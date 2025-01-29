@@ -44,15 +44,15 @@
     }
     
     .img_bg{
-        width: 250px;
-        height: 250px;
+        width: 350px;
+        height: 350px;
         background-color: #3E153E;
         border-radius: 20px;
     }
 
-    .logo img{
-        width: 250px;
-        height: 250px;
+    .img_bg img{
+        width: 350px;
+        height: 350px;
     }
 
     .forms{
