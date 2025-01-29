@@ -44,15 +44,15 @@
     }
     
     .img_bg{
-        width: 350px;
-        height: 350px;
+        width: 250px;
+        height: 250px;
         background-color: #3E153E;
         border-radius: 20px;
     }
 
-    .img_bg img{
-        width: 350px;
-        height: 350px;
+    .logo img{
+        width: 250px;
+        height: 250px;
     }
 
     .forms{
@@ -121,4 +121,12 @@
         cursor: pointer;
         background-color: #6834D4;
         transition: 0.3s;
+    }
+
+    .error{
+        background-color: #f2dede;
+        color: #a94442;
+        padding: 10px;
+        width: 95%;
+        border-radius: 5px;
     }

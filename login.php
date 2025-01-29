@@ -1,5 +1,5 @@
 <?php
-
+include("config/DBConnection.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,11 +21,13 @@
         </div>
         <div class="forms">
             <h1>Login</h1>
-            <h2 hidden>This is an error message!</h2>
-            <form class="formInput" action="maindashboard.php" method="POST">
-                <input class="inputs" type="email" name="email" id="email" placeholder="Email" required>
-                <input class="inputs" type="password" name="password" id="password" placeholder="Password" required>
-                <input class="submitbtn" type="submit" name="name" id="name" placeholder="Name">
+            <?php if (isset($_GET['error'])) { ?>
+                <p class = "error"><?php echo $_GET['error'];?></p>
+                <?php }?>
+            <form class="formInput" action="LoginDB.php" method="POST">
+                <input class="inputs" type="email" name="email" id="email" placeholder="Email" >
+                <input class="inputs" type="password" name="password" id="password" placeholder="Password" >
+                <input class="submitbtn" type="submit" name="login" id="name" value = "Login">
             </form>
             <h3>Don't have an account? <a href="index.php">Create an account</a></h3>
         </div>
