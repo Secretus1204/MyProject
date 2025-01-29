@@ -1,6 +1,6 @@
 <head>
     <title>YapHub</title>
-    <link rel="stylesheet" href="styles/navbar.css">
+    <link rel="stylesheet" href="styles/navbar.css?v=<?php echo time(); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">

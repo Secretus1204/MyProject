@@ -20,22 +20,21 @@
 
     
         if(empty($name)){
-            header("Location: ../login.php?error= Username is required ");
+            header("Location: ../index.php?error= Username is required! ");
             exit();
         }
         else if(empty($email)){
-            header("Location: ../login.php?error= Email is required ");
+            header("Location: ../index.php?error= Email is required! ");
             exit();
         }
         else if (empty($password)) {
-            header("Location: ../login.php?error= Password is required");
+            header("Location: ../index.php?error= Password is required! ");
             exit();
         }
-
         else {
             $verify_query = mysqli_query($conn,"SELECT email FROM users WHERE email = '$email'");
             if(mysqli_num_rows($verify_query)!=0){
-                header("Location: ../login.php?error= Email is Existing");
+                header("Location: ../index.php?error= Email is already existing!");
             } else{
             mysqli_query($conn,"INSERT INTO users (name, email, password) VALUES ('$name','$email','$password')");
             header("Location: ../login.php");
