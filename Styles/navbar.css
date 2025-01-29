@@ -1,0 +1,51 @@
+*{
+    font-family: "Roboto";
+}
+
+.nav{
+    background-image: linear-gradient(to top right, #511983, #3E153E, #410041);
+    height: 100%;
+    position: fixed;
+    width: 15%;
+}
+
+.logo img{
+    width: 200px;
+    height: 200px;
+}
+
+.nav-item{
+    text-align: center;
+    align-content: center;
+    font-size: 22px;
+    font-weight: 350;
+}
+
+.nav-link{
+    text-decoration: none;
+    color: white !important;
+}
+
+.main:hover{
+    cursor: pointer;
+    padding: 5px 0;
+    color: white;
+    border: 1px solid white;
+    transition: 0.5s;
+}
+
+.logout{
+    margin: 0 auto;
+    margin-top: auto;
+    margin-bottom: 20px;
+    width: 100%;
+    width: 130px;
+    border-radius: 20px;
+    background-color: #360236;
+}
+
+
+
+.logout_icon{
+    margin-bottom: 5px;
+}
