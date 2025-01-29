@@ -1,14 +1,12 @@
 <?php
     $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $db_name = "cst5";
-    $conn = mysqli_connect($servername, $username, $password,$db_name);
+    $username = "dm";
+    $password = "12345";
+    $db_name = "yaphub";
+    $conn = mysqli_connect($servername, $username, $password, $db_name);
 
-    if ($conn){
-        echo "";
-    }
-    else{
-        echo "Connection Failed";
+    // Check connection
+    if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
     }
 ?>

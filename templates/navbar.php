@@ -23,6 +23,6 @@
         <li class="nav-item main">
             <a class="nav-link" href="#">Group Chat</a>
         <li class="nav-item logout">
-            <a class="nav-link" href="index.php"><img src="Images/Icons/logout_icon.png" class="logout_icon" width="20px" height="20px" > Logout</a>
+            <a class="nav-link" href="config/logout.php"><img src="images/icons/logout_icon.png" class="logout_icon" width="20px" height="20px" > Logout</a>
         </li>
     </ul>

@@ -1,5 +1,5 @@
 <?php
-    
+    require("config/DBConnection.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,12 +21,12 @@
         </div>
         <div class="forms">
             <h1>Create Account</h1>
-            <h2>This is an error message!</h2>
-            <form class="formInput" action="maindashboard.php" method="POST">
+            <h2 class="error">This is an error message!</h2>
+            <form class="formInput" action="dbquery/signupDB.php" method="POST">
                 <input class="inputs" type="text" name="name" id="name" placeholder="Name" required>
                 <input class="inputs" type="email" name="email" id="email" placeholder="Email" required>
                 <input class="inputs" type="password" name="password" id="password" placeholder="Password" required>
-                <input class="submitbtn" type="submit" name="name" id="name" placeholder="Name">
+                <input class="submitbtn" type="submit" name="submit" id="submit" placeholder="Create Account">
             </form>
             <h3>Already have an account? <a href="login.php">Login here</a></h3>
         </div>

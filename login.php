@@ -1,5 +1,5 @@
 <?php
-include("config/DBConnection.php");
+    require("config/DBConnection.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,13 +21,13 @@ include("config/DBConnection.php");
         </div>
         <div class="forms">
             <h1>Login</h1>
-            <?php if (isset($_GET['error'])) { ?>
-                <p class = "error"><?php echo $_GET['error'];?></p>
+            <?php if (isset($_POST['error'])) { ?>
+                <h2 class = "error"><?php echo $_POST['error'];?></h2>
                 <?php }?>
-            <form class="formInput" action="LoginDB.php" method="POST">
+            <form class="formInput" action="dbquery/loginDB.php" method="POST">
                 <input class="inputs" type="email" name="email" id="email" placeholder="Email" >
                 <input class="inputs" type="password" name="password" id="password" placeholder="Password" >
-                <input class="submitbtn" type="submit" name="login" id="name" value = "Login">
+                <input class="submitbtn" type="submit" name="submit" id="submit" value = "Login">
             </form>
             <h3>Don't have an account? <a href="index.php">Create an account</a></h3>
         </div>
