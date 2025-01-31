@@ -12,17 +12,22 @@
             <img src="images/logo/yaphub_logo.png" alt="logo">
         </li>
         <li class="nav-item main">
+            <img src="images/icons/profile_icon.png" alt="profile" class="iconbtn">
             <a class="nav-link" href="#">Profile</a>
         </li>
         <li class="nav-item main">
+            <img src="images/icons/discoverpeople_icon.png" alt="discoverpeople" class="iconbtn">
             <a class="nav-link" href="#">Discover People</a>
         </li>
         <li class="nav-item main">
+            <img src="images/icons/message_icon.png" alt="messages" class="iconbtn">
             <a class="nav-link" href="#">Messages</a>
         </li>
         <li class="nav-item main">
+            <img src="images/icons/groupchat_icon.png" alt="groupchat" class="iconbtn">
             <a class="nav-link" href="#">Group Chat</a>
         <li class="nav-item logout">
-            <a class="nav-link" href="config/logout.php"><img src="images/icons/logout_icon.png" class="logout_icon" width="20px" height="20px" > Logout</a>
+            <img src="images/icons/logout_icon.png" class="logout_icon" width="20px" height="20px" >
+            <a class="nav-link" href="config/logout.php">Logout</a>
         </li>
     </ul>
