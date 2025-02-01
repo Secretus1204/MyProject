@@ -1,14 +1,13 @@
 
 
 body{
-    background: #DDC6FF;
     padding: 0;
     margin: 0;
 }
 
 
 .background{
-    background:#DDC6FF;
+    background:white;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -21,7 +20,7 @@ body{
 }
 
 .info_container{
-    background-color: white;
+    background-color: #DDC6FF;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -36,20 +35,21 @@ body{
 .edit_Profbtn{
     position: absolute;
     margin-bottom: 550px;
-    margin-right: 62%;
+    margin-right: 1200px;
+    z-index: 0;
 }
 
 .edit_Profbtn button{
     padding: 8px 20px;
     font-weight: 500;
-    background-color: #B380FF;
+    background-color: #4B276A;
     border: 0;
     border-radius: 20px;
 }
 
 .edit_Profbtn button a{
     text-decoration: none;
-    color: black;
+    color: #FEFEFE;
 }
 
 .edit_Profbtn button:hover{
@@ -60,7 +60,7 @@ body{
 .profile {
     position: absolute;
     margin-bottom: 620px;
-    background-color: #410041;
+    background-color: #4B276A;
     padding: 10px;
     border-radius: 50%;
 }

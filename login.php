@@ -13,12 +13,11 @@
     <title>YapHub</title>
 </head>
 <body>
-    <Section class="login">
+    <section class="separator">
         <div class="logo">
-            <div class="img_bg">
             <img src="images/logo/yaphub_logo.png" alt="logo">
-            </div>
         </div>
+    <section class="login">
         <div class="forms">
             <h1>Login</h1>
             <?php if (isset($_GET['error'])): ?>
@@ -31,6 +30,7 @@
             </form>
             <h3>Don't have an account? <a href="index.php">Create an account</a></h3>
         </div>
-    </Section>
+    </section>
+    </section>
 </body>
 </html>

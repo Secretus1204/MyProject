@@ -16,7 +16,7 @@
     <?php include('templates/navbar.php'); ?>
     <section class="background">
         <div class="info_container">
-        <div class="edit_Profbtn">
+                <div class="edit_Profbtn">
                     <button><a href="">Edit Profile</a></button>
                 </div>
                 <div class="profile">

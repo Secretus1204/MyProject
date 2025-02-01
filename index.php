@@ -13,12 +13,12 @@
     <title>YapHub</title>
 </head>
 <body>
-    <Section class="createaccount">
+    <section class="separator">
         <div class="logo">
-            <div class="img_bg">
             <img src="images/logo/yaphub_logo.png" alt="logo">
-            </div>
         </div>
+    <section class="login">
+    <Section class="createaccount">
         <div class="forms">
             <h1>Create Account</h1>
             <?php if (isset($_GET['error'])): ?>
