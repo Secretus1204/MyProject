@@ -23,7 +23,6 @@
         <li class="nav-item main">
             <a class="nav-link" href="createGroupPage.php"><img src="images/icons/groupchat_icon.png" alt="groupchat" class="iconbtn"><br>Create Group</a>
         <li class="nav-item logout">
-            <img src="images/icons/logout_icon.png" class="logout_icon" width="20px" height="20px" >
-            <a class="nav-link" href="config/logout.php">Logout</a>
+            <a class="nav-link" href="config/logout.php"><img src="images/icons/logout_icon.png" class="logout_icon" width="20px" height="20px">Logout</a>
         </li>
     </ul>

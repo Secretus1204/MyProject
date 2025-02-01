@@ -2,7 +2,7 @@
     font-family: "Roboto";
     }
     
-    html{
+    body{
         background-image: linear-gradient(to top right, #511983, #3E153E, #410041);
     }
     
@@ -17,8 +17,9 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        margin: 205px 0;
+        margin: 205px;
     }
+
     .login{
         background-color: #FEFEFE;
         width: 100%;
