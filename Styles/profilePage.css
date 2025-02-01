@@ -71,6 +71,7 @@ body{
 }
 
 .bio_name{
+    margin-top: 20px;
     text-align: center;
 }
 
@@ -81,7 +82,7 @@ body{
 
 .bio_name h2{
     font-weight: 400;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .current{
