@@ -27,7 +27,7 @@
         else {
            $result = mysqli_query($conn,"SELECT * FROM users WHERE email = '$email' AND password = '$password'");
             if (mysqli_num_rows($result) == 1) {
-                header("Location: ../maindashboard.php");
+                header("Location: ../profilePage.php");
             } else {
                 header("Location: ../login.php?error=Wrong login details!");
                 exit();

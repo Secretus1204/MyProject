@@ -29,9 +29,9 @@
 
 .main:hover{
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: 1.1em;
     color: white;
-    transition: 0.5s;
+    transition: 0.2s;
 }
 
 .iconbtn{

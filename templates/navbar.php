@@ -12,20 +12,16 @@
             <img src="images/logo/yaphub_logo.png" alt="logo">
         </li>
         <li class="nav-item main">
-            <img src="images/icons/profile_icon.png" alt="profile" class="iconbtn">
-            <a class="nav-link" href="#">Profile</a>
+            <a class="nav-link" href="profilePage.php"><img src="images/icons/profile_icon.png" alt="profile" class="iconbtn"><br>Profile</a>
         </li>
         <li class="nav-item main">
-            <img src="images/icons/discoverpeople_icon.png" alt="discoverpeople" class="iconbtn">
-            <a class="nav-link" href="#">Discover People</a>
+            <a class="nav-link" href="discoverPeoplePage.php"><img src="images/icons/discoverpeople_icon.png" alt="discoverpeople" class="iconbtn"><br>Discover People</a>
         </li>
         <li class="nav-item main">
-            <img src="images/icons/message_icon.png" alt="messages" class="iconbtn">
-            <a class="nav-link" href="#">Messages</a>
+            <a class="nav-link" href="messagesPage.php"><img src="images/icons/message_icon.png" alt="messages" class="iconbtn"><br>Messages</a>
         </li>
         <li class="nav-item main">
-            <img src="images/icons/groupchat_icon.png" alt="groupchat" class="iconbtn">
-            <a class="nav-link" href="#">Group Chat</a>
+            <a class="nav-link" href="createGroupPage.php"><img src="images/icons/groupchat_icon.png" alt="groupchat" class="iconbtn"><br>Create Group</a>
         <li class="nav-item logout">
             <img src="images/icons/logout_icon.png" class="logout_icon" width="20px" height="20px" >
             <a class="nav-link" href="config/logout.php">Logout</a>
