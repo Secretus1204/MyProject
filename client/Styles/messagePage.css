@@ -1,0 +1,129 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Roboto;
+}
+
+.background{
+    margin-left: 140px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-container{
+    margin-top: 50px;
+    width: 1200px;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: #511983;
+    padding: 30px ;
+    border-radius: 20px;
+}
+
+.search-bar-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    width: 500px;
+    height: 80px;
+    background-color: #6834D4;
+    border-radius: 50px;
+}
+
+.search-bar{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    height: 65px;
+    align-items: center;
+    width: 480px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 50px;
+}
+
+.search-bar img{
+    height: 50px;
+    width: 50px;
+}
+
+.search-bar input{
+    font-weight: 400;
+    height: 60px;
+    width: 380px;
+    font-size: 20px;
+    border: 0;
+}
+
+.search-bar input:focus{
+    border: none;
+    outline: none;
+}
+
+.message-list-container{
+    margin-top: 20px;
+    width: 1000px;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
+    height: 750px; /* Set a fixed height */
+    overflow-y: auto; /* Enable vertical scrolling when content overflows */
+    display: flex;
+}
+
+.message-list-container::-webkit-scrollbar {
+    width: 6px; /* Set scrollbar width */
+}
+
+.message-list-container::-webkit-scrollbar-thumb {
+    background: #888; /* Scrollbar color */
+    border-radius: 10px; /* Rounded scrollbar */
+}
+
+.message-list-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker color on hover */
+}
+
+.message-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 800px;
+    padding: 20px 50px;
+    background-color: #DDC6FF;
+    border-radius: 50px;
+    border: 0;
+}
+
+.message-pic img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    margin-right: 20px;
+}
+
+.name-time{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.message-preview-container h2{
+    font-size: 18px;
+}
+
+.message-preview-container h3{
+    font-size: 14px;
+    text-align: justify;
+}

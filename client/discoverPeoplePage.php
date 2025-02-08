@@ -15,6 +15,261 @@
 <body>
     <?php include('templates/navbar.php'); ?>
     <section class="background">
+        <div class="list-container">
+        <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+            <div class="profile-container">
+                <div class="profile-img">
+                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                </div>
+                <div class="name">
+                    <h2>James Oliver</h2>
+                </div>
+                <div class="add-icon">
+                    <img src="images/icons/addUser_icon.png" alt="add">
+                </div>
+            </div>
+        </div>
     </section>
 </body>
 </html>
