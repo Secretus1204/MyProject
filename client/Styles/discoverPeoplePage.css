@@ -69,6 +69,7 @@
 }
 
 .add-icon{
+    border: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -83,3 +84,8 @@
     width: 40px;
 }
 
+
+.add-icon:focus{
+    outline: none;
+    border: none;
+}
