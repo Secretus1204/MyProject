@@ -7,14 +7,10 @@ body{
 
 
 .background{
-    background:white;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    max-width: 100%;
-    height: 100vh;
-    padding-left: 140px;
+    margin-left: 140px;
+    height: 100%;
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 }
@@ -45,10 +41,6 @@ body{
     background-color: #4B276A;
     border: 0;
     border-radius: 20px;
-}
-
-.edit_Profbtn button a{
-    text-decoration: none;
     color: #FEFEFE;
 }
 

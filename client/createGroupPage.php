@@ -13,8 +13,53 @@
     <title>Create Group</title>
 </head>
 <body>
-    <?php include('templates/navbar.php'); ?>
+  <?php include('templates/navbar.php'); ?>
     <section class="background">
+      <div class="list-container">
+            <div class="first-container">
+              <div class="groupName-container">
+                <form action="">
+                  <input type="text" name="groupName" id="groupName" placeholder="Group Name" required>
+                </form>
+              </div>
+              <div class="create-group">
+                  <button class="createGroupbtn" name="createGroup">Create Group</button>
+              </div>
+            </div>
+            <div class="second-container">
+              <div class="search-members-container">
+                <div class="search-members">
+                    <form action="">
+                      <input type="text" name="searchMember" id="searchMember" placeholder="Search for a user" required>
+                    </form>
+                </div>
+                <div class="show-users">
+                  <div class="user">
+                      <img class="profilePic" src="images/profile_img/profile_1.jpg" alt="profile">
+                      <h2>Clarence Mabuang</h2>
+                      <button class="selectBtn"><img src="images/icons/select_icon.png" alt="select"></button>
+                  </div>
+                  <div class="user">
+                      <img class="profilePic" src="images/profile_img/profile_1.jpg" alt="profile">
+                      <h2>Clarence Mabuang</h2>
+                      <button class="selectBtn"></button>
+                  </div>
+                </div>
+              </div>
+              <div class="members-container">
+                <div class="memberTitle">
+                  <h2>Members:</h2>
+                </div>
+                <div class="added-members">
+                <div class="added-user">
+                      <img class="profilePic" src="images/profile_img/profile_1.jpg" alt="profile">
+                      <h2>Clarence Mabuang</h2>
+                      <button class="removeBtn"><img src="images/icons/remove_icon.png" alt="select"></button>
+                  </div>
+                </div> 
+              </div>
+            </div>
+      </div>
     </section>
 </body>
 </html>
