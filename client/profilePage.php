@@ -15,13 +15,15 @@
 <body>
     <?php include('templates/navbar.php'); ?>
     <section class="background">
+            <div class="profile">
+                <img src="images/profile_img/profile_1.jpg" alt="prof1">
+            </div>
         <div class="info_container">
+            <div class="editBtn_Profile">
                 <div class="edit_Profbtn">
                     <button onclick="window.location.href='editProfilePage.php'">Edit Profile</button>
                 </div>
-                <div class="profile">
-                    <img src="images/profile_img/profile_1.jpg" alt="prof1">
-                </div>
+            </div>
             <div class="bio_name">
                 <h1>DM Rashid Ferrer</h1>
                 <h2>Davao City, Philippines</h2>

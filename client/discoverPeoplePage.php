@@ -15,17 +15,42 @@
 <body>
     <?php include('templates/navbar.php'); ?>
     <section class="background">
-        <div class="list-container">
-            <div class="profile-container">
-                <div class="profile-img">
-                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+        <div class="main-container">
+            <div class="current-friends-container">
+                <div class="current-friends-header">
+                    <h1>Current Friends</h1>
                 </div>
-                <div class="name">
-                    <h2>James Oliver</h2>
+                <div class="current-friends-list">
+                    <button class="current-friend">
+                        <div class="profile-current-friend">
+                            <img src="images/profile_img/profile_1.jpg" alt="profile">
+                        </div>
+                        <div class="name-current-friend">
+                            <h3>Clarence Mabuang</h3>
+                        </div>
+                        <div class="online-or-not">
+
+                        </div>
+                    </button>
                 </div>
-                <button class="add-icon">
-                    <img src="images/icons/addUser_icon.png" alt="add">
-                </button>
+            </div>
+            <div class="search-people-container">
+                <div class="search-container">
+                    <input type="text" name="search" id="search" placeholder="Search">
+                </div>
+                <div class="suggested-friends">
+                    <div class="profile-container">
+                        <div class="profile-img">
+                            <img src="images/profile_img/profile_1.jpg" alt="profile">
+                        </div>
+                        <div class="name">
+                            <h2>James Oliver</h2>
+                        </div>
+                        <button class="add-icon">
+                            <img src="images/icons/addUser_icon.png" alt="add">
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

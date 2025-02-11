@@ -12,33 +12,137 @@
     align-items: center;
 }
 
-.list-container{
-    margin-top: 100px;
-    width: 1600px;
-    height: 80vh;
+.main-container{
+    width: 100%;
+    width: 100vw;
     display: flex;
     flex-direction: row;
-    align-items: top;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    background-color: #DDC6FF;
-    padding: 30px ;
-    border-radius: 20px;
+    align-items: center;
+}
+
+.current-friends-container{
+    width: 100%;
+    width: 40vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFFFFF;
+}
+
+.current-friends-header{
+    width: 100%;
+    height: 60px;
+    width: 40vw;
+    display: flex;
+    justify-content: center;
+    background-color: #FFFFFF;
+    box-shadow: 1px 1px 5px 0;
+}
+.current-friends-header h1{
+    font-size: 24px;
+    margin-top: 15px;
+    color: #264A82;
+}
+
+.current-friends-list{
+    margin-top: 20px;
+    width: 100%;
+    width: 30vw;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: top;
+    overflow-y: auto; 
+    overflow-x: hidden;
+}
+
+.current-friend{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    width: 30vw;
+    padding: 10px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #E9EEF0;
+    border: 1px solid lightgray;
+}
+
+
+.profile-current-friend img{
+    width: 40px;
+    border-radius: 10px;
+    height: 40px;
+}
+
+.current-friend h3{
+    width: 200px;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.online-or-not{
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.search-people-container{
+    width: 100%;
+    width: 54.8vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #E9EEF0;
     /* Enable scrolling when content overflows */
     overflow-y: auto; /* Vertical scrolling */
     overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
+.search-container{
+    width: 100%;
+    width: 54.8vw;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    background-color: #E9EEF0;
+    box-shadow: 1px 1px 5px 0;
+}
+
+.search-container input{
+    width: 400px;
+    font-size: 16px;
+    height: 40px;
+    padding: 0 40px;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid #12346F;
+    background-image: url("../images/icons/search_icon.png");
+    background-repeat: no-repeat;
+    background-size: 30px 30px;
+    background-position: 5px;
+}
+
 .profile-container{
     margin-top: 20px;
-    width: 350px;
-    height: 100px;
+    width: 25vw;
+    height: 55px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: #6834D4;
+    align-items: center;
+    background-color: #12346F;
     padding: 20px;
-    border-radius: 50px;
+    border-radius: 10px;
 }
 
 .profile-img{
@@ -49,9 +153,9 @@
 }
 
 .profile-img img{
-    height: 80px;
-    width: 80px;
-    border-radius: 50px;
+    height: 40px;
+    width: 40px;
+    border-radius: 10px;
 }
 
 .name{
@@ -64,7 +168,9 @@
 .name h2{
     text-align: center;
     align-self: center;
-    font-size: 20px;
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 10px;
     color: white;
 }
 
@@ -74,14 +180,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 10px;
+    padding: 5px;
     border-radius: 50px;
-    background-color: #DDC6FF;
+    height: 35px;
+    background-color: #E9EEF0;
+    box-shadow: 0px 1px 5px;
 }
 
 .add-icon img{
-    height: 40px;
-    width: 40px;
+    height: 25px;
+    width: 25px;
 }
 
 
