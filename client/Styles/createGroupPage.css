@@ -5,7 +5,7 @@
 }
 
 .background{
-    margin-left: 140px;
+    margin-left: 100px;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -13,47 +13,49 @@
 }
 
 .list-container{
-    margin-top: 50px;
-    width: 1600px;
-    height: 90vh;
+    width: 100%;
+    width: 100vw;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    background-color: #DDC6FF;
-    padding: 30px ;
-    border-radius: 20px;
+    background-color: white;
 }
 
 .first-container{
     width: 100%;
-    width: 1500px;
-    height: 100px;
+    height: 80px;
     display: flex;
+    background-color: #E0E4E5;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
+    box-shadow: 1px 0px 5px 0;
 }
 
 .groupName-container{
-    margin-left: 480px;
+    margin: 0 auto;
+    margin-left: 38%;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10px;
     width: 400px;
     height: 60px;
-    border-radius: 30px;
-    background-color: #6834D4;
+    border: 1px solid #264A82;
+    border-radius: 10px;
+    background-color: #E9EEF0;
 }
 
 .groupName-container input{
-    border-radius: 20px;
-    padding-left: 10px;
-    height: 40px;
-    width: 380px;
+    border-radius: 10px;
+    padding: 0 10px;
+    height: 56px;
+    width: 396px;
     border: 0;
-    color: #511983;
+    font-size: 24px;
+    text-align: center;
+    color: #264A82;
 }
 
 .groupName-container input:focus{
@@ -61,23 +63,22 @@
     border: 0;
 }
 
+
 .create-group{
-    margin-left: 380px;
-    padding: 10px;
-    background-color: #6834D4;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
+    margin-left: auto;
+    margin-right: 50px;
 }
 
 .create-group button{
+    box-shadow: 2px 2px 5px 0px;
     border: 0;
+    width: 200px;
+    height: 50px;
     border-radius: 7px;
     padding: 5px 10px;
     font-weight: 600;
-    color: #511983;
+    background-color: #12346F;
+    color: #E9EEF0;
 }
 
 .create-group button:focus{
@@ -85,21 +86,27 @@
     border: 0;
 }
 
+.create-group button:hover{
+    background-color: #1d6af0;
+}
+
 .second-container{
     height: 80vh;
     width: 100%;
-    width: 1400px;
+    width: 80vw;
+    margin-top: 60px;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
     padding: 20px;
-    background-color: #511983;
+    background-color: #E0E4E5;
+    box-shadow: 0px 0px 7px 0px;
     border-radius: 40px;
 }
 
 .search-members-container{
-    height: 500px;
+    height: 550px;
     width: 500px;
     display: flex;
     flex-direction: column;
@@ -111,20 +118,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
     width: 500px;
     height: 60px;
-    border-radius: 30px;
-    background-color: #6834D4;
 }
 
 .search-members input{
-    border-radius: 20px;
-    padding-left: 20px;
-    height: 40px;
+    border-radius: 10px;
+    padding: 20px;
+    height: 60px;
     width: 480px;
-    border: 0;
-    color: #511983;
+    border: 1px solid #264A82;
+    color: #264A82;
 }
 
 .search-members input:focus{
@@ -151,15 +155,15 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: #6834D4;
-    border-radius: 40px;
+    background-color: #12346F;
+    border-radius: 10px;
     margin-bottom: 10px;
 }
 
 .profilePic{
     width: 50px;
     height: 50px;
-    border-radius: 30px;
+    border-radius: 10px;
 }
 
 .user h2{
@@ -173,7 +177,7 @@
 
 .selectBtn{
     padding: 5px;
-    background-color: DDC6FF;
+    box-shadow: inset 0px 1px 5px;
     border: 0;
     width: 40px;
     height: 40px;
@@ -197,7 +201,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #DDC6FF;
+    background-color: #C1C8CB;
+    box-shadow: inset 1px 1px 5px;
     border-radius: 30px;
 }
 
@@ -208,7 +213,7 @@
 
 .memberTitle h2{
     font-size: 28px;
-    color: #511983;
+    color: #264A82;
     font-weight: 400;
 }
 
@@ -224,8 +229,8 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: #6834D4;
-    border-radius: 40px;
+    background-color: #12346F;
+    border-radius: 10px;
     margin-bottom: 10px;
 }
 
@@ -240,7 +245,7 @@
 
 .removeBtn{
     padding: 5px;
-    background-color: DDC6FF;
+    box-shadow: inset 0px 1px 5px;
     border: 0;
     width: 40px;
     height: 40px;

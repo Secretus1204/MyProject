@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/messageTab.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="styles/messagePage.css?v=<?php echo time(); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -15,6 +15,28 @@
 <body>
     <?php include('templates/navbar.php'); ?>
     <section class="background">
+        <div class="inbox-container">
+            <div class="search-inbox-container">
+                <input type="text" name="searchInbox" id="searchInbox" placeholder="Search">
+            </div>
+            <div class="last-chat-header">
+                <h3>Last Chats</h3>
+            </div>
+            <div class="inbox">
+                <button class="last-message">
+                    <div class="img-container">
+                        <img src="images/profile_img/profile_1.jpg" alt="">
+                    </div>
+                    <div class="names-msg">
+                        <h3>Clarence Mabuang</h3>
+                        <h4>KAFSKFASJKSFAKSFJKF</h4>
+                    </div>
+                    <div class="timeSent">
+                        <h4>7:00 PM</h4>
+                    </div>
+                </button>
+            </div>
+        </div>
         <div class="main-message-container">
             <div class="main-message">
                 <div class="dateSent">

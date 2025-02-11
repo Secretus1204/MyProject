@@ -7,7 +7,7 @@ body{
 
 
 .background{
-    margin-left: 140px;
+    margin-left: 100px;
     height: 100%;
     display: flex;
     flex-direction: row;
@@ -16,30 +16,34 @@ body{
 }
 
 .info_container{
-    background-color: #DDC6FF;
+    background-color: #E9EEF0;
+    box-shadow: 0px 2px 5px 2px #C1C8CB;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     flex-direction: column;
     width: 1400px;
-    height: 650px;
+    height: 80vh;
     border-radius: 20px;
-    margin-top: 120px;
+    margin-top: 100px;
 }
 
 
 .edit_Profbtn{
     position: absolute;
-    margin-bottom: 550px;
+    margin-bottom: 580px;
     margin-right: 1200px;
     z-index: 0;
 }
 
 .edit_Profbtn button{
     padding: 8px 20px;
-    font-weight: 500;
-    background-color: #4B276A;
+    font-weight: 400;
+    background-color: #12346F;
+    box-shadow: 1px 1px 5px 0px #12346F;
     border: 0;
+    width: 100px;
+    font-size: 12px;
     border-radius: 20px;
     color: #FEFEFE;
 }
@@ -51,30 +55,30 @@ body{
 
 .profile {
     position: absolute;
-    margin-bottom: 620px;
-    background-color: #4B276A;
-    padding: 10px;
+    margin-bottom: 640px;
+    background-color: #12346F;
+    padding: 8px;
     border-radius: 50%;
 }
 .profile img{
-    width: 200px;
-    height: 200px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
 }
 
 .bio_name{
-    margin-top: 20px;
     text-align: center;
+    margin-bottom: 150px;
 }
 
 .bio_name h1{
     font-weight: 600;
-    font-size: 40px;
+    font-size: 30px;
 }
 
 .bio_name h2{
     font-weight: 400;
-    font-size: 20px;
+    font-size: 14px;
 }
 
 .current{

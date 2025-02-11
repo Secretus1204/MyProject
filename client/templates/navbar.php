@@ -18,7 +18,7 @@
             <a class="nav-link" href="discoverPeoplePage.php"><img src="images/icons/discoverpeople_icon.png" alt="discoverpeople" class="iconbtn"><br>Discover People</a>
         </li>
         <li class="nav-item main">
-            <a class="nav-link" href="messagesPage.php"><img src="images/icons/message_icon.png" alt="messages" class="iconbtn"><br>Messages</a>
+            <a class="nav-link" href="messagePage.php"><img src="images/icons/message_icon.png" alt="messages" class="iconbtn"><br>Messages</a>
         </li>
         <li class="nav-item main">
             <a class="nav-link" href="createGroupPage.php"><img src="images/icons/groupchat_icon.png" alt="groupchat" class="iconbtn"><br>Create Group</a>
