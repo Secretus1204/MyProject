@@ -66,13 +66,13 @@
             } else if($checkEmailAdmin != 0){
                 header("Location: ../../client/index.php?error= This email is for admin!");
             }else{
-            $stmtCreateUser = mysqli_prepare($conn,"INSERT INTO user (userFirstName, userLastName, userEmail, userAddress, userPassword) VALUES ('$firstName', '$lastName', '$email', '$address', '$password')");
+            $stmtCreateUser = mysqli_prepare($conn,"INSERT INTO user (userFirstName, userLastName, userEmail, userAddress, userPassword) VALUES (?, ?, ?, ?, ?)");
             if($stmtCreateUser){
 
-                mysqli_stmt_bind_param($stmtCreateUser,"sssss",$firstName,$lastName,$email,$address,$password);
+                mysqli_stmt_bind_param($stmtCreateUser,"sssss", $firstName, $lastName, $email, $address, $password);
 
                  // Execute the statement
-                if (mysqli_stmt_execute($stmt)) {
+                if (mysqli_stmt_execute($stmtCreateUser)) {
                     header("Location: ../../client/login.php");
                 } else {
                     header("Location: ../../client/index.php?error= Error Occured In Executing Statement!");

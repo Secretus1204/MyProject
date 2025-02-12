@@ -28,7 +28,7 @@
                         <img src="images/profile_img/profile_1.jpg" alt="">
                     </div>
                     <div class="names-msg">
-                        <h3>Clarence Mabuang</h3>
+                        <h3>James Oliver</h3>
                         <h4>KAFSKFASJKSFAKSFJKF</h4>
                     </div>
                     <div class="timeSent">

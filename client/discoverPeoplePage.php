@@ -26,7 +26,7 @@
                             <img src="images/profile_img/profile_1.jpg" alt="profile">
                         </div>
                         <div class="name-current-friend">
-                            <h3>Clarence Mabuang</h3>
+                            <h3>James Oliver</h3>
                         </div>
                         <div class="online-or-not">
 
