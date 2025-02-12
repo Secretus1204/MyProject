@@ -1,5 +1,5 @@
 <?php
-    require("config/DBConnection.php");
+    require("../SQL/config/DBConnection.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +23,7 @@
             <?php if (isset($_GET['error'])): ?>
                 <h2 class="error"><?php echo htmlspecialchars($_GET['error']); ?></h2>
             <?php endif; ?>
-            <form class="formInput" action="dbquery/loginDB.php" method="POST">
+            <form class="formInput" action="../SQL/dbquery/loginDB.php" method="POST">
                 <input class="inputs" type="email" name="email" id="email" placeholder="Email" >
                 <input class="inputs" type="password" name="password" id="password" placeholder="Password" >
                 <input class="submitbtn" type="submit" name="submit" id="submit" value = "Login">

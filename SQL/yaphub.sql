@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 07, 2025 at 10:56 PM
+-- Generation Time: Feb 12, 2025 at 10:27 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,6 +20,26 @@ SET time_zone = "+00:00";
 --
 -- Database: `yaphub`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `adminId` int(11) NOT NULL,
+  `adminEmail` varchar(50) NOT NULL,
+  `adminPassword` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`adminId`, `adminEmail`, `adminPassword`) VALUES
+(1, 'dmrashidpferrer@gmail.com', 'dmrashid123'),
+(2, 'rylejadetabay@gmail.com', 'ryle123');
 
 -- --------------------------------------------------------
 
@@ -90,18 +110,14 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`userId`, `userFirstName`, `userLastName`, `userEmail`, `userAddress`, `userPassword`) VALUES
-(1, 'DM Rashid', 'Ferrer', 'dmrashidpferrer@gmail.com', 'Davao City, Philippines', '123456'),
-(2, 'James', 'Oliver', 'jamesoliver@gmail.com', 'sa kilid kilid lang', '123456'),
-(3, 'John', 'Myers', 'john@gmail.com', 'wqrqwnjrqwkqrw', '123456'),
-(4, 'Merk', 'Ren', 'merk@gmail.com', 'qwoqwriqrnwnrqw', '123456');
-
---
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`adminId`);
 
 --
 -- Indexes for table `group`
@@ -138,6 +154,12 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `adminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `group`
 --
 ALTER TABLE `group`
@@ -165,7 +187,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
