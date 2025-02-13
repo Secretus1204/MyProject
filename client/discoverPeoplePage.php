@@ -1,5 +1,5 @@
 <?php
-
+    include('../SQL/dbquery/discoverPeople.inc.php');   
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,17 +21,23 @@
                     <h1>Current Friends</h1>
                 </div>
                 <div class="current-friends-list">
-                    <button class="current-friend">
-                        <div class="profile-current-friend">
-                            <img src="images/profile_img/profile_1.jpg" alt="profile">
-                        </div>
-                        <div class="name-current-friend">
-                            <h3>James Oliver</h3>
-                        </div>
-                        <div class="online-or-not">
-
-                        </div>
-                    </button>
+                    <?php foreach ($friends as $friend): ?>
+                        <button class="current-friend">
+                            <div class="profile-current-friend">
+                                <img src="images/profile_img/profile_1.jpg" alt="profile">
+                            </div>
+                            <div class="name-current-friend">
+                                <h3><?php echo htmlspecialchars($friend['firstName'] . ' ' . $friend['lastName']); ?></h3>
+                            </div>
+                            <div class="online-or-not">
+                                <?php if ($friend['is_online'] == 1): ?>
+                                    <span class="online-status online">Online</span>
+                                <?php else: ?>
+                                    <span class="online-status offline">Offline</span>
+                                <?php endif; ?>
+                            </div>
+                        </button>
+                    <?php endforeach; ?>
                 </div>
             </div>
             <div class="search-people-container">
@@ -39,17 +45,19 @@
                     <input type="text" name="search" id="search" placeholder="Search">
                 </div>
                 <div class="suggested-friends">
-                    <div class="profile-container">
-                        <div class="profile-img">
-                            <img src="images/profile_img/profile_1.jpg" alt="profile">
+                    <?php foreach ($nonFriends as $nonfriend): ?>
+                        <div class="profile-container">
+                            <div class="profile-img">
+                                <img src="images/profile_img/profile_1.jpg" alt="profile">
+                            </div>
+                            <div class="name">
+                                <h2><?php echo htmlspecialchars($nonfriend['firstName'] . ' ' . $nonfriend['lastName']); ?></h2>
+                            </div>
+                            <button class="add-icon">
+                                <img src="images/icons/addUser_icon.png" alt="add">
+                            </button>
                         </div>
-                        <div class="name">
-                            <h2>James Oliver</h2>
-                        </div>
-                        <button class="add-icon">
-                            <img src="images/icons/addUser_icon.png" alt="add">
-                        </button>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>

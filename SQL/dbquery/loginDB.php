@@ -1,74 +1,75 @@
 <?php
-    require("../config/DBConnection.php");
-    session_start();
-    if (isset($_POST['submit'])){
+require("../config/DBConnection.php");
+session_start();
 
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+if (isset($_POST['submit'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-        function validate ($data){
-            $data = trim ($data);
-            $data = stripslashes($data);
-            $data = htmlspecialchars($data);
-            return $data;
-        }
-
-        $email = validate($_POST ['email']);
-        $password = validate($_POST ['password']);
-
-        if(empty($email)){
-            header("Location: ../../client/login.php?error=Email is required!");
-            exit();
-        }
-        else if (empty($password)) {
-            header("Location: ../../client/login.php?error=Password is required!");
-            exit();
-        }
-        else {
-            //check if the account details exits
-            $adminResult = mysqli_query($conn,"SELECT * FROM admin WHERE adminEmail = '$email' AND adminPassword = '$password'");
-                //if admin
-                if(mysqli_num_rows($adminResult) == 1){
-                        $row = mysqli_fetch_assoc($adminResult); // Fetch the row as an associative array
-
-                        // Store each column in separate variables
-                        $adminName = $row['adminName'];
-                        $adminEmail = $row['adminEmail'];
-                        $adminPassword = $row['adminPassword'];
-                        $_SESSION["name"] = $adminName;
-                        $_SESSION["email"] = $adminName;
-                        $_SESSION["password"] = $password;
-
-                        header("Location: ../../admin/dashboardPage.php");
-                }else{
-                //if just a user
-                $result = mysqli_query($conn,"SELECT * FROM user WHERE userEmail = '$email' AND userPassword = '$password'");
-                    if (mysqli_num_rows($result) == 1) {
-                        $row = mysqli_fetch_assoc($result); // Fetch the row as an associative array
-
-                        // Store each column in separate variables
-                        $userFirstName = $row['userFirstName'];
-                        $userLastName = $row['userLastName'];
-                        $userEmail = $row['userEmail'];
-                        $userAddress = $row['userAddress'];
-                        $userPassword = $row['userPassword'];
-
-                        $_SESSION["firstName"] = $userFirstName;
-                        $_SESSION["lastName"] = $userLastName;
-                        $_SESSION["email"] = $userEmail;
-                        $_SESSION["address"] = $userAddress;
-                        $_SESSION["password"] = $userPassword;
-
-                        header("Location: ../../client/profilePage.php");
-                    } else {
-                        header("Location: ../../client/login.php?error=Wrong login details!");
-                        exit();
-                    }
-                }
-        }
-
+    function validate($data)
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
     }
-    else{
-        header("Location: ../login.php");
+
+    $email = validate($email);
+    $password = validate($password);
+
+    if (empty($email)) {
+        header("Location: ../../client/login.php?error=Email is required!");
         exit();
+    } elseif (empty($password)) {
+        header("Location: ../../client/login.php?error=Password is required!");
+        exit();
+    } else {
+        try {
+            // Check if admin
+            $stmtAdmin = $pdo->prepare("SELECT * FROM admin WHERE adminEmail = ?");
+            $stmtAdmin->execute([$email]);
+            $admin = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
+
+            if ($admin && $password === $admin['adminPassword']) {
+                $_SESSION['name'] = $admin['adminName'];
+                $_SESSION['email'] = $admin['adminEmail'];
+                $_SESSION['password'] = $admin['adminPassword'];
+                header("Location: ../../admin/dashboardPage.php");
+                exit();
+            }
+
+            // Check if user
+            $stmtUser = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+            $stmtUser->execute([$email]);
+            $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
+
+            if ($user && password_verify($password, $user['password'])) {
+                $stmtOnline = $pdo->prepare("UPDATE users SET is_online = 1 WHERE email =?");
+                $stmtOnline->execute([$email]);
+
+                $stmtIfOnline = $pdo->prepare("SELECT is_online FROM users WHERE email = ?");
+                $stmtIfOnline->execute([$email]);
+                $online = $stmtIfOnline->fetch(PDO::FETCH_ASSOC);
+                
+                $_SESSION['currentUserId'] = $user['user_id'];
+                $_SESSION['firstName'] = $user['firstName'];
+                $_SESSION['lastName'] = $user['lastName'];
+                $_SESSION['email'] = $user['email'];
+                $_SESSION['address'] = $user['address'];
+                $_SESSION['profile_picture'] = $user['profile_picture'];
+                $_SESSION['online_status'] = $online['is_online'];
+                header("Location: ../../client/profilePage.php");
+                exit();
+            }
+
+            header("Location: ../../client/login.php?error=Wrong login details!");
+            exit();
+        } catch (PDOException $e) {
+            header("Location: ../../client/login.php?error=" . $e->getMessage());
+            exit();
+        }
     }
+} else {
+    header("Location: ../login.php");
+    exit();
+}

@@ -1,12 +1,13 @@
 <?php
-    $servername = "localhost";
-    $username = "dm";
-    $password = "12345";
-    $db_name = "yaphub";
-    $conn = mysqli_connect($servername, $username, $password, $db_name);
+$servername = "localhost";
+$username = "dm";
+$password = "12345";
+$db_name = "yaphub";
 
-    // Check connection
-    if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-    }
+try {
+    $pdo = new PDO("mysql:host=$servername;dbname=$db_name;charset=utf8mb4", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
+}
 ?>
