@@ -52,11 +52,6 @@ body{
     color: #FEFEFE;
 }
 
-.edit_Profbtn button:hover{
-    border: black;
-    margin-bottom: 3px;
-}
-
 .profile {
     position: absolute;
     margin-bottom: 65vh;
@@ -126,4 +121,56 @@ body{
 .current_friends h1{
     font-size: 40px;
     font-weight: 400;
+}
+
+.modal-header{
+   background-color: #12346F;
+   color: #E9EEF0;
+}
+
+.modal-footer{
+    background-color: #12346F;
+   color: #E9EEF0;
+}
+
+.modal-body{
+    background-color: #E9EEF0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalForms div{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+.modalForms label{
+    width: 200px;
+    font-size: 18px;
+    text-align: end;
+    margin-left: 50px;
+}
+
+.modalForms input, .modalForms select{
+    font-size: 18px;
+    margin-left: 50px;
+}
+
+.inputS{
+    width: 300px;
+    border: 0;
+    border-bottom: 1px solid black;
+    padding-bottom: 2px;
+    background-color: #E9EEF0;
+}
+
+.inputS:focus{
+    border: 0;
+    outline: 0;
+    border-bottom: 1px solid black;
 }
