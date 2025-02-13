@@ -1,5 +1,5 @@
 <?php
-
+    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +16,7 @@
     <?php include('templates/navbar.php'); ?>
     <section class="background">
             <div class="profile">
-                <img src="images/profile_img/profile_1.jpg" alt="prof1">
+                <img src="images/profile_img/profile_1.jpg?v=<?php echo time(); ?>" alt="prof1">
             </div>
         <div class="info_container">
             <div class="editBtn_Profile">
@@ -25,8 +25,8 @@
                 </div>
             </div>
             <div class="bio_name">
-                <h1>DM Rashid Ferrer</h1>
-                <h2>Davao City, Philippines</h2>
+                <h1><?= $_SESSION["firstName"] . " " . $_SESSION["lastName"] ?></h1>
+                <h2><?= $_SESSION["address"]?></h2>
             </div>
             <div class="current">
                 <div class="current_group">

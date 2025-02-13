@@ -1,0 +1,19 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Inter;
+}
+
+.background{
+    margin-left: 140px;
+    height: 100%;
+    display: column;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart-container{
+    width: 500px;
+    height: 500px;
+}

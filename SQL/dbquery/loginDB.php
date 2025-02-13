@@ -25,17 +25,41 @@
             exit();
         }
         else {
+            //check if the account details exits
             $adminResult = mysqli_query($conn,"SELECT * FROM admin WHERE adminEmail = '$email' AND adminPassword = '$password'");
+                //if admin
                 if(mysqli_num_rows($adminResult) == 1){
-                    header("Location: ../../admin/adminPage.php");
-                        $_SESSION["email"] = $email;
+                        $row = mysqli_fetch_assoc($adminResult); // Fetch the row as an associative array
+
+                        // Store each column in separate variables
+                        $adminName = $row['adminName'];
+                        $adminEmail = $row['adminEmail'];
+                        $adminPassword = $row['adminPassword'];
+                        $_SESSION["name"] = $adminName;
+                        $_SESSION["email"] = $adminName;
                         $_SESSION["password"] = $password;
-                } else{
+
+                        header("Location: ../../admin/dashboardPage.php");
+                }else{
+                //if just a user
                 $result = mysqli_query($conn,"SELECT * FROM user WHERE userEmail = '$email' AND userPassword = '$password'");
                     if (mysqli_num_rows($result) == 1) {
+                        $row = mysqli_fetch_assoc($result); // Fetch the row as an associative array
+
+                        // Store each column in separate variables
+                        $userFirstName = $row['userFirstName'];
+                        $userLastName = $row['userLastName'];
+                        $userEmail = $row['userEmail'];
+                        $userAddress = $row['userAddress'];
+                        $userPassword = $row['userPassword'];
+
+                        $_SESSION["firstName"] = $userFirstName;
+                        $_SESSION["lastName"] = $userLastName;
+                        $_SESSION["email"] = $userEmail;
+                        $_SESSION["address"] = $userAddress;
+                        $_SESSION["password"] = $userPassword;
+
                         header("Location: ../../client/profilePage.php");
-                        $_SESSION["email"] = $email;
-                        $_SESSION["password"] = $password;
                     } else {
                         header("Location: ../../client/login.php?error=Wrong login details!");
                         exit();
