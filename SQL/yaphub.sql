@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 12, 2025 at 10:27 AM
+-- Generation Time: Feb 14, 2025 at 06:52 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `admin` (
   `adminId` int(11) NOT NULL,
+  `adminName` varchar(50) NOT NULL,
   `adminEmail` varchar(50) NOT NULL,
   `adminPassword` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -37,48 +38,57 @@ CREATE TABLE `admin` (
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`adminId`, `adminEmail`, `adminPassword`) VALUES
-(1, 'dmrashidpferrer@gmail.com', 'dmrashid123'),
-(2, 'rylejadetabay@gmail.com', 'ryle123');
+INSERT INTO `admin` (`adminId`, `adminName`, `adminEmail`, `adminPassword`) VALUES
+(1, 'DM Rashid Ferrer', 'dmrashidpferrer@gmail.com', 'dmrashid123'),
+(2, 'Ryle Jade Tabay', 'rylejadetabay@gmail.com', 'ryle123');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `group`
+-- Table structure for table `chats`
 --
 
-CREATE TABLE `group` (
-  `groupId` int(11) NOT NULL,
-  `groupName` varchar(50) NOT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
+CREATE TABLE `chats` (
+  `chat_id` int(11) NOT NULL,
+  `chat_name` varchar(100) DEFAULT NULL,
+  `is_group` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `group_members`
+-- Table structure for table `chat_members`
 --
 
-CREATE TABLE `group_members` (
-  `id` int(11) NOT NULL,
-  `groupId` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `joinedAt` timestamp NOT NULL DEFAULT current_timestamp()
+CREATE TABLE `chat_members` (
+  `chat_member_id` int(11) NOT NULL,
+  `chat_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `joined_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `group_messages`
+-- Table structure for table `friends`
 --
 
-CREATE TABLE `group_messages` (
-  `group_messageId` int(11) NOT NULL,
-  `groupId` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dateSent` timestamp NOT NULL DEFAULT current_timestamp()
+CREATE TABLE `friends` (
+  `friendship_id` int(11) NOT NULL,
+  `user_id1` int(11) DEFAULT NULL,
+  `user_id2` int(11) DEFAULT NULL,
+  `status` enum('pending','accepted','blocked') DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `friends`
+--
+
+INSERT INTO `friends` (`friendship_id`, `user_id1`, `user_id2`, `status`, `created_at`) VALUES
+(1, 1, 2, 'accepted', '2025-02-14 17:35:38'),
+(2, 3, 1, 'pending', '2025-02-14 17:50:18');
 
 -- --------------------------------------------------------
 
@@ -87,27 +97,55 @@ CREATE TABLE `group_messages` (
 --
 
 CREATE TABLE `messages` (
-  `messageId` int(11) NOT NULL,
-  `message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `messageFrom` varchar(11) NOT NULL,
-  `messageTo` varchar(11) NOT NULL,
-  `dateSent` timestamp NOT NULL DEFAULT current_timestamp()
+  `message_id` int(11) NOT NULL,
+  `chat_id` int(11) DEFAULT NULL,
+  `sender_id` int(11) DEFAULT NULL,
+  `message_text` text DEFAULT NULL,
+  `message_type` enum('text','image','file','video') DEFAULT 'text',
+  `file_url` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Table structure for table `message_status`
 --
 
-CREATE TABLE `user` (
-  `userId` int(11) NOT NULL,
-  `userFirstName` varchar(50) NOT NULL,
-  `userLastName` varchar(50) NOT NULL,
-  `userEmail` varchar(100) NOT NULL,
-  `userAddress` varchar(300) NOT NULL,
-  `userPassword` varchar(15) NOT NULL
+CREATE TABLE `message_status` (
+  `status_id` int(11) NOT NULL,
+  `message_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `status` enum('sent','delivered','read') DEFAULT 'sent',
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL,
+  `firstName` varchar(50) NOT NULL,
+  `lastName` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `address` varchar(250) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `profile_picture` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `is_online` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `firstName`, `lastName`, `email`, `address`, `password`, `profile_picture`, `created_at`, `is_online`) VALUES
+(1, 'Mark', 'Waters', 'mark@gmail.com', 'Davao City, Philippines', '$2y$10$twEYkSdPPwQHGbXtbTlg.e.htAV5BtfYUOs.CK4OBtCzEwRIxcH46', NULL, '2025-02-13 19:29:28', 0),
+(2, 'James', 'Oliver', 'jamesoliver@gmail.com', 'Davao City, Philippines', '$2y$10$/QV1xjgQmvuWDEGM1EYdyePZA8P4O4KeuCn9SaVgr3HcVqHPGfZ.6', NULL, '2025-02-13 19:58:58', 1),
+(3, 'John', 'Doe', 'john@gmail.com', 'Maranata, New Zealand', '$2y$10$8bsFxKHRsjyjy5wd8.KruOkddmWXDtGwB4K6frMCaW/4TCCwHTyu.', NULL, '2025-02-14 17:50:00', 1);
 
 --
 -- Indexes for dumped tables
@@ -120,34 +158,49 @@ ALTER TABLE `admin`
   ADD PRIMARY KEY (`adminId`);
 
 --
--- Indexes for table `group`
+-- Indexes for table `chats`
 --
-ALTER TABLE `group`
-  ADD PRIMARY KEY (`groupId`);
+ALTER TABLE `chats`
+  ADD PRIMARY KEY (`chat_id`);
 
 --
--- Indexes for table `group_members`
+-- Indexes for table `chat_members`
 --
-ALTER TABLE `group_members`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `chat_members`
+  ADD PRIMARY KEY (`chat_member_id`),
+  ADD KEY `chat_id` (`chat_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `group_messages`
+-- Indexes for table `friends`
 --
-ALTER TABLE `group_messages`
-  ADD PRIMARY KEY (`group_messageId`);
+ALTER TABLE `friends`
+  ADD PRIMARY KEY (`friendship_id`),
+  ADD KEY `user_id1` (`user_id1`),
+  ADD KEY `user_id2` (`user_id2`);
 
 --
 -- Indexes for table `messages`
 --
 ALTER TABLE `messages`
-  ADD PRIMARY KEY (`messageId`);
+  ADD PRIMARY KEY (`message_id`),
+  ADD KEY `chat_id` (`chat_id`),
+  ADD KEY `sender_id` (`sender_id`);
 
 --
--- Indexes for table `user`
+-- Indexes for table `message_status`
 --
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`userId`);
+ALTER TABLE `message_status`
+  ADD PRIMARY KEY (`status_id`),
+  ADD KEY `message_id` (`message_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -160,34 +213,72 @@ ALTER TABLE `admin`
   MODIFY `adminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `group`
+-- AUTO_INCREMENT for table `chats`
 --
-ALTER TABLE `group`
-  MODIFY `groupId` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `chats`
+  MODIFY `chat_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `group_members`
+-- AUTO_INCREMENT for table `chat_members`
 --
-ALTER TABLE `group_members`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `chat_members`
+  MODIFY `chat_member_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `group_messages`
+-- AUTO_INCREMENT for table `friends`
 --
-ALTER TABLE `group_messages`
-  MODIFY `group_messageId` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `friends`
+  MODIFY `friendship_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `messageId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT for table `message_status`
 --
-ALTER TABLE `user`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `message_status`
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `chat_members`
+--
+ALTER TABLE `chat_members`
+  ADD CONSTRAINT `chat_members_ibfk_1` FOREIGN KEY (`chat_id`) REFERENCES `chats` (`chat_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `chat_members_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `friends`
+--
+ALTER TABLE `friends`
+  ADD CONSTRAINT `friends_ibfk_1` FOREIGN KEY (`user_id1`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `friends_ibfk_2` FOREIGN KEY (`user_id2`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`chat_id`) REFERENCES `chats` (`chat_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`sender_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `message_status`
+--
+ALTER TABLE `message_status`
+  ADD CONSTRAINT `message_status_ibfk_1` FOREIGN KEY (`message_id`) REFERENCES `messages` (`message_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `message_status_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -24,15 +24,19 @@
 .nav-item{
     text-align: center;
     align-content: center;
-    font-size: 14px;
     font-weight: 350;
     margin: 5px 0;
 }
 
 .nav-link{
+    width: 100%;
     text-decoration: none;
     font-size: 16px;
     color: #E9EEF0 !important;
+}
+
+.main{
+    text-align: start;
 }
 
 .main:hover{
