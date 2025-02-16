@@ -55,3 +55,11 @@ $queryFriendRequests = $pdo->prepare("
 $queryFriendRequests->execute(['current_user_id' => $current_user_id]);
 $friendRequests = $queryFriendRequests->fetchAll(PDO::FETCH_ASSOC);
 
+// Return JSON response
+header('Content-Type: application/json');
+echo json_encode([
+    'friends' => $friends,
+    'nonFriends' => $nonFriends,
+    'friendRequests' => $friendRequests
+]);
+exit;

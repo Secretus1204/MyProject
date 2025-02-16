@@ -44,6 +44,6 @@ if (isset($_POST['add_friend_id'])) {
         exit();
     }
 } else {
-    header("Location: ../../client/discoverPeoplePage.php");
+    http_response_code(200);
     exit();
 }

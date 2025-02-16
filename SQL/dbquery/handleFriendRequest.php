@@ -31,5 +31,5 @@ if (isset($_POST['friend_id'])) {
 }
 
 // Redirect back to the page after handling
-header("Location: ../../client/discoverPeoplePage.php");
+http_response_code(200);
 exit();

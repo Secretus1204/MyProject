@@ -68,6 +68,7 @@
     border-radius: 10px;
     background-color: #E9EEF0;
     border: 1px solid lightgray;
+    margin-top: 20px;
 }
 
 
@@ -153,6 +154,10 @@
     background-color: #12346F;
     padding: 20px;
     border-radius: 10px;
+}
+
+.profile-container:hover{
+    cursor: pointer;
 }
 
 .profile-img{
