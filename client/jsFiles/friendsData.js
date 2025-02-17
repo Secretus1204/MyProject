@@ -22,14 +22,13 @@ function fetchFriendsData() {
                     </button>
                 `;
             });
-            
 
             // Update Suggested Friends List
             const suggestedFriendsList = document.getElementById('suggested-friends-list');
             suggestedFriendsList.innerHTML = '';
             data.nonFriends.forEach(nonfriend => {
                 suggestedFriendsList.innerHTML += `
-                   <div class="profile-container" onclick="window.location.href='viewFriendProfilePage.php?user_id=${nonfriend.user_id}'">
+                    <div class="profile-container" data-name="${nonfriend.firstName} ${nonfriend.lastName}" onclick="window.location.href='viewFriendProfilePage.php?user_id=${nonfriend.user_id}'">
                         <div class="profile-img">
                             <img src="images/profile_img/profile_1.jpg" alt="profile">
                         </div>
@@ -75,10 +74,25 @@ function fetchFriendsData() {
                 });
             }
 
-            // Attach event listeners after DOM update
             attachEventListeners();
+            filterSuggestedFriends(); // <- Always filter after updating DOM
         })
         .catch(error => console.error('Error fetching data:', error));
+}
+
+function filterSuggestedFriends() {
+    const searchValue = document.getElementById('search').value.toLowerCase();
+    const profiles = document.querySelectorAll('#suggested-friends-list .profile-container');
+
+    profiles.forEach(profile => {
+        const nameText = profile.querySelector('.name h2').textContent.toLowerCase();
+
+        if (nameText.includes(searchValue)) {
+            profile.style.display = 'flex';
+        } else {
+            profile.style.display = 'none';
+        }
+    });
 }
 
 function attachEventListeners() {
@@ -90,21 +104,15 @@ function attachEventListeners() {
         });
 
         form.querySelector('button').addEventListener('click', function () {
-            const friendId = form.dataset.userId;
+            const friendId = form.closest('.addFriendForm').dataset.userId;
             addFriend(friendId);
         });
     });
 
     document.querySelectorAll('.handleRequestForm').forEach(form => {
         const friendId = form.dataset.userId;
-
-        form.querySelector('.acceptBtn').addEventListener('click', function () {
-            handleFriendRequest(friendId, 'accept');
-        });
-
-        form.querySelector('.rejectBtn').addEventListener('click', function () {
-            handleFriendRequest(friendId, 'reject');
-        });
+        form.querySelector('.acceptBtn').addEventListener('click', () => handleFriendRequest(friendId, 'accept'));
+        form.querySelector('.rejectBtn').addEventListener('click', () => handleFriendRequest(friendId, 'reject'));
     });
 }
 
@@ -113,27 +121,23 @@ function addFriend(friendId) {
         method: 'POST',
         body: new URLSearchParams({ add_friend_id: friendId }),
     })
-        .then(() => {
-            fetchFriendsData();
-        })
+        .then(() => fetchFriendsData())
         .catch(error => console.error('Error adding friend:', error));
 }
 
 function handleFriendRequest(friendId, action) {
     fetch('../SQL/dbquery/handleFriendRequest.php', {
         method: 'POST',
-        body: new URLSearchParams({
-            friend_id: friendId,
-            [action]: true
-        }),
+        body: new URLSearchParams({ friend_id: friendId, [action]: true }),
     })
-        .then(() => {
-            fetchFriendsData();
-        })
+        .then(() => fetchFriendsData())
         .catch(error => console.error(`Error ${action}ing friend request:`, error));
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     fetchFriendsData();
-    setInterval(fetchFriendsData, 2000); // Auto refresh every 2 seconds
+    document.getElementById('search').addEventListener('keyup', filterSuggestedFriends);
+
+    // Optional: Refresh online status only (better)
+    setInterval(fetchFriendsData, 1000); // 10s is better than 1s
 });

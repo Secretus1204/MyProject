@@ -51,7 +51,6 @@ session_start();
             </div>
         </div>
     </section>
-
     <script>
         // Fetch data from PHP file
         fetch('api/data.php')

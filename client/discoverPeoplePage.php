@@ -41,6 +41,6 @@
             </div>
         </div>
     </section>
-<script src="jsFiles/friendsData.js"></script>
+<script src="jsFiles/friendsData.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
