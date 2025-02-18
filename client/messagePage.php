@@ -1,5 +1,5 @@
 <?php
-
+    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,18 +23,7 @@
                 <h3>Last Chats</h3>
             </div>
             <div class="inbox">
-                <button class="last-message">
-                    <div class="img-container">
-                        <img src="images/profile_img/profile_1.jpg" alt="">
-                    </div>
-                    <div class="names-msg">
-                        <h3>James Oliver</h3>
-                        <h4>KAFSKFASJKSFAKSFJKF</h4>
-                    </div>
-                    <div class="timeSent">
-                        <h4>7:00 PM</h4>
-                    </div>
-                </button>
+                <!-- diri sulod ang inbox sa previous messages sa friend or if walay msg friends lang -->
             </div>
         </div>
         <div class="main-message-container">
@@ -91,5 +80,6 @@
             </div>
         </div>
     </section>
+    <script src="jsFiles/inboxLoader.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

@@ -138,6 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchFriendsData();
     document.getElementById('search').addEventListener('keyup', filterSuggestedFriends);
 
-    // Optional: Refresh online status only (better)
-    setInterval(fetchFriendsData, 1000); // 10s is better than 1s
+    //interval for refresh AJAX
+    setInterval(fetchFriendsData, 1000);
 });

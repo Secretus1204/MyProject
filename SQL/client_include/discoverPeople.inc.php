@@ -1,6 +1,6 @@
 <?php
-require(__DIR__ . "/../config/DBConnection.php");
 session_start();
+require(__DIR__ . "/../config/DBConnection.php");
 $current_user_id = $_SESSION['currentUserId'];
 
 // fetch non-friend account regardless if online or dili
