@@ -32,7 +32,7 @@
                     <h3>February 13, 2025</h3>
                 </div>
                 <div class="message-others">
-                    <img src="images/profile_img/profile_1.jpg" alt="chathead">
+                    <img src="images/profile_img/default_profile.jpg" alt="chathead">
                     <div>
                     <h3>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti quae et molestias illo minus sequi nesciunt quo dignissimos vero obcaecati distinctio, doloremque, quibusdam, assumenda atque veniam veritatis in impedit dolorem.</h3>
                     </div>
@@ -65,7 +65,7 @@
         <div class="message-info-container">
             <div class="profile-container">
                 <div class="profile">
-                    <img src="images/profile_img/profile_1.jpg" alt="profile">
+                    <img src="images/profile_img/default_profile.jpg" alt="profile">
                     <div class="online">
                     </div>
                 </div>

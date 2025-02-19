@@ -30,6 +30,6 @@ if (isset($_POST['friend_id'])) {
     }
 }
 
-// Redirect back to the page after handling
+//Return to discover people page
 http_response_code(200);
 exit();

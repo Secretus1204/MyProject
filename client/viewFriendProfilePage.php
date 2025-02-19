@@ -17,7 +17,7 @@
     <?php include('templates/navbar.php'); ?>
     <section class="background">
         <div class="profile">
-            <img src="images/profile_img/profile_1.jpg?v=<?php echo time(); ?>" alt="prof1">
+            <img src="images/profile_img/default_profile.jpg?v=<?php echo time(); ?>" alt="prof1">
         </div>
         <div class="info_container">
             <div class="buttons">

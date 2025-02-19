@@ -10,7 +10,7 @@ if ($user_id) {
     $query->execute(['user_id' => $user_id]);
     $user = $query->fetch(PDO::FETCH_ASSOC);
 
-    // Check friendship status
+    // To check friendship status
     $friendshipQuery = $pdo->prepare("
         SELECT status 
         FROM friends 
@@ -23,7 +23,7 @@ if ($user_id) {
     ]);
 
     $friendship = $friendshipQuery->fetch(PDO::FETCH_ASSOC);
-    $friendshipStatus = $friendship['status'] ?? null; // Could be 'accepted', 'pending', or null if no relationship
+    $friendshipStatus = $friendship['status'] ?? null; // accepted or pending (null if wala pa nag interact)
 } else {
     echo "No user specified!";
     exit;

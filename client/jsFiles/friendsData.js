@@ -1,3 +1,4 @@
+//to get all friend and non-friend data of the current user
 function fetchFriendsData() {
     fetch('../SQL/client_include/discoverPeople.inc.php')
         .then(response => response.json())
@@ -9,7 +10,7 @@ function fetchFriendsData() {
                 friendsList.innerHTML += `
                     <button class="current-friend" onclick="window.location.href='viewFriendProfilePage.php?user_id=${friend.user_id}'">
                         <div class="profile-current-friend">
-                            <img src="images/profile_img/profile_1.jpg" alt="profile">
+                            <img src="images/profile_img/default_profile.jpg" alt="profile">
                         </div>
                         <div class="name-current-friend">
                             <h3>${friend.firstName} ${friend.lastName}</h3>
@@ -30,7 +31,7 @@ function fetchFriendsData() {
                 suggestedFriendsList.innerHTML += `
                     <div class="profile-container" data-name="${nonfriend.firstName} ${nonfriend.lastName}" onclick="window.location.href='viewFriendProfilePage.php?user_id=${nonfriend.user_id}'">
                         <div class="profile-img">
-                            <img src="images/profile_img/profile_1.jpg" alt="profile">
+                            <img src="images/profile_img/default_profile.jpg" alt="profile">
                         </div>
                         <div class="name">
                             <h2>${nonfriend.firstName} ${nonfriend.lastName}</h2>
@@ -60,7 +61,7 @@ function fetchFriendsData() {
                     friendRequestList.innerHTML += `
                         <div class="fr-profile-container">
                             <div class="fr-profile-img">
-                                <img src="images/profile_img/profile_1.jpg" alt="profile">
+                                <img src="images/profile_img/default_profile.jpg" alt="profile">
                             </div>
                             <div class="fr-name">
                                 <h2>${request.firstName} ${request.lastName}</h2>
@@ -75,11 +76,12 @@ function fetchFriendsData() {
             }
 
             attachEventListeners();
-            filterSuggestedFriends(); // <- Always filter after updating DOM
+            filterSuggestedFriends();
         })
         .catch(error => console.error('Error fetching data:', error));
 }
 
+//function for search on suggested friends search bar
 function filterSuggestedFriends() {
     const searchValue = document.getElementById('search').value.toLowerCase();
     const profiles = document.querySelectorAll('#suggested-friends-list .profile-container');
@@ -95,6 +97,7 @@ function filterSuggestedFriends() {
     });
 }
 
+// onclick event handler for addfriend, accept and reject buttons
 function attachEventListeners() {
     document.querySelectorAll('.addFriendForm').forEach(form => {
         form.addEventListener('submit', function (e) {
@@ -116,6 +119,7 @@ function attachEventListeners() {
     });
 }
 
+//function for add friend button
 function addFriend(friendId) {
     fetch('../SQL/dbquery/addFriend.php', {
         method: 'POST',
@@ -125,6 +129,7 @@ function addFriend(friendId) {
         .catch(error => console.error('Error adding friend:', error));
 }
 
+//function for accept and reject button sent to sqlquery friendreq.php
 function handleFriendRequest(friendId, action) {
     fetch('../SQL/dbquery/handleFriendRequest.php', {
         method: 'POST',
@@ -138,6 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchFriendsData();
     document.getElementById('search').addEventListener('keyup', filterSuggestedFriends);
 
-    //interval for refresh AJAX
+    //interval for refresh AJAX (1 sec para realtime)
     setInterval(fetchFriendsData, 1000);
 });
