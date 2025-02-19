@@ -31,9 +31,8 @@ if (isset($_POST['submit'])) {
             $admin = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
 
             if ($admin && $password === $admin['adminPassword']) {
-                $_SESSION['name'] = $admin['adminName'];
-                $_SESSION['email'] = $admin['adminEmail'];
-                $_SESSION['password'] = $admin['adminPassword'];
+                $_SESSION['adminName'] = $admin['adminName'];
+                $_SESSION['adminEmail'] = $admin['adminEmail'];
                 header("Location: ../../admin/dashboardPage.php");
                 exit();
             }
@@ -44,20 +43,25 @@ if (isset($_POST['submit'])) {
             $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
 
             if ($user && password_verify($password, $user['password'])) {
-                $stmtOnline = $pdo->prepare("UPDATE users SET is_online = 1 WHERE email =?");
+                // Update online status
+                $stmtOnline = $pdo->prepare("UPDATE users SET is_online = 1 WHERE email = ?");
                 $stmtOnline->execute([$email]);
 
                 $stmtIfOnline = $pdo->prepare("SELECT is_online FROM users WHERE email = ?");
                 $stmtIfOnline->execute([$email]);
                 $online = $stmtIfOnline->fetch(PDO::FETCH_ASSOC);
-                
+
+                // Check if profile picture is NULL, use default if it is
+                $profilePicture = $user['profile_picture'] ?? 'images/profile_img/default_profile.jpg';
+
                 $_SESSION['currentUserId'] = $user['user_id'];
                 $_SESSION['firstName'] = $user['firstName'];
                 $_SESSION['lastName'] = $user['lastName'];
                 $_SESSION['email'] = $user['email'];
                 $_SESSION['address'] = $user['address'];
-                $_SESSION['profile_picture'] = $user['profile_picture'];
+                $_SESSION['profile_picture'] = $profilePicture;
                 $_SESSION['online_status'] = $online['is_online'];
+
                 header("Location: ../../client/profilePage.php");
                 exit();
             }

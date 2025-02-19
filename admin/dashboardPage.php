@@ -20,7 +20,7 @@ session_start();
             <h1>Dasboard</h1>
         </div>
         <div class="adminName">
-            <h1>Hello there, <?= $_SESSION["name"]?>!</h1>
+            <h1>Hello there, <?= $_SESSION["adminName"]?>!</h1>
         </div>
         <div class="numerical-info-container">
             <div class="total-users info">

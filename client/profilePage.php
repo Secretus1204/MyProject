@@ -17,7 +17,7 @@
     <?php include('templates/navbar.php'); ?>
     <section class="background">
             <div class="profile">
-                <img src="images/profile_img/profile_1.jpg?v=<?php echo time(); ?>" alt="prof1">
+                <img src="<?= $_SESSION['profile_picture'] ?>?v=<?= time(); ?>" alt="prof1">
             </div>
         <div class="info_container">
             <div class="editBtn_Profile">
@@ -68,7 +68,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
+                                <button type="button" class="btn btn-primary" id="saveProfileChanges">Save changes</button>
                             </div>
                             </div>
                         </div>
@@ -91,6 +91,7 @@
             </div>
         </div>
     </section>
+    <script src="jsFiles/editProfile.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
