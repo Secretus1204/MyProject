@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
-$username = "dm";
-$password = "12345";
+$username = "root";
+$password = "";
 $db_name = "yaphub";
 
 try {

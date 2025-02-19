@@ -25,56 +25,60 @@ if (isset($_POST['submit'])) {
     if (empty($firstName)) {
         header("Location: ../../client/index.php?error=First Name is required!");
         exit();
-    } elseif (empty($lastName)) {
+    } 
+    if (empty($lastName)) {
         header("Location: ../../client/index.php?error=Last Name is required!");
         exit();
-    } elseif (empty($email)) {
+    } 
+    if (empty($email)) {
         header("Location: ../../client/index.php?error=Email is required!");
         exit();
-    } elseif (empty($address)) {
+    } 
+    if (empty($address)) {
         header("Location: ../../client/index.php?error=Address is required!");
         exit();
-    } elseif (empty($password)) {
+    } 
+    if (empty($password)) {
         header("Location: ../../client/index.php?error=Password is required!");
         exit();
-    } else {
-        try {
-            // Check if email already exists in users table
-            $stmtUser = $pdo->prepare("SELECT email FROM users WHERE email = ?");
-            $stmtUser->execute([$email]);
-            $checkEmailUser = $stmtUser->rowCount();
+    }
+    
+    try {
+        // Check if email already exists in users table
+        $stmtUser = $pdo->prepare("SELECT email FROM users WHERE email = ?");
+        $stmtUser->execute([$email]);
+        $checkEmailUser = $stmtUser->rowCount();
 
-            // Check if email already exists in admin table
-            $stmtAdmin = $pdo->prepare("SELECT adminEmail FROM admin WHERE adminEmail = ?");
-            $stmtAdmin->execute([$email]);
-            $checkEmailAdmin = $stmtAdmin->rowCount();
+        // Check if email already exists in admin table
+        $stmtAdmin = $pdo->prepare("SELECT adminEmail FROM admin WHERE adminEmail = ?");
+        $stmtAdmin->execute([$email]);
+        $checkEmailAdmin = $stmtAdmin->rowCount();
 
-            if ($checkEmailUser > 0) {
-                header("Location: ../../client/index.php?error=Email is already existing!");
-                exit();
-            } elseif ($checkEmailAdmin > 0) {
-                header("Location: ../../client/index.php?error=This email is for admin!");
+        if ($checkEmailUser > 0) {
+            header("Location: ../../client/index.php?error=Email is already existing!");
+            exit();
+        } elseif ($checkEmailAdmin > 0) {
+            header("Location: ../../client/index.php?error=This email is for admin!");
+            exit();
+        } else {
+            // Hash the password before storing it
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            // Insert new user into users table
+            $stmtCreateUser = $pdo->prepare("INSERT INTO users (firstName, lastName, email, address, password) VALUES (?, ?, ?, ?, ?)");
+            if ($stmtCreateUser->execute([$firstName, $lastName, $email, $address, $hashedPassword])) {
+                header("Location: ../../client/login.php");
                 exit();
             } else {
-                // Hash the password before storing it
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-                // Insert new user into users table
-                $stmtCreateUser = $pdo->prepare("INSERT INTO users (firstName, lastName, email, address, password) VALUES (?, ?, ?, ?, ?)");
-                if ($stmtCreateUser->execute([$firstName, $lastName, $email, $address, $hashedPassword])) {
-                    header("Location: ../../client/login.php");
-                    exit();
-                } else {
-                    header("Location: ../../client/index.php?error=Error Occurred In Executing Statement!");
-                    exit();
-                }
+                header("Location: ../../client/index.php?error=Error Occurred In Executing Statement!");
+                exit();
             }
-        } catch (PDOException $e) {
-            header("Location: ../../client/index.php?error=" . $e->getMessage());
-            exit();
         }
-    }
-} else {
-    header("Location: ../login.php");
-    exit();
-}
+    } catch (PDOException $e) {
+        header("Location: ../../client/index.php?error=" . $e->getMessage());
+        exit();
+    }   
+} 
+
+header("Location: ../login.php");
+exit();
