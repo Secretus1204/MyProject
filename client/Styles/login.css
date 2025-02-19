@@ -3,7 +3,7 @@
     }
     
     html, body {
-        height: 100vh;
+        height: 70vh;
         margin: 0;
         padding: 0;
         background-color: #12346F;
@@ -21,12 +21,13 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        margin: 205px;
+        margin: 105px;
     }
 
     .login{
         background-color: #FEFEFE;
         box-shadow: 1px 1px 1px 2px lightgray;
+
         width: 100%;
         width: 500px;
         height: 500px;
@@ -72,10 +73,11 @@
     .forms h1{
         margin: 10px;
         width: 100%;
-        border-bottom: 1px solid black;
-        font-weight: 400;
-        display: block;
         margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid black;
+        font-weight: bold;
+        display: block;
     }
     
     .forms h2{
@@ -114,7 +116,7 @@
         border-radius: 5px;
         border: 0;
         outline: 0;
-        box-shadow: inset 0px 1px 7px #777474;
+        box-shadow: inset 0px 0.5px 3px #777474;
     }
     
     .inputs:focus{
@@ -125,12 +127,12 @@
     .submitbtn{
         background-color: #264A82;
         color: #FEFEFE;
-        width: 100px;
+        width: 340px;
         border: 0;
         box-shadow: 0px 1px 1px 1px #12346F;
-        border-radius: 15px;
-        height: 35px;
-        font-size: 18px;
+        border-radius: 5px;
+        height: 50px;
+        font-size: 20px;
         margin: 15px auto;
     }
     
