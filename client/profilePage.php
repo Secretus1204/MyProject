@@ -50,7 +50,7 @@
                                     </div>
                                     <div>
                                         <label for="email">Email:</label>
-                                        <input class="inputS" type="text" id="email" name="email">
+                                        <input class="inputS" type="email" id="email" name="email">
                                     </div>
                                     <div>
                                         <label for="address">Address:</label>
@@ -58,17 +58,17 @@
                                     </div>
                                     <div>
                                         <label for="currentPassword">Current Password:</label>
-                                        <input class="inputS" type="text" id="currentPassword" name="currentPassword">
+                                        <input class="inputS" type="password" id="currentPassword" name="currentPassword">
                                     </div>
                                     <div>
                                         <label for="newPassword">New Password:</label>
-                                        <input class="inputS" type="text" id="newPassword" name="newPassword">
+                                        <input class="inputS" type="password" id="newPassword" name="newPassword">
                                     </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" id="saveProfileChanges">Save changes</button>
+                                <button type="submit" class="btn btn-primary" id="saveProfileChanges">Save changes</button>
                             </div>
                             </div>
                         </div>

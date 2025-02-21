@@ -9,7 +9,7 @@ function loadInbox() {
         return;
     }
 
-    // Show "Loading..." only if this is the first time loading
+    // show loading status first
     if (isFirstLoad && inboxContainer.innerHTML.trim() === '') {
         inboxContainer.innerHTML = '<p>Loading...</p>';
     }
@@ -23,7 +23,7 @@ function loadInbox() {
                 return;
             }
 
-            inboxContainer.innerHTML = ''; // Clear the content before appending
+            inboxContainer.innerHTML = ''; // reset content
 
             data.forEach(chat => {
                 const chatButton = document.createElement('button');

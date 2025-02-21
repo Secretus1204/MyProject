@@ -56,12 +56,17 @@
     padding: 8px 20px;
     font-weight: 400;
     background-color: #12346F;
-    box-shadow: 1px 1px 5px 0px #12346F;
+    box-shadow: 0px 2px 5px 1px #24242476;
     border: 0;
-    width: 100px;
-    font-size: 12px;
-    border-radius: 20px;
+    height: 40px;
+    width: 150px;
+    font-size: 18px;
+    border-radius: 10px;
     color: #FEFEFE;
+}
+
+.buttons button:hover{
+    background-color: #1c4284;
 }
 
 .bio_name{
