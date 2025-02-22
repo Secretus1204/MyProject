@@ -1,5 +1,9 @@
 <?php
   session_start();
+  if (!isset($_SESSION['currentUserId'])) {
+    header("Location: index.php");
+    exit;
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,6 +30,9 @@
                   <button class="createGroupbtn" name="createGroup">Create Group</button>
               </div>
             </div>
+            <div class="error_message">
+              
+            </div>
             <div class="second-container">
               <div class="search-members-container">
                 <div class="search-members">
@@ -49,6 +56,5 @@
       </div>
     </section>
     <script src="jsFiles/createGroup.js"></script>
-    <script src="jsFiles/loadUsersCreateGroup.js"></script>
 </body>
 </html>

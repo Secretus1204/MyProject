@@ -1,5 +1,9 @@
 <?php
-session_start();
+    session_start();
+    if (!isset($_SESSION['adminName'])) {
+    header("Location: ../client/index.php");
+    exit;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +24,7 @@ session_start();
             <h1>Dasboard</h1>
         </div>
         <div class="adminName">
-            <h1>Hello there, <?= $_SESSION["name"]?>!</h1>
+            <h1>Hello there, <?= $_SESSION["adminName"]?>!</h1>
         </div>
         <div class="numerical-info-container">
             <div class="total-users info">

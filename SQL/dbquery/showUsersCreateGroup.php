@@ -7,11 +7,6 @@ header("Content-Type: application/json");
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-if (!isset($_SESSION['currentUserId'])) {
-    echo json_encode(["success" => false, "error" => "Not logged in"]);
-    exit;
-}
-
 $currentUserId = $_SESSION['currentUserId'];
 
 try {

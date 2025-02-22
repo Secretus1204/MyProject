@@ -6,11 +6,6 @@ header("Content-Type: application/json");
 
 $userId = $_SESSION['currentUserId'] ?? null;
 
-if (!$userId) {
-    echo json_encode(['success' => false, 'error' => 'User not logged in']);
-    exit;
-}
-
 $firstName = $_POST['firstName'] ?? '';
 $lastName = $_POST['lastName'] ?? '';
 $email = $_POST['email'] ?? '';

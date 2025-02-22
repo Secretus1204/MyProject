@@ -9,11 +9,6 @@ ini_set('display_errors', 1);
 
 $input = json_decode(file_get_contents("php://input"), true);
 
-if (!isset($_SESSION['currentUserId'])) {
-    echo json_encode(["success" => false, "error" => "Not logged in"]);
-    exit;
-}
-
 $userId = $_SESSION['currentUserId'];
 $groupName = $input['groupName'] ?? null;
 $members = $input['members'] ?? [];

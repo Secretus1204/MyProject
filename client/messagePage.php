@@ -1,5 +1,9 @@
 <?php
     session_start();
+    if (!isset($_SESSION['currentUserId'])) {
+        header("Location: index.php");
+        exit;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +26,7 @@
             <div class="last-chat-header">
                 <h3>Last Chats</h3>
             </div>
-            <div class="inbox">
+            <div class="inbox" id="inbox">
                 <!-- diri sulod ang inbox sa previous messages sa friend or if walay msg friends lang -->
             </div>
         </div>
@@ -80,6 +84,6 @@
             </div>
         </div>
     </section>
-    <script src="jsFiles/inboxLoader.js?v=<?php echo time(); ?>"></script>
+    <script src="jsFiles/inboxLoader.js"></script>
 </body>
 </html>

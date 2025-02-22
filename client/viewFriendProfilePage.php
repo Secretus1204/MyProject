@@ -1,5 +1,9 @@
 <?php
     include('../SQL/client_include/viewFriendProfile.inc.php');
+    if (!isset($_SESSION['currentUserId'])) {
+        header("Location: index.php");
+        exit;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">

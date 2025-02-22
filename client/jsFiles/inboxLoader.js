@@ -1,71 +1,60 @@
-//function to load inbox
-let isFirstLoad = true;
+document.addEventListener("DOMContentLoaded", function () {
+    loadInbox();
+});
 
 function loadInbox() {
-    const inboxContainer = document.querySelector('.inbox');
+    fetch("../SQL/dbquery/inbox.php")
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error("Error:", data.error);
+                return;
+            }
+            displayInbox(data);
+        })
+        .catch(error => console.error("Fetch Error:", error));
+}
 
-    if (!inboxContainer) {
-        console.error('Inbox container not found!');
+function displayInbox(inbox) {
+    const inboxContainer = document.getElementById("inbox");
+    inboxContainer.innerHTML = ""; // Clear previous content
+
+    if (inbox.length === 0) {
+        inboxContainer.innerHTML = "<p>No recent chats</p>";
         return;
     }
 
-    // show loading status first
-    if (isFirstLoad && inboxContainer.innerHTML.trim() === '') {
-        inboxContainer.innerHTML = '<p>Loading...</p>';
-    }
+    inbox.forEach(user => {
+        const chatItem = document.createElement("div");
+        chatItem.classList.add("last-message");
 
-    fetch('../SQL/dbquery/inbox.php')
-        .then(response => response.json())
-        .then(data => {
-            if (!Array.isArray(data)) {
-                console.error('Expected an array but got:', data);
-                if (isFirstLoad) inboxContainer.innerHTML = '<p>Error loading inbox.</p>';
-                return;
-            }
+        chatItem.innerHTML = `
+                <div class="img-container">
+                <img src="${user.profile_picture}" alt="${user.firstName}" class="profile-pic">
+                </div>
+                <div class="names-msg">
+                <h3>${user.firstName} ${user.lastName}</h3>
+                <h4>${user.message_text || "No messages yet"}</h4>
+                </div>
+                <div class="timeSent">
+                <h4>${formatDate(user.created_at)}</h4>
+                </div>
+        `;
 
-            inboxContainer.innerHTML = ''; // reset content
-
-            data.forEach(chat => {
-                const chatButton = document.createElement('button');
-                chatButton.classList.add('last-message');
-                chatButton.setAttribute('data-chat-id', chat.chat_id);
-                chatButton.setAttribute('data-friend-id', chat.user_id);
-                chatButton.onclick = function () {
-                    openChat(chat.user_id);
-                };
-
-                const lastMessage = chat.message_text ? chat.message_text : 'No messages yet';
-                const timestamp = chat.created_at ? new Date(chat.created_at).toLocaleString() : '';
-
-                chatButton.innerHTML = `
-                    <div class="img-container">
-                        <img src="images/profile_img/default_profile.jpg" alt="">
-                    </div>
-                    <div class="names-msg">
-                        <h3>${chat.firstName} ${chat.lastName}</h3>
-                        <h4>${lastMessage}</h4>
-                    </div>
-                    <div class="timeSent">
-                        <h4>${timestamp}</h4>
-                    </div>
-                `;
-
-                inboxContainer.appendChild(chatButton);
-            });
-
-            isFirstLoad = false; // Mark that the first load is done
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-            if (isFirstLoad) inboxContainer.innerHTML = '<p>Error fetching inbox data.</p>';
+        chatItem.addEventListener("click", function () {
+            openChat(user.chat_id);
         });
+
+        inboxContainer.appendChild(chatItem);
+    });
 }
 
-function openChat(friendId) {
-    console.log('Open chat with friend ID:', friendId);
+function formatDate(timestamp) {
+    if (!timestamp) return "No messages yet";
+    const date = new Date(timestamp);
+    return date.toLocaleString(); // Format to readable date
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    loadInbox();
-    setInterval(loadInbox, 5000);
-}); 
+function openChat(chatId) {
+    window.location.href = `chat.php?chat_id=${chatId}`;
+}
