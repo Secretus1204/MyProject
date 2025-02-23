@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 14, 2025 at 06:52 PM
+-- Generation Time: Feb 23, 2025 at 09:52 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -51,9 +51,19 @@ INSERT INTO `admin` (`adminId`, `adminName`, `adminEmail`, `adminPassword`) VALU
 CREATE TABLE `chats` (
   `chat_id` int(11) NOT NULL,
   `chat_name` varchar(100) DEFAULT NULL,
+  `group_picture` varchar(255) DEFAULT 'images/group_img/default_group.jpg',
   `is_group` tinyint(1) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `chats`
+--
+
+INSERT INTO `chats` (`chat_id`, `chat_name`, `group_picture`, `is_group`, `created_at`) VALUES
+(1, 'What The Group', 'images/group_img/default_group.jpg', 1, '2025-02-21 21:55:28'),
+(2, 'Ang Group', 'images/group_img/default_group.jpg', 1, '2025-02-22 20:59:51'),
+(3, 'Another Group', 'images/group_img/default_group.jpg', 1, '2025-02-22 21:37:05');
 
 -- --------------------------------------------------------
 
@@ -67,6 +77,20 @@ CREATE TABLE `chat_members` (
   `user_id` int(11) DEFAULT NULL,
   `joined_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `chat_members`
+--
+
+INSERT INTO `chat_members` (`chat_member_id`, `chat_id`, `user_id`, `joined_at`) VALUES
+(1, 1, 5, '2025-02-21 21:55:28'),
+(2, 1, 2, '2025-02-21 21:55:28'),
+(3, 1, 4, '2025-02-21 21:55:28'),
+(4, 2, 3, '2025-02-22 20:59:51'),
+(5, 2, 1, '2025-02-22 20:59:51'),
+(6, 3, 4, '2025-02-22 21:37:05'),
+(7, 3, 1, '2025-02-22 21:37:05'),
+(8, 3, 2, '2025-02-22 21:37:05');
 
 -- --------------------------------------------------------
 
@@ -87,8 +111,11 @@ CREATE TABLE `friends` (
 --
 
 INSERT INTO `friends` (`friendship_id`, `user_id1`, `user_id2`, `status`, `created_at`) VALUES
-(1, 1, 2, 'accepted', '2025-02-14 17:35:38'),
-(2, 3, 1, 'pending', '2025-02-14 17:50:18');
+(8, 5, 4, 'accepted', '2025-02-16 11:29:53'),
+(11, 1, 3, 'accepted', '2025-02-18 21:32:45'),
+(13, 2, 5, 'pending', '2025-02-19 21:47:34'),
+(14, 2, 4, 'accepted', '2025-02-19 21:47:49'),
+(15, 1, 2, 'accepted', '2025-02-22 20:58:23');
 
 -- --------------------------------------------------------
 
@@ -143,9 +170,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `firstName`, `lastName`, `email`, `address`, `password`, `profile_picture`, `created_at`, `is_online`) VALUES
-(1, 'Mark', 'Waters', 'mark@gmail.com', 'Davao City, Philippines', '$2y$10$twEYkSdPPwQHGbXtbTlg.e.htAV5BtfYUOs.CK4OBtCzEwRIxcH46', NULL, '2025-02-13 19:29:28', 0),
-(2, 'James', 'Oliver', 'jamesoliver@gmail.com', 'Davao City, Philippines', '$2y$10$/QV1xjgQmvuWDEGM1EYdyePZA8P4O4KeuCn9SaVgr3HcVqHPGfZ.6', NULL, '2025-02-13 19:58:58', 1),
-(3, 'John', 'Doe', 'john@gmail.com', 'Maranata, New Zealand', '$2y$10$8bsFxKHRsjyjy5wd8.KruOkddmWXDtGwB4K6frMCaW/4TCCwHTyu.', NULL, '2025-02-14 17:50:00', 1);
+(1, 'Mark', 'Palma', 'markpalma@gmail.com', 'Arakan, Sa baybayin', '$2y$10$dxEbVszmuMUsq0Oo1tihlOZtpOeu8uzVmg1wMufqtRG.Pa12UuAj.', 'images/profile_img/profile_1_1740172571.jpg', '2025-02-13 19:29:28', 0),
+(2, 'James', 'Oliver', 'jamesoliver@gmail.com', 'Davao City, Philippines', '$2y$10$/QV1xjgQmvuWDEGM1EYdyePZA8P4O4KeuCn9SaVgr3HcVqHPGfZ.6', 'images/profile_img/profile_2_1740172706.jpg', '2025-02-13 19:58:58', 1),
+(3, 'John', 'Doe', 'john@gmail.com', 'Maranata, New Zealand', '$2y$10$8bsFxKHRsjyjy5wd8.KruOkddmWXDtGwB4K6frMCaW/4TCCwHTyu.', NULL, '2025-02-14 17:50:00', 0),
+(4, 'Merk', 'Mundane', 'merk@gmail.com', 'Davao City, Philippines', '$2y$10$bB7sasukriI3kFTeRRHVwOrqCg0f7M0kwy1NDsJ/8gH0E.LCTAqDi', NULL, '2025-02-14 17:55:17', 0),
+(5, 'Angelito', 'Lozano', 'angelo@gmail.com', 'Taga Bukid', '$2y$10$W0my8ofzagc1TzwRFoR3oOhhFJB0I/sm9n9nSX75eJORKh.As2cDy', NULL, '2025-02-16 11:29:40', 0);
 
 --
 -- Indexes for dumped tables
@@ -216,19 +245,19 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `chats`
 --
 ALTER TABLE `chats`
-  MODIFY `chat_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `chat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `chat_members`
 --
 ALTER TABLE `chat_members`
-  MODIFY `chat_member_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `chat_member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `friends`
 --
 ALTER TABLE `friends`
-  MODIFY `friendship_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `friendship_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `messages`
@@ -246,7 +275,7 @@ ALTER TABLE `message_status`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
