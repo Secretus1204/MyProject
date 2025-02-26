@@ -45,18 +45,25 @@ try {
     // Handle profile picture upload if provided
     $profilePicturePath = $user['profile_picture']; // Keep existing picture
     if ($profilePicture && $profilePicture['error'] === UPLOAD_ERR_OK) {
+        $allowedExtensions = ['jpg', 'jpeg', 'png'];
+        $fileExtension = strtolower(pathinfo($profilePicture['name'], PATHINFO_EXTENSION));
+
+        if (!in_array($fileExtension, $allowedExtensions)) {
+            throw new Exception('Only JPG and PNG files are allowed.');
+        }
+
         $targetDir = __DIR__ . "/../../client/images/profile_img/";
 
         if (!is_dir($targetDir)) {
             mkdir($targetDir, 0777, true);
         }
 
-         // **Delete old profile picture if it exists**
+        // **Delete old profile picture if it exists**
         if (!empty($user['profile_picture']) && file_exists(__DIR__ . "/../../client/" . $user['profile_picture'])) {
             unlink(__DIR__ . "/../../client/" . $user['profile_picture']);
         }
 
-        $fileName = 'profile_' . $userId . '_' . time() . '.' . pathinfo($profilePicture['name'], PATHINFO_EXTENSION);
+        $fileName = 'profile_' . $userId . '_' . time() . '.' . $fileExtension;
         $targetFilePath = $targetDir . $fileName;
 
         if (move_uploaded_file($profilePicture['tmp_name'], $targetFilePath)) {
@@ -65,6 +72,7 @@ try {
             throw new Exception('Failed to upload profile picture');
         }
     }
+
 
     // Update user information
     $sql = "UPDATE users SET firstName = COALESCE(NULLIF(?, ''), firstName), 

@@ -31,7 +31,7 @@ function loadGroupChats() {
         .catch(error => console.error("Fetch Error:", error));
 }
 
-//display private message
+// Display private messages
 function displayInbox(inbox) {
     const inboxContainer = document.getElementById("inbox");
     inboxContainer.innerHTML = ""; // Clear previous content
@@ -43,23 +43,26 @@ function displayInbox(inbox) {
 
     inbox.forEach(user => {
         const profilePic = user.profile_picture 
-        ? `${user.profile_picture}` 
-        : "images/profile_img/default_profile.jpg"; // Default profile picture
+            ? `${user.profile_picture}` 
+            : "images/profile_img/default_profile.jpg"; // Default profile picture
+
+        const lastMessage = user.latest_message || "No messages yet";
+        const messageTime = user.message_timestamp ? formatDate(user.message_timestamp) : ""; // Avoid formatting null timestamps
 
         const chatItem = document.createElement("div");
         chatItem.classList.add("last-message");
 
         chatItem.innerHTML = `
-                <div class="img-container">
+            <div class="img-container">
                 <img src="${profilePic}" alt="${user.firstName}" class="profile-pic">
-                </div>
-                <div class="names-msg">
+            </div>
+            <div class="names-msg">
                 <h3>${user.firstName} ${user.lastName}</h3>
-                <h4>${user.message_text || "No messages yet"}</h4>
-                </div>
-                <div class="timeSent">
-                <h4>${formatDate(user.created_at)}</h4>
-                </div>
+                <h4>${lastMessage}</h4>
+            </div>
+            <div class="timeSent">
+                <h4>${messageTime}</h4>
+            </div>
         `;
 
         chatItem.addEventListener("click", function () {
@@ -70,10 +73,10 @@ function displayInbox(inbox) {
     });
 }
 
-//display group chats
+// Display group chats
 function displayGroups(groups) {
     const inboxContainer = document.getElementById("inbox");
-    
+
     if (groups.length === 0) {
         inboxContainer.innerHTML += ""; // Append instead of replacing
         return;
@@ -84,6 +87,9 @@ function displayGroups(groups) {
             ? `${group.group_picture}`  
             : "images/group_img/default_group.jpg"; // Default group picture
 
+        const latestMessage = group.latest_message ? group.latest_message : "No messages yet";
+        const timestamp = group.message_timestamp ? formatDate(group.message_timestamp) : "";
+
         const chatItem = document.createElement("div");
         chatItem.classList.add("last-message");
 
@@ -93,10 +99,10 @@ function displayGroups(groups) {
             </div>
             <div class="names-msg">
                 <h3>${group.chat_name}</h3>
-                <h4>${group.message_text || "No messages yet"}</h4>
+                <h4>${latestMessage}</h4>
             </div>
             <div class="timeSent">
-                <h4>${formatDate(group.created_at)}</h4>
+                ${timestamp ? `<h4>${timestamp}</h4>` : ""}
             </div>
         `;
 

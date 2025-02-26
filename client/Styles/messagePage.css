@@ -222,6 +222,7 @@
 .type-message{
     width: 100%;
     width: 520px;
+    margin-left: 20px;
 }
 
 .type-message form{
@@ -262,6 +263,7 @@
 .send-icon{
     border: 0;
     background-color: transparent;
+    margin-left: 20px;
 }
 
 .send-icon:focus{
@@ -271,9 +273,27 @@
 }
 
 .send-icon img{
-    width: 35px;
-    height: 35px;
-    margin-bottom: 5px;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 7px;
+}
+
+.send-attachment{
+    border: 0;
+    background-color: transparent;
+    margin-left: 10px;
+}
+
+.send-attachment:focus{
+    outline: 0;
+    border: 0;
+    background-color: transparent;
+}
+
+.send-attachment img{
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
 }
 
 .message-info-container{

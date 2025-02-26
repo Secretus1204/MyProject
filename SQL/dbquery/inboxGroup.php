@@ -8,13 +8,21 @@ $userId = $_SESSION['currentUserId'];
 
 try {
     $sql = "
-    SELECT c.chat_id, c.chat_name, c.group_picture, MAX(m.message_text) AS message_text, MAX(m.created_at) AS created_at
+    SELECT c.chat_id, c.chat_name, c.group_picture, 
+        m.message_text AS latest_message, 
+        m.created_at AS message_timestamp
     FROM chat_members cm
     JOIN chats c ON cm.chat_id = c.chat_id
-    LEFT JOIN messages m ON m.chat_id = c.chat_id
-    WHERE cm.user_id = :userId AND c.is_group = 1
-    GROUP BY c.chat_id, c.chat_name, c.group_picture
-    ORDER BY MAX(m.created_at) DESC, c.chat_name ASC
+    LEFT JOIN messages m 
+        ON m.chat_id = c.chat_id 
+        AND m.created_at = (
+            SELECT MAX(created_at) 
+            FROM messages 
+            WHERE chat_id = c.chat_id
+        )
+    WHERE cm.user_id = :userId 
+    AND c.is_group = 1
+    ORDER BY m.created_at DESC, c.chat_name ASC
     ";
 
     $stmt = $pdo->prepare($sql);

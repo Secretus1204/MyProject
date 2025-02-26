@@ -22,7 +22,7 @@ if (isset($_POST['add_friend_id'])) {
         $existingRequest = $checkQuery->fetch(PDO::FETCH_ASSOC);
 
         if (!$existingRequest) {
-            // Set friend request status to pending
+            // Insert the friend request
             $insertQuery = $pdo->prepare("
                 INSERT INTO friends (user_id1, user_id2, status) 
                 VALUES (:current_user_id, :friend_id, 'pending')
@@ -31,7 +31,26 @@ if (isset($_POST['add_friend_id'])) {
                 'current_user_id' => $current_user_id,
                 'friend_id' => $friend_id
             ]);
-        } else {
+        
+            // Create a private chat for the two users
+            $chatQuery = $pdo->prepare("
+                INSERT INTO chats (chat_name, is_group) 
+                VALUES (NULL, 0)
+            ");
+            $chatQuery->execute();
+            $chatId = $pdo->lastInsertId();
+        
+            // Add both users to chat_members
+            $chatMemberQuery = $pdo->prepare("
+                INSERT INTO chat_members (chat_id, user_id) 
+                VALUES (:chat_id, :user1), (:chat_id, :user2)
+            ");
+            $chatMemberQuery->execute([
+                'chat_id' => $chatId,
+                'user1' => $current_user_id,
+                'user2' => $friend_id
+            ]);
+        }else {
             // mag add pani ug pop up or something if naay pending request na
         }
         header("Location: ../../client/discoverPeoplePage.php");

@@ -21,7 +21,7 @@
     <?php include('templates/navbar.php'); ?>
     <section class="background">
         <div class="profile">
-            <img src="images/profile_img/default_profile.jpg?v=<?php echo time(); ?>" alt="prof1">
+            <img src="<?php echo htmlspecialchars($user['profile_picture']); ?>?v=<?php echo time(); ?>" alt="Profile Picture">
         </div>
         <div class="info_container">
             <div class="buttons">

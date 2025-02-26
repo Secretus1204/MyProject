@@ -1,55 +1,65 @@
 //to get all friend and non-friend data of the current user
 function fetchFriendsData() {
-    fetch('../SQL/client_include/discoverPeople.inc.php')
+    fetch('../SQL/dbquery/discoverPeople.php')
         .then(response => response.json())
         .then(data => {
             // Update Current Friends List
             const friendsList = document.getElementById('current-friends-list');
             friendsList.innerHTML = '';
-            data.friends.forEach(friend => {
-                friendsList.innerHTML += `
-                    <button class="current-friend" onclick="window.location.href='viewFriendProfilePage.php?user_id=${friend.user_id}'">
-                        <div class="profile-current-friend">
-                            <img src="images/profile_img/default_profile.jpg" alt="profile">
-                        </div>
-                        <div class="name-current-friend">
-                            <h3>${friend.firstName} ${friend.lastName}</h3>
-                        </div>
-                        <div class="online-or-not">
-                            <span class="online-status ${friend.is_online == 1 ? 'online' : 'offline'}">
-                                ${friend.is_online == 1 ? 'Online' : 'Offline'}
-                            </span>
-                        </div>
-                    </button>
-                `;
-            });
+            if (data.friends.length === 0) {
+                friendsList.innerHTML = '<p>No friends at the moment.</p>';
+            } else {
+                data.friends.forEach(friend => {
+                    const profileImage = friend.profile_picture ? `${friend.profile_picture}` : 'images/profile_img/default_profile.jpg';
+                    friendsList.innerHTML += `
+                        <button class="current-friend" onclick="window.location.href='viewFriendProfilePage.php?user_id=${friend.user_id}'">
+                            <div class="profile-current-friend">
+                                <img src="${profileImage}" alt="profile">
+                            </div>
+                            <div class="name-current-friend">
+                                <h3>${friend.firstName} ${friend.lastName}</h3>
+                            </div>
+                            <div class="online-or-not">
+                                <span class="online-status ${friend.is_online == 1 ? 'online' : 'offline'}">
+                                    ${friend.is_online == 1 ? 'Online' : 'Offline'}
+                                </span>
+                            </div>
+                        </button>
+                    `;
+                });
+            }
 
             // Update Suggested Friends List
             const suggestedFriendsList = document.getElementById('suggested-friends-list');
             suggestedFriendsList.innerHTML = '';
-            data.nonFriends.forEach(nonfriend => {
-                suggestedFriendsList.innerHTML += `
-                    <div class="profile-container" data-name="${nonfriend.firstName} ${nonfriend.lastName}" onclick="window.location.href='viewFriendProfilePage.php?user_id=${nonfriend.user_id}'">
-                        <div class="profile-img">
-                            <img src="images/profile_img/default_profile.jpg" alt="profile">
-                        </div>
-                        <div class="name">
-                            <h2>${nonfriend.firstName} ${nonfriend.lastName}</h2>
-                        </div>
-                        ${nonfriend.is_pending == 0 ? `
-                            <form class="addFriendForm" data-user-id="${nonfriend.user_id}" onclick="event.stopPropagation();">
-                                <button type="button" class="add-icon">
-                                    <img src="images/icons/addUser_icon.png" alt="add">
+            if (data.nonFriends.length === 0) {
+                suggestedFriendsList.innerHTML = '<p>No other users at the moment.</p>';
+            } else {
+                data.nonFriends.forEach(nonfriend => {
+                    const profileImage = nonfriend.profile_picture ? `${nonfriend.profile_picture}` : 'images/profile_img/default_profile.jpg';
+                    suggestedFriendsList.innerHTML += `
+                        <div class="profile-container" data-name="${nonfriend.firstName} ${nonfriend.lastName}" onclick="window.location.href='viewFriendProfilePage.php?user_id=${nonfriend.user_id}'">
+                            <div class="profile-img">
+                                <img src="${profileImage}" alt="profile">
+                            </div>
+                            <div class="name">
+                                <h2>${nonfriend.firstName} ${nonfriend.lastName}</h2>
+                            </div>
+                            ${nonfriend.is_pending == 0 ? `
+                                <form class="addFriendForm" data-user-id="${nonfriend.user_id}" onclick="event.stopPropagation();">
+                                    <button type="button" class="add-icon">
+                                        <img src="images/icons/addUser_icon.png" alt="add">
+                                    </button>
+                                </form>
+                            ` : `
+                                <button class="add-icon pending-btn" disabled onclick="event.stopPropagation();">
+                                    <span>Pending</span>
                                 </button>
-                            </form>
-                        ` : `
-                            <button class="add-icon pending-btn" disabled onclick="event.stopPropagation();">
-                                <span>Pending</span>
-                            </button>
-                        `}
-                    </div>
-                `;
-            });
+                            `}
+                        </div>
+                    `;
+                });
+            }
 
             // Update Friend Requests List
             const friendRequestList = document.getElementById('friend-request-list');
@@ -58,10 +68,11 @@ function fetchFriendsData() {
                 friendRequestList.innerHTML = '<p>No friend requests.</p>';
             } else {
                 data.friendRequests.forEach(request => {
+                    const profileImage = request.profile_picture ? `${request.profile_picture}` : 'images/profile_img/default_profile.jpg';
                     friendRequestList.innerHTML += `
                         <div class="fr-profile-container">
                             <div class="fr-profile-img">
-                                <img src="images/profile_img/default_profile.jpg" alt="profile">
+                                <img src="${profileImage}" alt="profile">
                             </div>
                             <div class="fr-name">
                                 <h2>${request.firstName} ${request.lastName}</h2>

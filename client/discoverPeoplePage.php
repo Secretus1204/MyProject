@@ -32,7 +32,7 @@
                 <div class="search-container">
                     <input type="text" name="search" id="search" placeholder="Search">
                 </div>
-                <div class="suggested-friends" id="suggested-friends-list">
+                <div class="suggested-friends-list" id="suggested-friends-list">
                     <!-- Suggested friends will be loaded here -->
                 </div>
             </div>

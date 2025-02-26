@@ -63,6 +63,9 @@
                     <button class="send-icon">
                         <img src="images/icons/send_icon.png" alt="send">
                     </button>
+                    <button class="send-attachment">
+                        <img src="images/icons/add_attachment_icon.png" alt="add_file">
+                    </button>
                 </div>
             </div>
         </div>
