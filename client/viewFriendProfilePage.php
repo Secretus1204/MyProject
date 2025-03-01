@@ -52,12 +52,12 @@
             <div class="current">
                 <div class="current_group">
                     <h2>Current Groups</h2>
-                    <h1>6</h1>
+                    <h1><?php echo htmlspecialchars($groupCount); ?></h1>
                 </div>
                 <div class="vl"></div>
                 <div class="current_friends">
                     <h2>Current Friends</h2>
-                    <h1>6</h1>
+                    <h1><?php echo htmlspecialchars($friendCount); ?></h1>
                 </div>
             </div>
         </div>

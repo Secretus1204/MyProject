@@ -44,6 +44,9 @@
                 <div class="dateSent">
                     <h3>February 14, 2025</h3>
                 </div>
+                <div class="userOnline">
+                    <h3>We Joined the chat</h3>
+                </div>
                 <div class="message-me">
                     <div>
                     <h3>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore impedit, ducimus fuga unde ipsum adipisci inventore illum maxime eveniet corporis, tempora aliquid expedita ex earum reiciendis? Corrupti nemo ducimus voluptate?</h3>

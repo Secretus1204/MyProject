@@ -39,6 +39,23 @@ if ($user_id) {
 
     $friendship = $friendshipQuery->fetch(PDO::FETCH_ASSOC);
     $friendshipStatus = $friendship['status'] ?? null; // 'accepted', 'pending', or null
+
+    //friend count query
+    $query = "SELECT COUNT(*) AS friend_count FROM friends WHERE (user_id1 = :userId OR user_id2 = :userId) AND status = 'accepted' ";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':userId', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $friendCount = $stmt->fetch(PDO::FETCH_ASSOC)['friend_count'];
+
+    //group count query(excluded the chat_id with is_group value 0)
+    $query = "SELECT COUNT(*) AS group_count 
+            FROM chat_members cm
+            JOIN chats c ON cm.chat_id = c.chat_id
+            WHERE cm.user_id = :userId AND c.is_group = 1";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':userId', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $groupCount = $stmt->fetch(PDO::FETCH_ASSOC)['group_count'];
 } else {
     echo "No user specified!";
     exit;

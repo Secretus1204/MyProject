@@ -1,6 +1,15 @@
 <?php
 header("Content-Type: application/json");
-require_once "../config/database.php"; // Include database connection
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+$dbPath = __DIR__ . "/../config/DBConnection.php";
+if (!file_exists($dbPath)) {
+    echo json_encode(["success" => false, "message" => "Database connection file not found"]);
+    exit();
+}
+require_once $dbPath;
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -19,9 +28,8 @@ $stmt->bindParam(':chat_id', $chat_id, PDO::PARAM_INT);
 $stmt->execute();
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($result['count'] > 0) {
-    echo json_encode(["success" => true]);
-} else {
-    echo json_encode(["success" => false, "message" => "User is not a member of this chat"]);
-}
+echo json_encode([
+    "success" => $result['count'] > 0,
+    "message" => $result['count'] > 0 ? "User is in the chat" : "User is not a member of this chat"
+]);
 ?>

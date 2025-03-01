@@ -130,6 +130,17 @@
     font-weight: 450;
 }
 
+.userOnline{
+    text-align: center;
+}
+
+.userOnline h3{
+    font-size: 12px;
+    font-style: italic;
+    margin: 5px 0;
+    font-weight: 450;
+}
+
 .message-others{
     width: 100%;
     display: flex;
