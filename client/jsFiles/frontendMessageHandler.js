@@ -20,214 +20,77 @@ chatContainer.prepend(loadMoreBtn);
 function joinChat(user_id, chat_id) {
     currentUser = user_id;
     currentChat = chat_id;
-
     loadMessages();
-
     socket.emit("enterRoom", { user_id, chat_id });
 
-    socket.on("join_leftChat", (data) => {
-        displayUserJoined(data.user_id, data.text);
-    });
-
-    socket.on("message", (message) => {
-        messages.push(message); // Store new message
-        messages.sort((a, b) => new Date(a.time) - new Date(b.time)); // Sort messages by time
-    
-        // Clear chat UI and re-display all messages in order
-        chatContainer.innerHTML = "";
-        chatContainer.appendChild(loadMoreBtn);
-    
-        messages.forEach(msg => {
-            displayMessage(msg.user_id, msg.text, msg.time, true);
-        });
-    
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    });
-
-    socket.on("userList", (data) => {
-        updateUserList(data.users);
-    });
-
-    socket.on("errorMessage", (msg) => {
-        console.error("Error:", msg);
-    });
-
-    socket.on("typing", (user_id, chat_id) => {
-        if (user_id !== currentUser) {
-            typingIndicator.innerText = `User ${user_id} is typing...`;
-        }
-    });
-
-    socket.on("stopTyping", (user_id, chat_id) => {
-        typingIndicator.innerText = "";
-    });
+    socket.on("join_leftChat", (data) => displayUserJoined(data.user_id, data.text));
+    socket.on("message", (message) => updateChat(message));
+    socket.on("userList", (data) => updateUserList(data.users));
+    socket.on("errorMessage", (msg) => console.error("Error:", msg));
+    socket.on("typing", async (user_id) => displayTyping(user_id));
+    socket.on("stopTyping", () => typingIndicator.innerText = "");
 }
 
-// Load initial messages (limit 20)
+// Load latest 20 messages
 async function loadMessages() {
     try {
         const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getMessages.php?chat_id=${currentChat}&limit=20`);
         const data = await response.json();
+        if (!data.success) return console.error("Error loading messages:", data.message);
 
-        if (!data.success) {
-            console.error("Error loading messages:", data.message);
-            return;
-        }
-
-        // Clear chat UI before displaying messages
         chatContainer.innerHTML = "";
         chatContainer.appendChild(loadMoreBtn);
-
-        // Sort messages in ascending order by timestamp
         data.messages.sort((a, b) => new Date(a.time) - new Date(b.time));
-
-        // Display sorted messages
-        data.messages.forEach((msg) => {
-            displayMessage(msg.user_id, msg.text, msg.time, true);
-        });
-
-        // Update lastMessageTime to the oldest message
-        if (data.messages.length > 0) {
-            lastMessageTime = data.messages[0].time;
-        }
-
-        // Hide Load More button if fewer than 20 messages are loaded
+        data.messages.forEach((msg) => displayMessage(msg.user_id, msg.text, msg.time, true));
+        if (data.messages.length > 0) lastMessageTime = data.messages[0].time;
         loadMoreBtn.style.display = data.messages.length < 20 ? "none" : "block";
     } catch (error) {
         console.error("Fetch error:", error);
     }
 }
 
-
-// Load more messages when clicking "Load More"
+// Load more messages
 async function loadMoreMessages() {
-    if (!lastMessageTime) return; // No older messages to load
-
+    if (!lastMessageTime) return;
     try {
         const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getMessages.php?chat_id=${currentChat}&limit=20&last_time=${encodeURIComponent(lastMessageTime)}`);
         const data = await response.json();
+        if (!data.success) return console.error("Error loading more messages:", data.message);
 
-        if (!data.success) {
-            console.error("Error loading more messages:", data.message);
-            return;
-        }
-
-        // Sort messages in ascending order before inserting at the top
         data.messages.sort((a, b) => new Date(a.time) - new Date(b.time));
-
-        // Insert messages at the top in order
-        data.messages.forEach((msg) => {
-            displayMessage(msg.user_id, msg.text, msg.time, false);
-        });
-
-        // Update lastMessageTime to the new oldest message timestamp
-        if (data.messages.length > 0) {
-            lastMessageTime = data.messages[0].time;
-        }
-
-        // Hide Load More button if there are no more messages to load
-        if (data.messages.length < 20) {
-            loadMoreBtn.style.display = "none";
-        }
+        data.messages.forEach((msg) => displayMessage(msg.user_id, msg.text, msg.time, false));
+        if (data.messages.length > 0) lastMessageTime = data.messages[0].time;
+        if (data.messages.length < 20) loadMoreBtn.style.display = "none";
     } catch (error) {
         console.error("Fetch error:", error);
     }
 }
 
-
-// load message details
-function loadChatInfo(chatId) {
-    fetch(`../SQL/dbquery/getChatInfo.php?chat_id=${chatId}`)
-        .then(response => response.json())
-        .then(data => {
-            if (!data.success) {
-                console.error("Error loading chat:", data.message);
-                return;
-            }
-
-            // Update profile picture
-            document.querySelector(".profile img").src = data.profile_picture;
-
-            // Update chat name
-            document.querySelector(".profileName h2").textContent = data.chat_name;
-
-            // Select UI containers
-            const addMembersContainer = document.querySelector(".add-members-container");
-            const createChatContainer = document.querySelector(".create-chat-container");
-            const groupMembersContainer = document.querySelector(".group-member-container");
-            const groupMembersList = document.querySelector(".group-members");
-
-            if (data.is_group) {
-                // Show "Add Members" and group members list
-                addMembersContainer.style.display = "block";
-                createChatContainer.style.display = "none"; // Hide "Create Group"
-
-                // Clear existing group members
-                groupMembersList.innerHTML = "";
-
-                // Populate group members list
-                data.group_members.forEach(member => {
-                    const memberElement = document.createElement("h2");
-                    memberElement.textContent = member;
-                    groupMembersList.appendChild(memberElement);
-                });
-
-                groupMembersContainer.style.display = "block";
-            } else {
-                // Show "Create Group" button
-                createChatContainer.style.display = "block";
-                addMembersContainer.style.display = "none"; // Hide "Add Members"
-                groupMembersContainer.style.display = "none"; // Hide group members
-            }
-        })
-        .catch(error => console.error("Fetch error:", error));
-}
-
-// Call function when page loads
-document.addEventListener("DOMContentLoaded", () => {
-    const chat_id = document.querySelector("#chat_id").value;
-    loadChatInfo(chat_id);
-});
-
-
-// Send a message
+// Send message
 function sendMessage() {
     const text = messageInput.value.trim();
-
     if (text === "" || !currentChat || !currentUser) return;
-
     socket.emit("message", { user_id: currentUser, chat_id: currentChat, text });
-
     messageInput.value = "";
 }
 
-// Display message in the chat UI
+// Display message
 async function displayMessage(user_id, text, time, appendToBottom = true) {
     const messageDiv = document.createElement("div");
     messageDiv.classList.add(user_id == currentUser ? "message-me" : "message-others");
-
+    
     if (user_id !== currentUser) {
         const userProfile = await fetchUserProfile(user_id);
         messageDiv.innerHTML = `
-            ${userProfile && userProfile.profile_picture ? `<img src="${userProfile.profile_picture}" alt="chathead">` : ""}
-            <div>
-                <h3>${text}</h3>
-                <h4>${time}</h4>
-            </div>
+            ${userProfile?.profile_picture ? `<img src="${userProfile.profile_picture}" alt="chathead">` : ""}
+            <div><h3>${text}</h3><h4>${time}</h4></div>
         `;
     } else {
-        messageDiv.innerHTML = `
-            <div>
-                <h3>${text}</h3>
-                <h4>${time}</h4>
-            </div>
-        `;
+        messageDiv.innerHTML = `<div><h3>${text}</h3><h4>${time}</h4></div>`;
     }
 
-    // **Insert messages in correct order based on timestamp**
     let inserted = false;
     const messages = chatContainer.querySelectorAll(".message-me, .message-others");
-
     for (let i = 0; i < messages.length; i++) {
         const existingTime = messages[i].querySelector("h4").innerText.trim();
         if (new Date(time) < new Date(existingTime)) {
@@ -236,83 +99,61 @@ async function displayMessage(user_id, text, time, appendToBottom = true) {
             break;
         }
     }
-
-    // If no earlier message exists, append to the bottom
-    if (!inserted) {
-        chatContainer.appendChild(messageDiv);
-    }
-
-    // Scroll only if the user is at the bottom
-    if (appendToBottom) {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-}
-
-
-// To display when joining
-async function displayUserJoined(user_id, text) {
-    const user = await fetchUserProfile(user_id);
-    console.log(`${user.firstName} ${text}`);
+    if (!inserted) chatContainer.appendChild(messageDiv);
+    if (appendToBottom) chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 // Typing event
 messageInput.addEventListener("input", () => {
     socket.emit("typing", { user_id: currentUser, chat_id: currentChat });
-
     clearTimeout(typingTimeout);
     typingTimeout = setTimeout(() => {
         socket.emit("stopTyping", { user_id: currentUser, chat_id: currentChat });
     }, 500);
 });
 
-// Join chat when page loads
-document.addEventListener("DOMContentLoaded", () => {
+// Fetch user profile
+async function fetchUserProfile(user_id) {
+    try {
+        const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getUserProfile.php?user_id=${user_id}`);
+        const data = await response.json();
+        if (!data.success) return console.error("Error fetching user profile:", data.message);
+        return data.profile;
+    } catch (error) {
+        console.error("Fetch error:", error);
+        return null;
+    }
+}
+
+// Page load events
+window.addEventListener("DOMContentLoaded", () => {
     const user_id = document.querySelector("#sender_id").value;
     const chat_id = document.querySelector("#chat_id").value;
-
     console.log("Current User Online:", user_id);
     console.log("Current Chat Id:", chat_id);
     joinChat(user_id, chat_id);
 });
 
-// Send message on button click
 document.getElementById("sendBtn").addEventListener("click", sendMessage);
-
-// Send message on Enter key press (fixes the issue)
 messageInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault(); // Prevent new line in textarea
+        e.preventDefault();
         sendMessage();
     }
 });
 
 function updateUserList(users) {
     console.log("Current Users:");
-    
-    if (!Array.isArray(users)) {
-        console.error("Invalid user list:", users);
-        return;
-    }
-
-    users.forEach(user => {
-        console.log(`User Joined ID: ${user}`);
-    });
+    if (!Array.isArray(users)) return console.error("Invalid user list:", users);
+    users.forEach(user => console.log(`User Joined ID: ${user}`));
 }
 
-//to display profile per message
-async function fetchUserProfile(user_id) {
-    try {
-        const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getUserProfile.php?user_id=${user_id}`);
-        const data = await response.json();
+async function displayUserJoined(user_id, text) {
+    const user = await fetchUserProfile(user_id);
+    console.log(`${user.firstName} ${text}`);
+}
 
-        if (!data.success) {
-            console.error("Error fetching user profile:", data.message);
-            return null;
-        }
-
-        return data.profile;
-    } catch (error) {
-        console.error("Fetch error:", error);
-        return null;
-    }
+async function displayTyping(user_id) {
+    const user = await fetchUserProfile(user_id);
+    if (user_id !== currentUser) typingIndicator.innerText = `${user.firstName} is typing...`;
 }
