@@ -4,7 +4,15 @@ ini_set('display_errors', 1);
 
 header("Content-Type: application/json");
 
-require_once __DIR__ . "/../config/DBConnection.php"; // Fix path issue
+require_once __DIR__ . "/../config/DBConnection.php";
+session_start();
+
+if (!isset($_SESSION['currentUserId'])) {
+    echo json_encode(["success" => false, "message" => "User not logged in"]);
+    exit;
+}
+
+$current_user_id = $_SESSION['currentUserId'];
 
 if (!isset($_GET['chat_id'])) {
     echo json_encode(["success" => false, "message" => "Chat ID is required"]);
@@ -14,7 +22,8 @@ if (!isset($_GET['chat_id'])) {
 $chat_id = $_GET['chat_id'];
 
 try {
-    $query = "SELECT c.chat_id, c.chat_name, c.group_picture, c.is_group, u.profile_picture, u.firstName, u.lastName
+    // Get chat details, but exclude current_user if it's a private chat
+    $query = "SELECT c.chat_id, c.chat_name, c.group_picture, c.is_group, u.user_id, u.profile_picture, u.firstName, u.lastName
               FROM chats c
               JOIN chat_members cm ON c.chat_id = cm.chat_id
               JOIN users u ON cm.user_id = u.user_id
@@ -31,16 +40,26 @@ try {
     }
 
     $is_group = (bool) $chatDetails[0]['is_group'];
-    $chatName = $is_group ? $chatDetails[0]['chat_name'] : ($chatDetails[0]['firstName'] . " " . $chatDetails[0]['lastName']);
-    $profileImg = $is_group 
-    ? ($chatDetails[0]['group_picture'] ?? 'images/group_img/default_group.jpg') 
-    : ($chatDetails[0]['profile_picture'] ?? 'images/profile_img/default_profile.jpg');
 
-    $groupMembers = [];
     if ($is_group) {
+        // For group chats, use chat name and group picture
+        $chatName = $chatDetails[0]['chat_name'];
+        $profileImg = $chatDetails[0]['group_picture'] ?? 'images/group_img/default_group.jpg';
+
+        $groupMembers = [];
         foreach ($chatDetails as $member) {
             $groupMembers[] = $member['firstName'] . " " . $member['lastName'];
         }
+    } else {
+        // For private chats, exclude current user and fetch only the other user
+        foreach ($chatDetails as $user) {
+            if ($user['user_id'] != $current_user_id) {
+                $chatName = $user['firstName'] . " " . $user['lastName'];
+                $profileImg = $user['profile_picture'] ?? 'images/profile_img/default_profile.jpg';
+                break; // Stop after finding the other user
+            }
+        }
+        $groupMembers = null; // Not applicable for private chats
     }
 
     echo json_encode([
@@ -54,4 +73,3 @@ try {
 } catch (PDOException $e) {
     echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
 }
-

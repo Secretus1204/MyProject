@@ -38,7 +38,7 @@
                     </div>
                     <div class="message-btn">
                         <?php if ($friendshipStatus === 'accepted'): ?>
-                            <button onclick="window.location.href = 'chatPage.php?user_id=' + userId;">Message</button>
+                            <button id="openChatBtn">Message</button>
                         <?php endif; ?>
                     </div>
             </div>
@@ -62,6 +62,17 @@
             </div>
         </div>
     </section>
+    <script>
+    var chatId = <?= isset($chat_id) ? json_encode($chat_id) : "null" ?>; // Convert PHP to JS
+
+    document.getElementById("openChatBtn").addEventListener("click", function () {
+        if (chatId) {
+            window.location.href = `messagePage.php?chat_id=${chatId}`;
+        } else {
+            alert("No chat found with this user!");
+        }
+    });
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

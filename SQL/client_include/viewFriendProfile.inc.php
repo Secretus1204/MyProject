@@ -56,6 +56,30 @@ if ($user_id) {
     $stmt->bindParam(':userId', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $groupCount = $stmt->fetch(PDO::FETCH_ASSOC)['group_count'];
+
+    // Query to get the chat_id for a private chat between the current user and the profile user
+    $chatQuery = $pdo->prepare("
+    SELECT chat_id 
+    FROM chats 
+    WHERE is_group = 0 
+    AND chat_id IN (
+        SELECT chat_id 
+        FROM chat_members 
+        WHERE user_id = :current_user
+    ) 
+    AND chat_id IN (
+        SELECT chat_id 
+        FROM chat_members 
+        WHERE user_id = :profile_user
+    )
+    ");
+    $chatQuery->execute([
+    'current_user' => $current_user_id,
+    'profile_user' => $user_id
+    ]);
+
+    $chat = $chatQuery->fetch(PDO::FETCH_ASSOC);
+    $chat_id = $chat['chat_id'] ?? null; // Set to null if no chat exists
 } else {
     echo "No user specified!";
     exit;
