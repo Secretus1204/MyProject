@@ -9,37 +9,33 @@ if (!isset($_GET['chat_id'])) {
 
 $chat_id = intval($_GET['chat_id']);
 $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 20;
-$last_id = isset($_GET['last_id']) ? intval($_GET['last_id']) : null;
+$last_time = isset($_GET['last_time']) ? $_GET['last_time'] : null; // Expecting a timestamp
 
 try {
-    // Fetch messages with optional pagination
-    if ($last_id) {
+    if ($last_time) {
         $query = "SELECT message_id, sender_id AS user_id, message_text AS text, created_at AS time 
                   FROM messages 
-                  WHERE chat_id = :chat_id AND id < :last_id 
-                  ORDER BY message_id DESC 
-                  LIMIT :limit";
+                  WHERE chat_id = :chat_id AND created_at < :last_time 
+                  ORDER BY created_at DESC 
+                  LIMIT $limit"; // Use direct integer in LIMIT
         $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':last_id', $last_id, PDO::PARAM_INT);
+        $stmt->bindParam(':last_time', $last_time, PDO::PARAM_STR);
     } else {
         $query = "SELECT message_id, sender_id AS user_id, message_text AS text, created_at AS time 
                   FROM messages 
                   WHERE chat_id = :chat_id 
-                  ORDER BY message_id DESC 
-                  LIMIT :limit";
+                  ORDER BY created_at DESC 
+                  LIMIT $limit"; // Use direct integer in LIMIT
         $stmt = $pdo->prepare($query);
     }
 
     $stmt->bindParam(':chat_id', $chat_id, PDO::PARAM_INT);
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
     $stmt->execute();
     $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Reverse the order so the newest messages appear at the bottom
-    $messages = array_reverse($messages);
+    array_reverse($messages);
 
     echo json_encode(["success" => true, "messages" => $messages]);
 } catch (PDOException $e) {
     echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
 }
-?>

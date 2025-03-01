@@ -67,10 +67,22 @@
                     <h2>James Oliver</h2>
                 </div>
             </div>
-            <div class="extras">
+            <div class="create-chat-container">
             <button class="create-chat">
                 <h2>Create a group </h2>
             </button>
+            </div>
+            <div class="group-member-container">
+                <h1>Group Members:</h1>
+                <div class="group-members">
+                    <h2>James Oliver</h2>
+                    <h2>DM Ferrer</h2>
+                </div>
+            </div>
+            <div class="add-members-container">
+                <button class="add-members">
+                    <h2>Add members</h2>
+                </button>
             </div>
         </div>
     </section>
