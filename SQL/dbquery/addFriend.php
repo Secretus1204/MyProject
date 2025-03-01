@@ -32,29 +32,47 @@ if (isset($_POST['add_friend_id'])) {
                 'friend_id' => $friend_id
             ]);
         
-            // Create a private chat for the two users
-            $chatQuery = $pdo->prepare("
-                INSERT INTO chats (chat_name, is_group) 
-                VALUES (NULL, 0)
+            // Check if a private chat already exists between these users
+            $checkChatQuery = $pdo->prepare("
+                SELECT c.chat_id FROM chats c
+                JOIN chat_members cm1 ON c.chat_id = cm1.chat_id
+                JOIN chat_members cm2 ON c.chat_id = cm2.chat_id
+                WHERE c.is_group = 0
+                AND cm1.user_id = :user1 
+                AND cm2.user_id = :user2
             ");
-            $chatQuery->execute();
-            $chatId = $pdo->lastInsertId();
-        
-            // Add both users to chat_members
-            $chatMemberQuery = $pdo->prepare("
-                INSERT INTO chat_members (chat_id, user_id) 
-                VALUES (:chat_id, :user1), (:chat_id, :user2)
-            ");
-            $chatMemberQuery->execute([
-                'chat_id' => $chatId,
+            $checkChatQuery->execute([
                 'user1' => $current_user_id,
                 'user2' => $friend_id
             ]);
-        }else {
-            // mag add pani ug pop up or something if naay pending request na
+            $existingChat = $checkChatQuery->fetch(PDO::FETCH_ASSOC);
+        
+            if (!$existingChat) {
+                // Create a private chat for the two users
+                $chatQuery = $pdo->prepare("
+                    INSERT INTO chats (chat_name, is_group) 
+                    VALUES (NULL, 0)
+                ");
+                $chatQuery->execute();
+                $chatId = $pdo->lastInsertId();
+        
+                // Add both users to chat_members
+                $chatMemberQuery = $pdo->prepare("
+                    INSERT INTO chat_members (chat_id, user_id) 
+                    VALUES (:chat_id, :user1), (:chat_id, :user2)
+                ");
+                $chatMemberQuery->execute([
+                    'chat_id' => $chatId,
+                    'user1' => $current_user_id,
+                    'user2' => $friend_id
+                ]);
+            }
+        } else {
+            // Add a pop-up or message for pending friend requests
         }
+        
         header("Location: ../../client/discoverPeoplePage.php");
-        exit();
+        exit();        
     } catch (PDOException $e) {
         // error handling onle
         header("Location: ../../client/discoverPeoplePage.php?error=" . urlencode($e->getMessage()));

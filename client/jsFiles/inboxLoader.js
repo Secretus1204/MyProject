@@ -122,5 +122,5 @@ function formatDate(timestamp) {
 }
 
 function openChat(chatId) {
-    window.location.href = `chat.php?chat_id=${chatId}`;
+    window.location.href = `messagePage.php?chat_id=${chatId}`;
 }

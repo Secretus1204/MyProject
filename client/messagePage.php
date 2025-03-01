@@ -1,9 +1,17 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['currentUserId'])) {
-        header("Location: index.php");
-        exit;
-    }
+session_start();
+if (!isset($_SESSION['currentUserId'])) {
+    header("Location: index.php");
+    exit;
+}
+
+$chatId = isset($_GET['chat_id']) ? $_GET['chat_id'] : null;
+
+// if (!$chatId) {
+//     echo "Invalid chat.";
+//     exit;
+// }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,6 +47,7 @@
                     <img src="images/profile_img/default_profile.jpg" alt="chathead">
                     <div>
                     <h3>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti quae et molestias illo minus sequi nesciunt quo dignissimos vero obcaecati distinctio, doloremque, quibusdam, assumenda atque veniam veritatis in impedit dolorem.</h3>
+                    <h4>3:04 PM</h4>
                     </div>
                 </div>
                 <div class="dateSent">
@@ -47,6 +56,7 @@
                 <div class="message-me">
                     <div>
                     <h3>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore impedit, ducimus fuga unde ipsum adipisci inventore illum maxime eveniet corporis, tempora aliquid expedita ex earum reiciendis? Corrupti nemo ducimus voluptate?</h3>
+                    <h4>3:05 PM</h4>
                     </div>
                 </div>
             </div>
@@ -57,6 +67,7 @@
                 <div class="send-message">
                     <div class="type-message">
                         <form action="">
+                        <input type="hidden" name="chat_id" id="chat_id" value="<?php echo htmlspecialchars($chatId); ?>">
                         <textarea name="message" id="message" placeholder="Type a message..."      rows="1" ></textarea>
                         </form>
                     </div>
