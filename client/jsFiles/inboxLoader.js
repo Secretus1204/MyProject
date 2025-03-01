@@ -1,7 +1,13 @@
 //to load whenever the messages icon is clicked
 document.addEventListener("DOMContentLoaded", function () {
     loadInbox().then(() => loadGroupChats());
+    setInterval(reloadChats, 5000); // Reload both inbox and group chats every second
 });
+
+// Function to reload both private and group chats
+function reloadChats() {
+    loadInbox().then(() => loadGroupChats());
+}
 
 // Function to search inbox messages
 function searchInbox() {
@@ -30,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //fucntion to load private messages
 function loadInbox() {
-    return fetch("../SQL/dbquery/inbox.php") // Return the fetch promise
+    return fetch("../SQL/dbquery/inbox.php")
         .then(response => response.json())
         .then(data => {
             if (data.error) {
@@ -38,8 +44,22 @@ function loadInbox() {
                 return;
             }
             displayInbox(data);
+            
+            // Automatically select the first chat if chat_id is not set
+            if (data.length > 0) {
+                const firstChatId = data[0].chat_id;
+                if (!getChatIdFromURL()) {
+                    openChat(firstChatId);
+                }
+            }
         })
         .catch(error => console.error("Fetch Error:", error));
+}
+
+// Function to get chat_id from URL
+function getChatIdFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("chat_id");
 }
 
 //function to load group chat

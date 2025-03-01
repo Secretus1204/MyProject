@@ -1,7 +1,22 @@
 <?php
     session_start();
+    include_once('../SQL/config/DBConnection.php');
     include_once('authenticate.php');
     $chatId = isset($_GET['chat_id']) ? $_GET['chat_id'] : null;
+
+    // If chat_id is not provided, fetch the first available chat
+    if (!$chatId) {
+    $userId = $_SESSION['currentUserId'];
+    $stmt = $pdo->prepare("SELECT chat_id FROM chat_members WHERE user_id = ? ORDER BY chat_id ASC LIMIT 1");
+    $stmt->execute([$userId]);
+    $firstChat = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($firstChat) {
+        $chatId = $firstChat['chat_id'];
+        header("Location: messagePage.php?chat_id=$chatId");
+        exit();
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
