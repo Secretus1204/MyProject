@@ -208,9 +208,14 @@ async function displayMessage(user_id, text, time, appendToBottom = true) {
 
     if (user_id !== currentUser) {
         const userProfile = await fetchUserProfile(user_id);
+        const profileImage = userProfile && userProfile.profile_picture 
+        ? userProfile.profile_picture 
+        : "images/profile_img/default_profile.jpg";
+
         messageDiv.innerHTML = `
-            ${userProfile && userProfile.profile_picture ? `<img src="${userProfile.profile_picture}" alt="chathead">` : ""}
+            <img src="${profileImage}" alt="chathead">
             <div>
+                <h2>${userProfile.firstName}</h2>
                 <h3>${text}</h3>
                 <h4>${time}</h4>
             </div>
