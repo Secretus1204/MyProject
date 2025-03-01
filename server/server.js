@@ -42,12 +42,8 @@ io.on('connection', (socket) => {
                 body: JSON.stringify({ user_id, chat_id })
             });
     
-            console.log("Response Status:", response.status);
-            console.log("Response Headers:", response.headers.raw());
-    
             // Read raw response before parsing
             const rawText = await response.text();
-            console.log("Raw Response:", rawText);
     
             // Try parsing JSON
             let data;
@@ -72,16 +68,16 @@ io.on('connection', (socket) => {
             const prevRoom = UsersState.get(socket.id)?.chat_id;
             if (prevRoom) {
                 socket.leave(prevRoom);
-                io.to(prevRoom).emit('message', buildMessage(ADMIN, `User ${user_id} left chat ${prevRoom}.`));
+                io.to(prevRoom).emit('join_leftChat', notifyMessage(user_id, `left chat ${prevRoom}.`));
             }
     
             // Store user session in UsersState
             UsersState.set(socket.id, { user_id, chat_id });
             socket.join(chat_id);
     
-            // Notify everyone in the chat
-            socket.emit('joinChat', notifyMessage(ADMIN, `You joined chat ${chat_id}.`));
-    
+            // Notify everyone in the chat when user join
+            socket.emit('join_leftChat', notifyMessage(user_id, `joined chat ${chat_id}.`));
+
             // Update user list for the chat
             io.to(chat_id).emit('userList', {
                 users: Array.from(UsersState.values()).filter(u => u.chat_id === chat_id).map(u => u.user_id)
@@ -99,7 +95,7 @@ io.on('connection', (socket) => {
         const user = UsersState.get(socket.id);
         if (user) {
             UsersState.delete(socket.id);
-            io.to(user.chat_id).emit('message', buildMessage(ADMIN, `User ${user.user_id} left the chat.`));
+            io.to(user.chat_id).emit('join_leftChat', buildMessage(user.user_id, `left the chat.`));
             io.to(user.chat_id).emit('userList', {
                 users: Array.from(UsersState.values()).filter(u => u.chat_id === user.chat_id).map(u => u.user_id)
             });
@@ -114,7 +110,7 @@ io.on('connection', (socket) => {
         if (!user || user.chat_id !== chat_id) return;
 
         // Store message in the database via PHP
-        await fetch("http://localhost/Projects/CST5-Final-Project/SQL/dbquery/save_message.php", {
+        await fetch("http://localhost/Projects/CST5-Final-Project/SQL/dbquery/saveMessage.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ user_id, chat_id, text })
@@ -122,6 +118,16 @@ io.on('connection', (socket) => {
 
         // Broadcast message
         io.to(chat_id).emit('message', buildMessage(user_id, text));
+    });
+
+    //typing activity
+    socket.on("typing", ({ user_id, chat_id }) => {
+        socket.to(chat_id).emit("typing", user_id);
+    });
+    
+    //stops typing
+    socket.on("stopTyping", ({ user_id, chat_id }) => {
+        socket.to(chat_id).emit("stopTyping", user_id);
     });
 });
 
@@ -132,11 +138,18 @@ function buildMessage(user_id, text) {
         text,
         time: new Date().toLocaleTimeString()
     };
-}
+};
 
 function notifyMessage(user_id, text){
     return{
         user_id,
         text
     };
-}
+};
+
+function showActivity(user_id, text){
+    return{
+        user_id,
+        text
+    };
+};

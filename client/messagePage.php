@@ -31,39 +31,20 @@
         </div>
         <div class="main-message-container">
             <div class="main-message">
-                <div class="dateSent">
-                    <h3>February 13, 2025</h3>
-                </div>
-                <div class="message-others">
-                    <img src="images/profile_img/default_profile.jpg" alt="chathead">
-                    <div>
-                    <h3>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti quae et molestias illo minus sequi nesciunt quo dignissimos vero obcaecati distinctio, doloremque, quibusdam, assumenda atque veniam veritatis in impedit dolorem.</h3>
-                    <h4>3:04 PM</h4>
-                    </div>
-                </div>
-                <div class="dateSent">
-                    <h3>February 14, 2025</h3>
-                </div>
-                <div class="userOnline">
-                    <h3>We Joined the chat</h3>
-                </div>
-                <div class="message-me">
-                    <div>
-                    <h3>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore impedit, ducimus fuga unde ipsum adipisci inventore illum maxime eveniet corporis, tempora aliquid expedita ex earum reiciendis? Corrupti nemo ducimus voluptate?</h3>
-                    <h4>3:05 PM</h4>
-                    </div>
-                </div>
+                <!-- container for chats -->
             </div>
             <div class="send-message-container">
                 <div class="activity">
-                    <h3>Someone is typing...</h3>
+                    <h3>
+                        <!-- container for activity -->
+                    </h3>
                 </div>
                 <div class="send-message">
                     <div class="type-message">
                         <form action="">
                         <input type="hidden" name="sender_id" id="sender_id" value="<?php echo htmlspecialchars($_SESSION['currentUserId']); ?>">
                         <input type="hidden" name="chat_id" id="chat_id" value="<?php echo htmlspecialchars($chatId); ?>">
-                        <textarea name="message" id="message" placeholder="Type a message..."      rows="1" ></textarea>
+                        <textarea name="message" id="message" placeholder="Type a message..." rows="1" ></textarea>
                         </form>
                     </div>
                     <button class="send-icon" id="sendBtn">

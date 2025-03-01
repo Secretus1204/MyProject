@@ -117,6 +117,9 @@
 
 .main-message{
     width: 100%;
+    padding-top: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .dateSent{
@@ -162,7 +165,11 @@
     background-color: #7E9DCE;
     margin: 10px 0;
     border-radius: 20px;
-    width: 500px;
+    min-width: 200px;
+    max-width: 500px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
 
 .message-others h3{
@@ -194,7 +201,11 @@
     margin: 10px 0;
     margin-right: 15px;
     border-radius: 20px;
-    width: 500px;
+    min-width: 200px;
+    max-width: 500px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
 
 .message-me h3{

@@ -15,8 +15,8 @@ function joinChat(user_id, chat_id) {
 
     socket.emit("enterRoom", { user_id, chat_id });
 
-    socket.on("joinChat", (data) => {
-        displayUserJoined(data.user_id);
+    socket.on("join_leftChat", (data) => {
+        displayUserJoined(data.user_id, data.text);
     });
 
     socket.on("message", (message) => {
@@ -31,15 +31,47 @@ function joinChat(user_id, chat_id) {
         console.error("Error:", msg);
     });
 
-    socket.on("typing", (user_id) => {
+    socket.on("typing", (user_id, chat_id) => {
         if (user_id !== currentUser) {
             typingIndicator.innerText = `User ${user_id} is typing...`;
         }
     });
 
-    socket.on("stopTyping", () => {
+    socket.on("stopTyping", (user_id, chat_id) => {
         typingIndicator.innerText = "";
     });
+
+    loadMessages();
+}
+
+// Load messages from the database (limit 20 initially)
+async function loadMessages() {
+    try {
+        const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getMessages.php?chat_id=${currentChat}&limit=20`);
+        const data = await response.json();
+
+        if (!data.success) {
+            console.error("Error loading messages:", data.message);
+            return;
+        }
+
+        // Clear old messages when loading initially
+        chatContainer.innerHTML = "";
+
+        data.messages.forEach((msg) => {
+            displayMessage(msg.user_id, msg.text, msg.time, true);
+        });
+
+        // Set lastMessageId to the oldest message loaded
+        if (data.messages.length > 0) {
+            lastMessageId = data.messages[data.messages.length - 1].id;
+        }
+
+        // Hide Load More button if fewer than 20 messages are loaded
+        loadMoreBtn.style.display = data.messages.length < 20 ? "none" : "block";
+    } catch (error) {
+        console.error("Fetch error:", error);
+    }
 }
 
 // Send a message
@@ -54,29 +86,43 @@ function sendMessage() {
 }
 
 // Display message in the chat UI
-function displayMessage(user_id, text, time) {
+async function displayMessage(user_id, text, time) {
     const messageDiv = document.createElement("div");
     messageDiv.classList.add(user_id == currentUser ? "message-me" : "message-others");
 
-    messageDiv.innerHTML = `
-        <div>
-            <h3>${text}</h3>
-            <h4>${time}</h4>
-        </div>
-    `;
+    if (user_id !== currentUser) {
+        const userProfile = await fetchUserProfile(user_id);
+
+        messageDiv.innerHTML = `
+            ${userProfile && userProfile.profile_picture ? `<img src="${userProfile.profile_picture}" alt="chathead">` : ""}
+            <div>
+                <h3>${text}</h3>
+                <h4>${time}</h4>
+            </div>
+        `;
+    } else {
+        messageDiv.innerHTML = `
+            <div>
+                <h3>${text}</h3>
+                <h4>${time}</h4>
+            </div>
+        `;
+    }
 
     chatContainer.appendChild(messageDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-function displayUserJoined(user_id){
+//to display when joining
+async function displayUserJoined(user_id, text){
+    const user = await fetchUserProfile(user_id);
     const notifyDiv = document.createElement("div");
     notifyDiv.classList.add("userOnline");
     notifyDiv.innerHTML = `
-        <h3>${user_id}</h3>
+        <h3>${user.firstName} ${text}</h3>
     `;
 
-    chatContainer.appendChild(messageDiv);
+    chatContainer.appendChild(notifyDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
@@ -87,7 +133,7 @@ messageInput.addEventListener("input", () => {
     clearTimeout(typingTimeout);
     typingTimeout = setTimeout(() => {
         socket.emit("stopTyping", { user_id: currentUser, chat_id: currentChat });
-    }, 2000);
+    }, 500);
 });
 
 // Join chat when page loads
@@ -112,16 +158,31 @@ messageInput.addEventListener("keydown", (e) => {
 });
 
 function updateUserList(users) {
-    const userListElement = document.getElementById("userList"); // Make sure this element exists in your HTML
-    if (!userListElement) {
-        console.error("User list element not found.");
+    console.log("Current Users:");
+    
+    if (!Array.isArray(users)) {
+        console.error("Invalid user list:", users);
         return;
     }
 
-    userListElement.innerHTML = ""; // Clear previous list
     users.forEach(user => {
-        const li = document.createElement("li");
-        li.textContent = `User ID: ${user}`;
-        userListElement.appendChild(li);
+        console.log(`User Joined ID: ${user}`);
     });
+}
+
+async function fetchUserProfile(user_id) {
+    try {
+        const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getUserProfile.php?user_id=${user_id}`);
+        const data = await response.json();
+
+        if (!data.success) {
+            console.error("Error fetching user profile:", data.message);
+            return null;
+        }
+
+        return data.profile; // Assuming `data.profile` contains { username, profile_picture }
+    } catch (error) {
+        console.error("Fetch error:", error);
+        return null;
+    }
 }

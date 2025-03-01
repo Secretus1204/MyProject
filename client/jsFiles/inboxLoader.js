@@ -46,7 +46,11 @@ function displayInbox(inbox) {
             ? `${user.profile_picture}` 
             : "images/profile_img/default_profile.jpg"; // Default profile picture
 
-        const lastMessage = user.latest_message || "No messages yet";
+        const lastMessage = user.latest_message 
+            ? (user.latest_message.length > 20 
+                ? user.latest_message.substring(0, 20) + "..." 
+                : user.latest_message) 
+            : "No messages yet";
         const messageTime = user.message_timestamp ? formatDate(user.message_timestamp) : ""; // Avoid formatting null timestamps
 
         const chatItem = document.createElement("div");
@@ -87,7 +91,12 @@ function displayGroups(groups) {
             ? `${group.group_picture}`  
             : "images/group_img/default_group.jpg"; // Default group picture
 
-        const latestMessage = group.latest_message ? group.latest_message : "No messages yet";
+        const latestMessage = group.latest_message 
+            ? (group.latest_message.length > 20 
+                ? group.latest_message.substring(0, 20) + "..." 
+                : group.latest_message) 
+            : "No messages yet";
+    
         const timestamp = group.message_timestamp ? formatDate(group.message_timestamp) : "";
 
         const chatItem = document.createElement("div");
@@ -118,7 +127,7 @@ function displayGroups(groups) {
 function formatDate(timestamp) {
     if (!timestamp) return "No messages yet";
     const date = new Date(timestamp);
-    return date.toLocaleString(); // Format to readable date
+    return date.toISOString().split("T")[0]; // Extracts YYYY-MM-DD
 }
 
 function openChat(chatId) {
