@@ -3,6 +3,31 @@ document.addEventListener("DOMContentLoaded", function () {
     loadInbox().then(() => loadGroupChats());
 });
 
+// Function to search inbox messages
+function searchInbox() {
+    const searchInput = document.getElementById("searchInbox").value.toLowerCase();
+    const chatItems = document.querySelectorAll("#inbox .last-message");
+
+    chatItems.forEach(chat => {
+        const chatName = chat.querySelector(".names-msg h3").innerText.toLowerCase();
+        const lastMessage = chat.querySelector(".names-msg h4").innerText.toLowerCase();
+
+        if (chatName.includes(searchInput) || lastMessage.includes(searchInput)) {
+            chat.style.display = "flex"; // Show matching chats
+        } else {
+            chat.style.display = "none"; // Hide non-matching chats
+        }
+    });
+}
+
+// Attach event listener to the search bar
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("searchInbox");
+    if (searchInput) {
+        searchInput.addEventListener("input", searchInbox);
+    }
+});
+
 //fucntion to load private messages
 function loadInbox() {
     return fetch("../SQL/dbquery/inbox.php") // Return the fetch promise
