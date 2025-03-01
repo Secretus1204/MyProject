@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 01, 2025 at 03:41 PM
+-- Generation Time: Mar 01, 2025 at 03:48 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -179,7 +179,12 @@ INSERT INTO `messages` (`message_id`, `chat_id`, `sender_id`, `message_text`, `m
 (43, 2, 2, 'hello', 'text', NULL, '2025-03-01 14:38:12'),
 (44, 2, 3, 'hi', 'text', NULL, '2025-03-01 14:38:23'),
 (45, 2, 2, 'baka', 'text', NULL, '2025-03-01 14:38:29'),
-(46, 2, 3, 'kabaw', 'text', NULL, '2025-03-01 14:38:34');
+(46, 2, 3, 'kabaw', 'text', NULL, '2025-03-01 14:38:34'),
+(47, 3, 2, 'kung ang hipon ay pasayan', 'text', NULL, '2025-03-01 14:47:16'),
+(48, 3, 2, 'nganong lisod man kaayo ning websocket', 'text', NULL, '2025-03-01 14:47:22'),
+(49, 3, 3, 'mao jud frfr', 'text', NULL, '2025-03-01 14:47:28'),
+(50, 3, 3, 'HAHAHAHAH', 'text', NULL, '2025-03-01 14:47:35'),
+(51, 3, 1, 'kasturya ang sarili o', 'text', NULL, '2025-03-01 14:47:58');
 
 -- --------------------------------------------------------
 
@@ -218,8 +223,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `firstName`, `lastName`, `email`, `address`, `password`, `profile_picture`, `created_at`, `is_online`) VALUES
-(1, 'Mark', 'Palma', 'mark@gmail.com', 'Panabo, Davao', '$2y$10$rysaOgQ2MeoUNLIGbVB.Ae3naOo4wGsSMIJjW4zIaCIeicqvmTijO', NULL, '2025-02-26 09:49:46', 0),
-(2, 'James', 'Oliver', 'jamesoliver@gmail.com', 'Water District, Lanang', '$2y$10$6nLWxJ.KTlvIFJOtXv2r8.NcM0dBC76HRbU6fgkJLucfbMHIuLXYi', 'images/profile_img/profile_2_1740563965.jpg', '2025-02-26 09:57:25', 1),
+(1, 'Mark', 'Palma', 'mark@gmail.com', 'Panabo, Davao', '$2y$10$rysaOgQ2MeoUNLIGbVB.Ae3naOo4wGsSMIJjW4zIaCIeicqvmTijO', NULL, '2025-02-26 09:49:46', 1),
+(2, 'James', 'Oliver', 'jamesoliver@gmail.com', 'Water District, Lanang', '$2y$10$6nLWxJ.KTlvIFJOtXv2r8.NcM0dBC76HRbU6fgkJLucfbMHIuLXYi', 'images/profile_img/profile_2_1740563965.jpg', '2025-02-26 09:57:25', 0),
 (3, 'Jayrald', 'Dionaldo', 'jayrald@gmail.com', 'Abreeza, Davao City', '$2y$10$ZUxA/aIaQc5V/.0QlAXKQeu3/DbHo0O.BR1COL2AG9uA6tAld1yxe', 'images/profile_img/profile_3_1740796380.jpg', '2025-02-26 09:57:46', 0);
 
 --
@@ -309,7 +314,7 @@ ALTER TABLE `friends`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `message_status`
