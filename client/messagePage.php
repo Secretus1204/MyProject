@@ -1,17 +1,7 @@
 <?php
-session_start();
-if (!isset($_SESSION['currentUserId'])) {
-    header("Location: index.php");
-    exit;
-}
-
-$chatId = isset($_GET['chat_id']) ? $_GET['chat_id'] : null;
-
-// if (!$chatId) {
-//     echo "Invalid chat.";
-//     exit;
-// }
-
+    session_start();
+    include_once('authenticate.php');
+    $chatId = isset($_GET['chat_id']) ? $_GET['chat_id'] : null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +11,7 @@ $chatId = isset($_GET['chat_id']) ? $_GET['chat_id'] : null;
     <link rel="stylesheet" href="styles/messagePage.css?v=<?php echo time(); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Messages</title>
 </head>
@@ -67,14 +58,15 @@ $chatId = isset($_GET['chat_id']) ? $_GET['chat_id'] : null;
                 <div class="send-message">
                     <div class="type-message">
                         <form action="">
+                        <input type="hidden" name="sender_id" id="sender_id" value="<?php echo htmlspecialchars($_SESSION['currentUserId']); ?>">
                         <input type="hidden" name="chat_id" id="chat_id" value="<?php echo htmlspecialchars($chatId); ?>">
                         <textarea name="message" id="message" placeholder="Type a message..."      rows="1" ></textarea>
                         </form>
                     </div>
-                    <button class="send-icon">
+                    <button class="send-icon" id="sendBtn">
                         <img src="images/icons/send_icon.png" alt="send">
                     </button>
-                    <button class="send-attachment">
+                    <button class="send-attachment" id="sendAttachmentBtn">
                         <img src="images/icons/add_attachment_icon.png" alt="add_file">
                     </button>
                 </div>
@@ -99,5 +91,6 @@ $chatId = isset($_GET['chat_id']) ? $_GET['chat_id'] : null;
         </div>
     </section>
     <script src="jsFiles/inboxLoader.js"></script>
+    <script src="jsFiles/frontendMessageHandler.js"></script>
 </body>
 </html>

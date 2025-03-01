@@ -1,9 +1,6 @@
 <?php
   session_start();
-  if (!isset($_SESSION['currentUserId'])) {
-    header("Location: index.php");
-    exit;
-  }
+  include_once('authenticate.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">

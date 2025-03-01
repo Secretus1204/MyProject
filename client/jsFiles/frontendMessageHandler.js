@@ -1,4 +1,4 @@
-const socket = io("http://localhost:5500"); // Change if deployed
+const socket = io("http://localhost/Projects/CST5-Final-Project/client/messagePage.php"); // Change if deployed
 
 const messageInput = document.getElementById("message");
 const chatContainer = document.querySelector(".main-message");
@@ -54,7 +54,7 @@ function displayMessage(user_id, text, time) {
 }
 
 // Typing indicator
-document.getElementById("messageInput").addEventListener("input", () => {
+document.getElementById("message").addEventListener("input", () => {
     socket.emit("typing", { user_id: currentUser, chat_id: currentChat });
 
     clearTimeout(typingTimeout);
@@ -73,16 +73,17 @@ socket.on("stopTyping", () => {
 
 // Join chat when page loads
 document.addEventListener("DOMContentLoaded", () => {
-    const user_id = 1; // Replace with actual logged-in user ID
-    const chat_id = 10; // Replace with actual chat ID
+    const user_id = $_SESSION['currentUserId'];
+    const chat_id = document.querySelector("#chat_id").value;
 
+    console.log(user_id);
     joinChat(user_id, chat_id);
 });
 
 // Send message on button click
-document.getElementById("sendButton").addEventListener("click", sendMessage);
+document.getElementById("sendBtn").addEventListener("click", sendMessage);
 
 // Send message on enter key press
-document.getElementById("messageInput").addEventListener("keypress", (e) => {
+document.getElementById("sendBtn").addEventListener("keypress", (e) => {
     if (e.key === "Enter") sendMessage();
 });

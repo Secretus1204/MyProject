@@ -1,6 +1,12 @@
 <?php
 require(__DIR__ . "/../config/DBConnection.php");
+
 session_start();
+
+if (!isset($_SESSION['currentUserId'])) {
+    header("Location: index.php");
+    exit;
+}
 
 $current_user_id = $_SESSION['currentUserId']; //get the logged-in user ID
 

@@ -1,6 +1,12 @@
 <?php
 require(__DIR__ . "/../config/DBConnection.php");
+
 session_start();
+
+if (!isset($_SESSION['currentUserId'])) {
+    header("Location: index.php");
+    exit;
+}
 
 $current_user_id = $_SESSION['currentUserId'];
 $user_id = $_GET['user_id'] ?? null;
@@ -16,7 +22,7 @@ if ($user_id) {
 
     // Ensure the profile_picture is not null; otherwise, set a default.
     if (empty($user['profile_picture'])) {
-        $user['profile_picture'] = 'default_profile.jpg';  // Fallback if no image is set
+        $user['profile_picture'] = 'images/profile_img/default_profile.jpg';  // Fallback if no image is set
     }
 
     // To check friendship status
