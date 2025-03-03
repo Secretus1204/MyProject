@@ -157,10 +157,3 @@ function notifyMessage(user_id, text){
         text
     };
 };
-
-function showActivity(user_id, text){
-    return{
-        user_id,
-        text
-    };
-};

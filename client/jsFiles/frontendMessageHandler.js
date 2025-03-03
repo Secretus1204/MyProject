@@ -40,8 +40,10 @@ function joinChat(user_id, chat_id) {
     socket.on("message", (message) => {
         console.log("Received message:", message);
     
-        const { user_id, text, file_url, file_type } = message;
-        const time = new Date().toLocaleTimeString(); // Format time properly
+        const { user_id, text, file_url, file_type, timestamp } = message;
+    
+        // Ensure timestamp is valid
+        const time = timestamp ? new Date(timestamp) : new Date();
     
         displayMessage(user_id, text, time, file_url, file_type);
     });
@@ -145,7 +147,7 @@ function scrollToBottom() {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-// Function to format timestamps to "February 26, 2026 7:06PM"
+// Function to format timestamps
 function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
 
@@ -406,13 +408,18 @@ fileInput.addEventListener("change", async () => {
 
     const file = fileInput.files[0];
     const allowedTypes = ["image/jpeg", "image/png", "video/mp4"];
+    const maxSize = 20 * 1024 * 1024;
 
     if (!allowedTypes.includes(file.type)) {
         alert("Only JPG, JPEG, PNG, and MP4 files are allowed.");
         return;
     }
 
-    // Reset input before processing to prevent duplicate triggers
+    if (file.size > maxSize) {
+        alert("File size must not exceed 20MB.");
+        return;
+    }
+
     fileInput.value = "";
 
     if (typeof currentUser === "undefined" || typeof currentChat === "undefined") {
@@ -442,19 +449,6 @@ fileInput.addEventListener("change", async () => {
 
         const { file_url, file_type } = uploadData;
         console.log("File uploaded successfully:", file_url, file_type);
-
-        const saveMessageResponse = await fetch("http://localhost/Projects/CST5-Final-Project/SQL/dbquery/saveMessage.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id: currentUser, chat_id: currentChat, text: null, file_url, file_type }),
-        });
-
-        const saveMessageData = await saveMessageResponse.json();
-        if (!saveMessageData.success) {
-            console.error("Message save error:", saveMessageData.message);
-            alert("Failed to save message: " + saveMessageData.message);
-            return;
-        }
 
         console.log("Emitting file message:", { file_url, file_type });
         socket.emit("message", { user_id: currentUser, chat_id: currentChat, text: null, file_url, file_type });

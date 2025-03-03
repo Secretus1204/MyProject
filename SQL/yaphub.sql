@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 01, 2025 at 03:48 PM
+-- Generation Time: Mar 03, 2025 at 02:01 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -184,7 +184,47 @@ INSERT INTO `messages` (`message_id`, `chat_id`, `sender_id`, `message_text`, `m
 (48, 3, 2, 'nganong lisod man kaayo ning websocket', 'text', NULL, '2025-03-01 14:47:22'),
 (49, 3, 3, 'mao jud frfr', 'text', NULL, '2025-03-01 14:47:28'),
 (50, 3, 3, 'HAHAHAHAH', 'text', NULL, '2025-03-01 14:47:35'),
-(51, 3, 1, 'kasturya ang sarili o', 'text', NULL, '2025-03-01 14:47:58');
+(51, 3, 1, 'kasturya ang sarili o', 'text', NULL, '2025-03-01 14:47:58'),
+(52, 1, 1, 'hi oleber', 'text', NULL, '2025-03-01 14:57:24'),
+(53, 1, 2, 'hello', 'text', NULL, '2025-03-03 09:24:33'),
+(54, 1, 1, 'wat', 'text', NULL, '2025-03-03 09:24:45'),
+(55, 1, 1, 'anong problima', 'text', NULL, '2025-03-03 09:24:53'),
+(56, 1, 2, 'gumagana naba ang webscoket', 'text', NULL, '2025-03-03 09:28:07'),
+(57, 1, 1, 'yesser', 'text', NULL, '2025-03-03 09:28:10'),
+(58, 1, 1, 'helo', 'text', NULL, '2025-03-03 09:50:13'),
+(60, 2, 3, 'hey', 'text', NULL, '2025-03-03 10:50:00'),
+(61, 2, 3, 'hell', 'text', NULL, '2025-03-03 10:50:17'),
+(62, 2, 2, 'hello', 'text', NULL, '2025-03-03 10:50:56'),
+(63, 2, 3, 'mellow', 'text', NULL, '2025-03-03 10:53:25'),
+(64, 2, 3, 'is this working?', 'text', NULL, '2025-03-03 11:10:25'),
+(65, 2, 3, 'hello', 'text', NULL, '2025-03-03 11:12:35'),
+(66, 2, 3, 'hi', 'text', NULL, '2025-03-03 11:12:44'),
+(67, 2, 2, 'wrokier', 'text', NULL, '2025-03-03 11:14:00'),
+(68, 2, 3, 'hey', 'text', NULL, '2025-03-03 11:15:39'),
+(79, 2, 3, 'hello', 'text', NULL, '2025-03-03 11:24:13'),
+(80, 2, 3, 'wow', 'text', NULL, '2025-03-03 11:24:15'),
+(81, 2, 2, 'nigana na', 'text', NULL, '2025-03-03 11:24:20'),
+(90, 3, 3, NULL, 'image', 'fileUpload/file_67c59a0bc6d476.98155706.jpg', '2025-03-03 12:01:15'),
+(92, 2, 3, NULL, 'image', 'fileUpload/file_67c59a128d86a7.32546984.jpg', '2025-03-03 12:01:22'),
+(94, 2, 3, 'hello FINALLY ITS WORKING', 'text', NULL, '2025-03-03 12:01:30'),
+(96, 2, 3, NULL, 'image', 'fileUpload/file_67c59ba48f43c5.46814966.png', '2025-03-03 12:08:04'),
+(97, 2, 3, 'hello', 'text', NULL, '2025-03-03 12:11:11'),
+(98, 2, 2, 'wow wat the roblox', 'text', NULL, '2025-03-03 12:11:20'),
+(100, 2, 3, NULL, 'image', 'fileUpload/file_67c5a1b5897ad4.56492759.png', '2025-03-03 12:33:57'),
+(101, 2, 3, NULL, 'image', 'fileUpload/file_67c5a23ef3d719.68846234.png', '2025-03-03 12:36:15'),
+(102, 2, 3, 'aw', 'text', NULL, '2025-03-03 12:37:03'),
+(103, 2, 3, 'hala', 'text', NULL, '2025-03-03 12:37:09'),
+(104, 2, 3, NULL, 'image', 'fileUpload/file_67c5a392509e23.34965727.png', '2025-03-03 12:41:54'),
+(105, 2, 3, 'hello', 'text', NULL, '2025-03-03 12:43:59'),
+(106, 2, 2, 'hello', 'text', NULL, '2025-03-03 12:46:12'),
+(107, 2, 3, 'he', 'text', NULL, '2025-03-03 12:48:20'),
+(108, 2, 3, 'hello', 'text', NULL, '2025-03-03 12:48:27'),
+(109, 2, 2, 'again', 'text', NULL, '2025-03-03 12:49:16'),
+(110, 2, 3, 'hello', 'text', NULL, '2025-03-03 12:50:30'),
+(111, 2, 2, 'sige', 'text', NULL, '2025-03-03 12:51:36'),
+(112, 2, 2, 'yo', 'text', NULL, '2025-03-03 12:56:22'),
+(113, 2, 3, 'what the yow', 'text', NULL, '2025-03-03 12:56:34'),
+(114, 2, 3, NULL, 'image', 'fileUpload/file_67c5a707060d66.44210080.png', '2025-03-03 12:56:39');
 
 -- --------------------------------------------------------
 
@@ -223,9 +263,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `firstName`, `lastName`, `email`, `address`, `password`, `profile_picture`, `created_at`, `is_online`) VALUES
-(1, 'Mark', 'Palma', 'mark@gmail.com', 'Panabo, Davao', '$2y$10$rysaOgQ2MeoUNLIGbVB.Ae3naOo4wGsSMIJjW4zIaCIeicqvmTijO', NULL, '2025-02-26 09:49:46', 1),
-(2, 'James', 'Oliver', 'jamesoliver@gmail.com', 'Water District, Lanang', '$2y$10$6nLWxJ.KTlvIFJOtXv2r8.NcM0dBC76HRbU6fgkJLucfbMHIuLXYi', 'images/profile_img/profile_2_1740563965.jpg', '2025-02-26 09:57:25', 0),
-(3, 'Jayrald', 'Dionaldo', 'jayrald@gmail.com', 'Abreeza, Davao City', '$2y$10$ZUxA/aIaQc5V/.0QlAXKQeu3/DbHo0O.BR1COL2AG9uA6tAld1yxe', 'images/profile_img/profile_3_1740796380.jpg', '2025-02-26 09:57:46', 0);
+(1, 'Mark', 'Palma', 'mark@gmail.com', 'Panabo, Davao', '$2y$10$rysaOgQ2MeoUNLIGbVB.Ae3naOo4wGsSMIJjW4zIaCIeicqvmTijO', NULL, '2025-02-26 09:49:46', 0),
+(2, 'James', 'Oliver', 'jamesoliver@gmail.com', 'Water District, Lanang', '$2y$10$6nLWxJ.KTlvIFJOtXv2r8.NcM0dBC76HRbU6fgkJLucfbMHIuLXYi', 'images/profile_img/profile_2_1740563965.jpg', '2025-02-26 09:57:25', 1),
+(3, 'Jayrald', 'Dionaldo', 'jayrald@gmail.com', 'Abreeza, Davao City', '$2y$10$ZUxA/aIaQc5V/.0QlAXKQeu3/DbHo0O.BR1COL2AG9uA6tAld1yxe', 'images/profile_img/profile_3_1740796380.jpg', '2025-02-26 09:57:46', 1);
 
 --
 -- Indexes for dumped tables
@@ -314,7 +354,7 @@ ALTER TABLE `friends`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
 
 --
 -- AUTO_INCREMENT for table `message_status`

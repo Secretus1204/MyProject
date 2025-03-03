@@ -1,3 +1,5 @@
+const inboxContainer = document.getElementById("inbox");
+
 //to load whenever the messages icon is clicked
 document.addEventListener("DOMContentLoaded", function () {
     loadInbox().then(() => loadGroupChats());
@@ -6,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to reload both private and group chats
 function reloadChats() {
-    const inboxContainer = document.getElementById("inbox");
     inboxContainer.innerHTML = "";
     loadInbox().then(() => loadGroupChats());
 }
@@ -80,8 +81,6 @@ function loadGroupChats() {
 
 // Display private messages
 function displayInbox(inbox) {
-    const inboxContainer = document.getElementById("inbox");
-
     if (inbox.length === 0) {
         inboxContainer.innerHTML = "<p>No recent chats</p>";
         return;
@@ -141,8 +140,6 @@ function displayInbox(inbox) {
 
 // Display group chats
 function displayGroups(groups) {
-    const inboxContainer = document.getElementById("inbox");
-
     if (groups.length === 0) {
         inboxContainer.innerHTML = "<p>No group chats</p>";
         return;
