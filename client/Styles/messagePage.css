@@ -159,14 +159,13 @@
     border-radius: 50px;
 }
 
-.message-others div{
-    width: 100%;
+.message-others div {
+    width: fit-content; 
+    max-width: 80%;
     padding: 10px;
     background-color: #7E9DCE;
     margin: 10px 0;
     border-radius: 20px;
-    min-width: 200px;
-    max-width: 500px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: normal;
@@ -191,6 +190,7 @@
     font-weight: 400;
     text-align: right;
     padding: 0 10px;
+    padding-top: 20px;
 }
 
 .message-others .chat-image{
@@ -215,14 +215,12 @@
 }
 
 .message-me div{
+    width: fit-content; 
+    max-width: 80%;
     padding: 10px;
     background-color: #264A82;
-    width: 100%;
     margin: 10px 0;
-    margin-right: 15px;
     border-radius: 20px;
-    min-width: 200px;
-    max-width: 500px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: normal;
@@ -241,7 +239,8 @@
     font-weight: 400;
     text-align: left;
     color: white;
-    padding: 10px 0;
+    padding: 0 10px;
+    padding-top: 20px;
 }
 
 .message-me .chat-image{

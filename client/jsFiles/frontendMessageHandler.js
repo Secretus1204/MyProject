@@ -140,6 +140,34 @@ function updateUserList(users) {
     });
 }
 
+// Scroll to the bottom smoothly
+function scrollToBottom() {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+// Function to format timestamps to "February 26, 2026 7:06PM"
+function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+
+    const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    const month = months[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12 || 12; // Convert "0" (midnight) to "12"
+    const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+
+    return `${month} ${day}, ${year} | ${hours}:${formattedMinutes} ${ampm}`;
+}
+
 // Load latest 20 messages
 async function loadMessages() {
     try {
@@ -244,7 +272,7 @@ async function displayMessage(user_id, text = null, time, file_url = null, file_
     messageDiv.classList.add(user_id == currentUser ? "message-me" : "message-others");
 
     let content = "";
-
+    
     if (file_url && file_url !== "NULL") {
         if (file_type === "image") {
             content = `<img src="${file_url}" alt="Sent Image" class="chat-image">`;
@@ -259,12 +287,13 @@ async function displayMessage(user_id, text = null, time, file_url = null, file_
         content += `<h3>${text}</h3>`;
     }
 
+    const formattedTime = formatTimestamp(time); // Apply formatting
+
     if (user_id === currentUser) {
-        // If it's the current user, do NOT show profile picture and name
         messageDiv.innerHTML = `
             <div class="my-message">
                 ${content}
-                <h4>${time}</h4>
+                <h4>${formattedTime}</h4>
             </div>
         `;
     } else {
@@ -287,7 +316,7 @@ async function displayMessage(user_id, text = null, time, file_url = null, file_
             <div>
                 <h2>${userName}</h2>
                 ${content}
-                <h4>${time}</h4>
+                <h4>${formattedTime}</h4>
             </div>
         `;
     }
@@ -296,11 +325,6 @@ async function displayMessage(user_id, text = null, time, file_url = null, file_
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
     return messageDiv;
-}
-
-// Scroll to the bottom smoothly
-function scrollToBottom() {
-    chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 // Call `scrollToBottom()` after appending a new message
