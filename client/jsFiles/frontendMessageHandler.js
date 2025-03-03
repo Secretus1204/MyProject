@@ -4,18 +4,25 @@ const messageInput = document.getElementById("message");
 const chatContainer = document.querySelector(".main-message");
 const typingIndicator = document.querySelector(".activity h3");
 const loadMoreBtn = document.createElement("button");
+const fileInput = document.createElement("input");
 
 let currentUser = null;
 let currentChat = null;
 let typingTimeout;
-let lastMessageTime = null; // Track the oldest message loaded
-let messages = []; // Declare messages array
+let lastMessageTime = null;
+let messages = [];
 
-// Set up Load More Button
+//for load more button
 loadMoreBtn.innerText = "Load More...";
 loadMoreBtn.classList.add("load-more-btn");
 loadMoreBtn.addEventListener("click", loadMoreMessages);
 chatContainer.prepend(loadMoreBtn);
+
+// for file selection
+fileInput.type = "file";
+fileInput.accept = "image/jpeg, image/png, video/mp4"; // Allowed file types
+fileInput.style.display = "none";
+document.body.appendChild(fileInput);
 
 // Connect the user to the chat
 function joinChat(user_id, chat_id) {
@@ -31,17 +38,14 @@ function joinChat(user_id, chat_id) {
     });
 
     socket.on("message", (message) => {
-        messages.push(message); // Add new message to array
+        console.log("Received message:", message);
     
-        // Display the new message at the bottom
-        displayMessage(message.user_id, message.text, message.time, true);
+        const { user_id, text, file_url, file_type } = message;
+        const time = new Date().toLocaleTimeString(); // Format time properly
     
-        // Scroll to the bottom to show the latest message
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+        displayMessage(user_id, text, time, file_url, file_type);
     });
     
-
-
     socket.on("userList", (data) => {
         updateUserList(data.users);
     });
@@ -63,80 +67,8 @@ function joinChat(user_id, chat_id) {
     });
 }
 
-// load latest 20 messages
-async function loadMessages() {
-    try {
-        const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getMessages.php?chat_id=${currentChat}&limit=20`);
-        const data = await response.json();
-
-        if (!data.success) {
-            console.error("Error loading messages:", data.message);
-            return;
-        }
-
-        // Clear chat UI before displaying messages
-        chatContainer.innerHTML = "";
-        chatContainer.appendChild(loadMoreBtn);
-
-        // Sort messages in ascending order by timestamp
-        data.messages.sort((a, b) => new Date(a.time) - new Date(b.time));
-
-        // Display sorted messages
-        data.messages.forEach((msg) => {
-            displayMessage(msg.user_id, msg.text, msg.time, true);
-        });
-
-        // Update lastMessageTime to the oldest message
-        if (data.messages.length > 0) {
-            lastMessageTime = data.messages[0].time;
-        }
-
-        // Hide Load More button if fewer than 20 messages are loaded
-        loadMoreBtn.style.display = data.messages.length < 20 ? "none" : "block";
-    } catch (error) {
-        console.error("Fetch error:", error);
-    }
-}
-
-
-// load more messages when clicking "load more" button
-async function loadMoreMessages() {
-    if (!lastMessageTime) return; // No older messages to load
-
-    try {
-        const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getMessages.php?chat_id=${currentChat}&limit=20&last_time=${encodeURIComponent(lastMessageTime)}`);
-        const data = await response.json();
-
-        if (!data.success) {
-            console.error("Error loading more messages:", data.message);
-            return;
-        }
-
-        // Sort messages in ascending order before inserting at the top
-        data.messages.sort((a, b) => new Date(a.time) - new Date(b.time));
-
-        // Insert messages at the top in order
-        data.messages.forEach((msg) => {
-            displayMessage(msg.user_id, msg.text, msg.time, false);
-        });
-
-        // Update lastMessageTime to the new oldest message timestamp
-        if (data.messages.length > 0) {
-            lastMessageTime = data.messages[0].time;
-        }
-
-        // Hide Load More button if there are no more messages to load
-        if (data.messages.length < 20) {
-            loadMoreBtn.style.display = "none";
-        }
-    } catch (error) {
-        console.error("Fetch error:", error);
-    }
-}
-
-
 // load message details
-function loadChatInfo(chatId) {
+function loadCurrentChatDetails(chatId) {
     fetch(`../SQL/dbquery/getChatInfo.php?chat_id=${chatId}`)
         .then(response => response.json())
         .then(data => {
@@ -183,13 +115,6 @@ function loadChatInfo(chatId) {
         .catch(error => console.error("Fetch error:", error));
 }
 
-// call function when page loads
-document.addEventListener("DOMContentLoaded", () => {
-    const chat_id = document.querySelector("#chat_id").value;
-    loadChatInfo(chat_id);
-});
-
-
 // sends a message
 function sendMessage() {
     const text = messageInput.value.trim();
@@ -201,96 +126,7 @@ function sendMessage() {
     messageInput.value = "";
 }
 
-// display messages
-async function displayMessage(user_id, text, time, appendToBottom = true) {
-    const messageDiv = document.createElement("div");
-    messageDiv.classList.add(user_id == currentUser ? "message-me" : "message-others");
-
-    if (user_id !== currentUser) {
-        const userProfile = await fetchUserProfile(user_id);
-        const profileImage = userProfile && userProfile.profile_picture 
-        ? userProfile.profile_picture 
-        : "images/profile_img/default_profile.jpg";
-
-        messageDiv.innerHTML = `
-            <img src="${profileImage}" alt="chathead">
-            <div>
-                <h2>${userProfile.firstName}</h2>
-                <h3>${text}</h3>
-                <h4>${time}</h4>
-            </div>
-        `;
-    } else {
-        messageDiv.innerHTML = `
-            <div>
-                <h3>${text}</h3>
-                <h4>${time}</h4>
-            </div>
-        `;
-    }
-
-    // order using timestamp
-    let inserted = false;
-    const messages = chatContainer.querySelectorAll(".message-me, .message-others");
-
-    for (let i = 0; i < messages.length; i++) {
-        const existingTime = messages[i].querySelector("h4").innerText.trim();
-        if (new Date(time) < new Date(existingTime)) {
-            chatContainer.insertBefore(messageDiv, messages[i]);
-            inserted = true;
-            break;
-        }
-    }
-
-    // If no earlier message exists, append to the bottom
-    if (!inserted) {
-        chatContainer.appendChild(messageDiv);
-    }
-
-    // Scroll only if the user is at the bottom
-    if (appendToBottom) {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-}
-
-
-// To display when joining
-async function displayUserJoined(user_id, text) {
-    const user = await fetchUserProfile(user_id);
-    console.log(`${user.firstName} ${text}`);
-}
-
-// Typing event
-messageInput.addEventListener("input", () => {
-    socket.emit("typing", { user_id: currentUser, chat_id: currentChat });
-
-    clearTimeout(typingTimeout);
-    typingTimeout = setTimeout(() => {
-        socket.emit("stopTyping", { user_id: currentUser, chat_id: currentChat });
-    }, 500);
-});
-
-// Join chat when page loads
-document.addEventListener("DOMContentLoaded", () => {
-    const user_id = document.querySelector("#sender_id").value;
-    const chat_id = document.querySelector("#chat_id").value;
-
-    console.log("Current User Online:", user_id);
-    console.log("Current Chat Id:", chat_id);
-    joinChat(user_id, chat_id);
-});
-
-// Send message on button click
-document.getElementById("sendBtn").addEventListener("click", sendMessage);
-
-// Send message on Enter key press (fixes the issue)
-messageInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault(); // Prevent new line in textarea
-        sendMessage();
-    }
-});
-
+//update the log of current users on chat
 function updateUserList(users) {
     console.log("Current Users:");
     
@@ -302,6 +138,182 @@ function updateUserList(users) {
     users.forEach(user => {
         console.log(`User Joined ID: ${user}`);
     });
+}
+
+// Load latest 20 messages
+async function loadMessages() {
+    try {
+        const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getMessages.php?chat_id=${currentChat}&limit=20`);
+        const data = await response.json();
+
+        if (!data.success) {
+            console.error("Error loading messages:", data.message);
+            return;
+        }
+
+        chatContainer.innerHTML = "";
+        chatContainer.appendChild(loadMoreBtn);
+
+        // Sort messages by timestamp before displaying
+        data.messages.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+
+        // Wait for all messages to be properly built before appending
+        const messageElements = await Promise.all(data.messages.map(msg =>
+            displayMessage(msg.user_id, msg.text, msg.time, msg.file_url, msg.file_type)
+        ));
+
+        messageElements.forEach(msgElement => chatContainer.appendChild(msgElement));
+
+        if (data.messages.length > 0) {
+            lastMessageTime = data.messages[0].time;
+        }
+
+        loadMoreBtn.style.display = data.messages.length < 20 ? "none" : "block";
+        
+        // Scroll to the bottom after loading messages
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    } catch (error) {
+        console.error("Fetch error:", error);
+    }
+}
+
+
+// Load older messages
+async function loadMoreMessages() {
+    if (!lastMessageTime) return;
+
+    console.log("Loading more messages. Last message time:", lastMessageTime);
+
+    try {
+        const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getMessages.php?chat_id=${currentChat}&limit=20&last_time=${encodeURIComponent(lastMessageTime)}`);
+        const data = await response.json();
+
+        console.log("Response data:", data);
+
+        if (!data.success) {
+            console.error("Error loading more messages:", data.message);
+            return;
+        }
+
+        if (data.messages.length === 0) {
+            console.log("No more messages to load.");
+            loadMoreBtn.style.display = "none";
+            return;
+        }
+
+        // Sort messages in ascending order before displaying
+        data.messages.sort((a, b) => new Date(a.time) - new Date(b.time));
+
+        // Save current scroll position before adding messages
+        const scrollHeightBefore = chatContainer.scrollHeight;
+
+        // Insert messages manually at the top  
+        const newMessageElements = await Promise.all(
+            data.messages.map((msg) => displayMessage(msg.user_id, msg.text, msg.time, msg.file_url, msg.file_type))
+        );
+
+        // Insert messages at the top
+        newMessageElements.reverse().forEach((msgElement) => {
+            chatContainer.insertBefore(msgElement, chatContainer.children[1]); // Put messages below "Load More" button
+        });
+
+        // Update lastMessageTime to the oldest message's time  
+        lastMessageTime = data.messages[0].time;  
+        console.log("Updated lastMessageTime:", lastMessageTime);
+
+        // Check if we just loaded the first message in the database
+        if (data.messages.length < 20) {
+            console.log("Reached the oldest message. Hiding Load More button.");
+            loadMoreBtn.style.display = "none";
+        }
+
+        // Keep scroll position
+        chatContainer.scrollTop += chatContainer.scrollHeight - scrollHeightBefore;
+
+    } catch (error) {
+        console.error("Fetch error:", error);
+    }
+}
+
+
+// Display messages properly
+async function displayMessage(user_id, text = null, time, file_url = null, file_type = null) {
+    console.log("Displaying message:", { user_id, text, file_url, file_type });
+
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add(user_id == currentUser ? "message-me" : "message-others");
+
+    let content = "";
+
+    if (file_url && file_url !== "NULL") {
+        if (file_type === "image") {
+            content = `<img src="${file_url}" alt="Sent Image" class="chat-image">`;
+        } else if (file_type === "video") {
+            content = `<video controls class="chat-video"><source src="${file_url}" type="video/mp4"></video>`;
+        } else {
+            content = `<a href="${file_url}" target="_blank">Download File</a>`;
+        }
+    }
+
+    if (text) {
+        content += `<h3>${text}</h3>`;
+    }
+
+    if (user_id === currentUser) {
+        // If it's the current user, do NOT show profile picture and name
+        messageDiv.innerHTML = `
+            <div class="my-message">
+                ${content}
+                <h4>${time}</h4>
+            </div>
+        `;
+    } else {
+        // Fetch profile for other users
+        let profileImage = "images/profile_img/default_profile.jpg";
+        let userName = "Unknown";
+
+        try {
+            const userProfile = await fetchUserProfile(user_id);
+            if (userProfile) {
+                profileImage = userProfile.profile_picture || profileImage;
+                userName = userProfile.firstName || userName;
+            }
+        } catch (error) {
+            console.error("Error fetching user profile:", error);
+        }
+
+        messageDiv.innerHTML = `
+            <img src="${profileImage}" alt="chathead" class="profile-pic-others">
+            <div>
+                <h2>${userName}</h2>
+                ${content}
+                <h4>${time}</h4>
+            </div>
+        `;
+    }
+
+    chatContainer.appendChild(messageDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    return messageDiv;
+}
+
+// Scroll to the bottom smoothly
+function scrollToBottom() {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+// Call `scrollToBottom()` after appending a new message
+async function addNewMessage(user_id, text, time, file_url = null, file_type = null) {
+    const newMessage = await displayMessage(user_id, text, time, file_url, file_type);
+    chatContainer.appendChild(newMessage);
+    scrollToBottom(); // Ensure the chat always stays at the latest message
+}
+
+// To display when joining
+async function displayUserJoined(user_id, text) {
+    const user = await fetchUserProfile(user_id);
+    console.log(`${user.firstName} ${text}`);
 }
 
 //to display profile per message
@@ -321,3 +333,115 @@ async function fetchUserProfile(user_id) {
         return null;
     }
 }
+
+// Join chat when page loads
+document.addEventListener("DOMContentLoaded", () => {
+    const user_id = document.querySelector("#sender_id").value;
+    const chat_id = document.querySelector("#chat_id").value;
+
+    console.log("Current User Online:", user_id);
+    console.log("Current Chat Id:", chat_id);
+    joinChat(user_id, chat_id);
+});
+
+// call function when page loads
+document.addEventListener("DOMContentLoaded", () => {
+    const chat_id = document.querySelector("#chat_id").value;
+    loadCurrentChatDetails(chat_id);
+});
+
+// Typing event
+messageInput.addEventListener("input", () => {
+    socket.emit("typing", { user_id: currentUser, chat_id: currentChat });
+
+    clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(() => {
+        socket.emit("stopTyping", { user_id: currentUser, chat_id: currentChat });
+    }, 500);
+});
+
+// Send message on button click
+document.getElementById("sendBtn").addEventListener("click", sendMessage);
+
+// Send message on Enter key press
+messageInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+});
+
+// Function to trigger file selection
+function selectFile() {
+    fileInput.click();
+}
+
+// Handle file upload
+fileInput.addEventListener("change", async () => {
+    if (!fileInput.files.length) return;
+
+    const file = fileInput.files[0];
+    const allowedTypes = ["image/jpeg", "image/png", "video/mp4"];
+
+    if (!allowedTypes.includes(file.type)) {
+        alert("Only JPG, JPEG, PNG, and MP4 files are allowed.");
+        return;
+    }
+
+    // Reset input before processing to prevent duplicate triggers
+    fileInput.value = "";
+
+    if (typeof currentUser === "undefined" || typeof currentChat === "undefined") {
+        alert("User or chat ID is missing.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("user_id", currentUser);
+    formData.append("chat_id", currentChat);
+
+    try {
+        console.log("Uploading file...");
+
+        const uploadResponse = await fetch("http://localhost/Projects/CST5-Final-Project/SQL/dbquery/uploadFileMessage.php", {
+            method: "POST",
+            body: formData,
+        });
+
+        const uploadData = await uploadResponse.json();
+        if (!uploadData.success) {
+            console.error("Upload error:", uploadData.message);
+            alert("File upload failed: " + uploadData.message);
+            return;
+        }
+
+        const { file_url, file_type } = uploadData;
+        console.log("File uploaded successfully:", file_url, file_type);
+
+        const saveMessageResponse = await fetch("http://localhost/Projects/CST5-Final-Project/SQL/dbquery/saveMessage.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: currentUser, chat_id: currentChat, text: null, file_url, file_type }),
+        });
+
+        const saveMessageData = await saveMessageResponse.json();
+        if (!saveMessageData.success) {
+            console.error("Message save error:", saveMessageData.message);
+            alert("Failed to save message: " + saveMessageData.message);
+            return;
+        }
+
+        console.log("Emitting file message:", { file_url, file_type });
+        socket.emit("message", { user_id: currentUser, chat_id: currentChat, text: null, file_url, file_type });
+
+    } catch (error) {
+        console.error("File upload failed:", error);
+        alert("An error occurred while uploading the file.");
+    }
+});
+
+// Attach event listener to the attachment button
+document.getElementById("sendAttachmentBtn").addEventListener("click", selectFile);
+
+

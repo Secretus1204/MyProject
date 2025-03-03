@@ -152,7 +152,7 @@
     align-items: top;
 }
 
-.message-others img{
+.message-others .profile-pic-others{
     width: 60px;
     height: 60px;
     margin: 10px;
@@ -193,6 +193,19 @@
     padding: 0 10px;
 }
 
+.message-others .chat-image{
+    justify-self: center;
+    width: 200px;
+    height: 200px;
+    padding: 10px 0;
+}
+
+.message-others .chat-video{
+    justify-self: center;
+    width: 200px;
+    height: 200px;
+    padding: 10px 0;
+}
 .message-me{
     width: 100%;
     display: flex;
@@ -228,6 +241,20 @@
     font-weight: 400;
     text-align: left;
     color: white;
+    padding: 10px 0;
+}
+
+.message-me .chat-image{
+    align-self: center;
+    width: 200px;
+    height: 200px;
+    padding: 10px 0;
+}
+
+.message-me .chat-video{
+    justify-self: center;
+    width: 200px;
+    height: 200px;
     padding: 0 10px;
 }
 

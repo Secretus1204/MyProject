@@ -4,7 +4,7 @@
     include_once('authenticate.php');
     $chatId = isset($_GET['chat_id']) ? $_GET['chat_id'] : null;
 
-    // If chat_id is not provided, fetch the first available chat
+    // to fetch the most recent chat
     if (!$chatId) {
     $userId = $_SESSION['currentUserId'];
     $stmt = $pdo->prepare("SELECT chat_id FROM chat_members WHERE user_id = ? ORDER BY chat_id ASC LIMIT 1");
@@ -57,11 +57,12 @@
                 <div class="send-message">
                     <div class="type-message">
                         <form action="">
-                        <input type="hidden" name="sender_id" id="sender_id" value="<?php echo htmlspecialchars($_SESSION['currentUserId']); ?>">
-                        <input type="hidden" name="chat_id" id="chat_id" value="<?php echo htmlspecialchars($chatId); ?>">
-                        <textarea name="message" id="message" placeholder="Type a message..." rows="1" ></textarea>
+                            <input type="hidden" name="sender_id" id="sender_id" value="<?php echo htmlspecialchars($_SESSION['currentUserId']); ?>">
+                            <input type="hidden" name="chat_id" id="chat_id" value="<?php echo htmlspecialchars($chatId); ?>">
+                            <textarea name="message" id="message" placeholder="Type a message..." rows="1"></textarea>
                         </form>
                     </div>
+                    <input type="file" id="fileInput" style="display: none;">
                     <button class="send-icon" id="sendBtn">
                         <img src="images/icons/send_icon.png" alt="send">
                     </button>

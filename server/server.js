@@ -89,6 +89,43 @@ io.on('connection', (socket) => {
         }
     });
     
+    //listen for message
+    socket.on("message", async ({ user_id, chat_id, text, file_url, file_type }) => {
+        const user = UsersState.get(socket.id);
+        if (!user || user.chat_id !== chat_id) return;
+    
+        // Construct message payload
+        const messageData = { user_id, chat_id, text, file_url, file_type };
+    
+        // Store message in the database
+        await fetch("http://localhost/Projects/CST5-Final-Project/SQL/dbquery/saveMessage.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(messageData),
+        });
+    
+        // Determine if it's a text message or a file message
+        if (file_url) {
+            console.log(`File message from user ${user_id} in chat ${chat_id}: ${file_url}`);
+        } else {
+            console.log(`Text message from user ${user_id} in chat ${chat_id}: ${text}`);
+        }
+    
+        // Emit the message to the chat room
+        io.to(chat_id).emit("message", messageData);
+    });
+    
+
+
+    // starts typing
+    socket.on("typing", ({ user_id, chat_id }) => {
+        socket.to(chat_id).emit("typing", user_id);
+    });
+    
+    // stops typing
+    socket.on("stopTyping", ({ user_id, chat_id }) => {
+        socket.to(chat_id).emit("stopTyping", user_id);
+    });
 
     // When user disconnects
     socket.on('disconnect', () => {
@@ -102,32 +139,6 @@ io.on('connection', (socket) => {
         }
 
         console.log(`User ${socket.id} disconnected`);
-    });
-
-    // Listening for messages
-    socket.on('message', async ({ user_id, chat_id, text }) => {
-        const user = UsersState.get(socket.id);
-        if (!user || user.chat_id !== chat_id) return;
-
-        // Store message in the database via PHP
-        await fetch("http://localhost/Projects/CST5-Final-Project/SQL/dbquery/saveMessage.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id, chat_id, text })
-        });
-
-        // Broadcast message
-        io.to(chat_id).emit('message', buildMessage(user_id, text));
-    });
-
-    //typing activity
-    socket.on("typing", ({ user_id, chat_id }) => {
-        socket.to(chat_id).emit("typing", user_id);
-    });
-    
-    //stops typing
-    socket.on("stopTyping", ({ user_id, chat_id }) => {
-        socket.to(chat_id).emit("stopTyping", user_id);
     });
 });
 

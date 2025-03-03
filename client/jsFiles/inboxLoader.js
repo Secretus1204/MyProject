@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to reload both private and group chats
 function reloadChats() {
+    const inboxContainer = document.getElementById("inbox");
+    inboxContainer.innerHTML = "";
     loadInbox().then(() => loadGroupChats());
 }
 
@@ -79,7 +81,6 @@ function loadGroupChats() {
 // Display private messages
 function displayInbox(inbox) {
     const inboxContainer = document.getElementById("inbox");
-    inboxContainer.innerHTML = ""; // Clear previous content
 
     if (inbox.length === 0) {
         inboxContainer.innerHTML = "<p>No recent chats</p>";
@@ -91,11 +92,26 @@ function displayInbox(inbox) {
             ? `${user.profile_picture}` 
             : "images/profile_img/default_profile.jpg"; // Default profile picture
 
-        const lastMessage = user.latest_message 
-            ? (user.latest_message.length > 20 
+        // Determine how to display the latest message
+        let lastMessage = "No messages yet"; // Default message
+
+        // Check if there's a valid text message
+        if (user.latest_message !== null && user.latest_message.trim() !== "") {
+            lastMessage = user.latest_message.length > 20 
                 ? user.latest_message.substring(0, 20) + "..." 
-                : user.latest_message) 
-            : "No messages yet";
+                : user.latest_message;
+        } 
+
+        // If there's no text message, check for a file type
+        if (user.latest_file_type !== null) {
+            if (user.latest_file_type.includes("image")) {
+                lastMessage = "Sent a photo";
+            } else if (user.latest_file_type.includes("video")) {
+                lastMessage = "Sent a video";
+            }
+        }
+
+
         const messageTime = user.message_timestamp ? formatDate(user.message_timestamp) : ""; // Avoid formatting null timestamps
 
         const chatItem = document.createElement("div");
@@ -122,12 +138,13 @@ function displayInbox(inbox) {
     });
 }
 
+
 // Display group chats
 function displayGroups(groups) {
     const inboxContainer = document.getElementById("inbox");
 
     if (groups.length === 0) {
-        inboxContainer.innerHTML += ""; // Append instead of replacing
+        inboxContainer.innerHTML = "<p>No group chats</p>";
         return;
     }
 
@@ -136,12 +153,24 @@ function displayGroups(groups) {
             ? `${group.group_picture}`  
             : "images/group_img/default_group.jpg"; // Default group picture
 
-        const latestMessage = group.latest_message 
-            ? (group.latest_message.length > 20 
+        // Determine how to display the latest message
+        let latestMessage = "No messages yet"; // Default
+
+        if (group.latest_message && group.latest_message.trim() !== "") {
+            latestMessage = group.latest_message.length > 20 
                 ? group.latest_message.substring(0, 20) + "..." 
-                : group.latest_message) 
-            : "No messages yet";
-    
+                : group.latest_message;
+        } 
+
+        // Check file type if there's no text message
+        if (group.latest_file_type !== null) {
+            if (group.latest_file_type.includes("image")) {
+                latestMessage = "Sent a photo";
+            } else if (group.latest_file_type.includes("video")) {
+                latestMessage = "Sent a video";
+            }
+        }
+
         const timestamp = group.message_timestamp ? formatDate(group.message_timestamp) : "";
 
         const chatItem = document.createElement("div");
@@ -168,7 +197,7 @@ function displayGroups(groups) {
     });
 }
 
-
+// to format timestamps
 function formatDate(timestamp) {
     if (!timestamp) return "No messages yet";
     const date = new Date(timestamp);
