@@ -418,14 +418,14 @@
     font-size: 20px;
 }
 
-.create-chat-container{
+.create-group-chat-container{
     margin-top: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.create-chat{
+.create-group-chat{
     width: 140px;
     display: flex;
     justify-content: center;
@@ -436,12 +436,12 @@
     box-shadow: 1px 1px 1px 1px #264A82;
 }
 
-.create-chat:hover{
+.create-group-chat:hover{
     background-color: #7E9DCE;
     box-shadow: none;
 }
 
-.create-chat h2{
+.create-group-chat h2{
     margin-top: 10px;
     padding: 0 20px;
     font-size: 14px;

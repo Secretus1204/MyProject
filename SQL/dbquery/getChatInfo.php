@@ -50,12 +50,14 @@ try {
         foreach ($chatDetails as $member) {
             $groupMembers[] = $member['firstName'] . " " . $member['lastName'];
         }
+        $user_id = null; // No user_id needed for groups
     } else {
         // For private chats, exclude current user and fetch only the other user
         foreach ($chatDetails as $user) {
             if ($user['user_id'] != $current_user_id) {
                 $chatName = $user['firstName'] . " " . $user['lastName'];
                 $profileImg = $user['profile_picture'] ?? 'images/profile_img/default_profile.jpg';
+                $user_id = $user['user_id']; // Set the user_id of the other user
                 break; // Stop after finding the other user
             }
         }
@@ -68,8 +70,10 @@ try {
         "chat_name" => $chatName,
         "profile_picture" => $profileImg,
         "is_group" => $is_group,
-        "group_members" => $groupMembers
+        "group_members" => $groupMembers,
+        "user_id" => $user_id // Send user_id for private chats only
     ]);
+    
 } catch (PDOException $e) {
     echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
 }

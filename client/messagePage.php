@@ -83,11 +83,14 @@
                     <h2>James Oliver</h2>
                 </div>
             </div>
-            <div class="create-chat-container">
-            <button class="create-chat">
+            <!-- hides if group -->
+            <div class="create-group-chat-container">
+            <button class="create-group-chat">
+                <input type="hidden" class="user" >
                 <h2>Create a group </h2>
             </button>
             </div>
+            <!-- hides this if not group -->
             <div class="group-member-container">
                 <h1>Group Members:</h1>
                 <div class="group-members">

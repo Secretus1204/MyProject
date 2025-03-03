@@ -5,6 +5,10 @@ const chatContainer = document.querySelector(".main-message");
 const typingIndicator = document.querySelector(".activity h3");
 const loadMoreBtn = document.createElement("button");
 const fileInput = document.createElement("input");
+const addMembersContainer = document.querySelector(".add-members-container");
+const createGroupChatContainer = document.querySelector(".create-group-chat-container");
+const groupMembersContainer = document.querySelector(".group-member-container");
+const groupMembersList = document.querySelector(".group-members");
 
 let currentUser = null;
 let currentChat = null;
@@ -76,43 +80,71 @@ function loadCurrentChatDetails(chatId) {
                 return;
             }
 
-            // Update profile picture
-            document.querySelector(".profile img").src = data.profile_picture;
+            // Update profile picture and chat name
+            const profileImg = document.querySelector(".profile img");
+            const profileName = document.querySelector(".profileName h2");
 
-            // Update chat name
-            document.querySelector(".profileName h2").textContent = data.chat_name;
+            // Check if the profile picture and name exist in the data
+            if (profileImg && data.profile_picture) {
+                profileImg.src = data.profile_picture;
+            }
 
-            // Select UI containers
-            const addMembersContainer = document.querySelector(".add-members-container");
-            const createChatContainer = document.querySelector(".create-chat-container");
-            const groupMembersContainer = document.querySelector(".group-member-container");
-            const groupMembersList = document.querySelector(".group-members");
+            if (profileName && data.chat_name) {
+                profileName.textContent = data.chat_name;
+            }
 
+            // Set userId on the profile container if the chat is not a group chat
+            const createChatBtn = document.querySelector(".create-group-chat");
+            if (createChatBtn && !data.is_group && data.user_id) {
+                createChatBtn.dataset.userId = data.user_id; // Set user ID dynamically
+            }
+
+            // Handle group chat or private chat
             if (data.is_group) {
                 // Show "Add Members" and group members list
                 addMembersContainer.style.display = "block";
-                createChatContainer.style.display = "none"; // Hide "Create Group"
+                createGroupChatContainer.style.display = "none";
 
                 // Clear existing group members
                 groupMembersList.innerHTML = "";
 
                 // Populate group members list
-                data.group_members.forEach(member => {
-                    const memberElement = document.createElement("h2");
-                    memberElement.textContent = member;
-                    groupMembersList.appendChild(memberElement);
-                });
+                if (data.group_members && data.group_members.length > 0) {
+                    data.group_members.forEach(member => {
+                        const memberElement = document.createElement("h2");
+                        memberElement.textContent = member;
+                        groupMembersList.appendChild(memberElement);
+                    });
+                }
 
                 groupMembersContainer.style.display = "block";
             } else {
-                // Show "Create Group" button
-                createChatContainer.style.display = "block";
-                addMembersContainer.style.display = "none"; // Hide "Add Members"
-                groupMembersContainer.style.display = "none"; // Hide group members
+                // Hide group chat related containers
+                createGroupChatContainer.style.display = "block";
+                addMembersContainer.style.display = "none";
+                groupMembersContainer.style.display = "none";
+            }
+
+            // Add event listener for creating group chat if it's a private chat
+            if (!data.is_group) {
+                createChatBtn.addEventListener("click", function () {
+                    const userId = createChatBtn.dataset.userId;
+                    if (userId) {
+                        // Redirect to the createGroupPage.php with the selected user
+                        window.location.href = `createGroupPage.php?preselected_users=${userId}`;
+                    } else {
+                        console.error("User ID not found for creating group chat");
+                    }
+                });
             }
         })
-        .catch(error => console.error("Fetch error:", error));
+        .catch(error => {
+            console.error("Fetch error:", error);
+        });
 }
+
+
+
 
 // sends a message
 function sendMessage() {
@@ -345,6 +377,21 @@ async function fetchUserProfile(user_id) {
         return null;
     }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("click", function (event) {
+        const createChatBtn = event.target.closest(".create-group-chat");
+        if (!createChatBtn) return;
+
+        const userId = createChatBtn.dataset.userId; // Get the user_id from data attribute
+        
+        if (userId) {
+            // Redirect to createGroupPage.php with preselected user
+            window.location.href = `createGroupPage.php?preselected_users=${userId}`;
+        }
+    });
+});
+
 
 // Join chat when page loads
 document.addEventListener("DOMContentLoaded", () => {
