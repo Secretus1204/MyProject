@@ -96,19 +96,15 @@ function loadCurrentChatDetails(chatId) {
             // Set userId on the profile container if the chat is not a group chat
             const createChatBtn = document.querySelector(".create-group-chat");
             if (createChatBtn && !data.is_group && data.user_id) {
-                createChatBtn.dataset.userId = data.user_id; // Set user ID dynamically
+                createChatBtn.dataset.userId = data.user_id;
             }
 
-            // Handle group chat or private chat
+            // Handle group chat
             if (data.is_group) {
-                // Show "Add Members" and group members list
                 addMembersContainer.style.display = "block";
                 createGroupChatContainer.style.display = "none";
-
-                // Clear existing group members
                 groupMembersList.innerHTML = "";
 
-                // Populate group members list
                 if (data.group_members && data.group_members.length > 0) {
                     data.group_members.forEach(member => {
                         const memberElement = document.createElement("h2");
@@ -125,7 +121,7 @@ function loadCurrentChatDetails(chatId) {
                 groupMembersContainer.style.display = "none";
             }
 
-            // Add event listener for creating group chat if it's a private chat
+            // handles group
             if (!data.is_group) {
                 createChatBtn.addEventListener("click", function () {
                     const userId = createChatBtn.dataset.userId;
@@ -377,21 +373,6 @@ async function fetchUserProfile(user_id) {
         return null;
     }
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.addEventListener("click", function (event) {
-        const createChatBtn = event.target.closest(".create-group-chat");
-        if (!createChatBtn) return;
-
-        const userId = createChatBtn.dataset.userId; // Get the user_id from data attribute
-        
-        if (userId) {
-            // Redirect to createGroupPage.php with preselected user
-            window.location.href = `createGroupPage.php?preselected_users=${userId}`;
-        }
-    });
-});
-
 
 // Join chat when page loads
 document.addEventListener("DOMContentLoaded", () => {
