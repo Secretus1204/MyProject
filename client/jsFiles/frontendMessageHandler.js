@@ -39,12 +39,9 @@ function joinChat(user_id, chat_id) {
 
     socket.on("message", (message) => {
         console.log("Received message:", message);
-    
         const { user_id, text, file_url, file_type, timestamp } = message;
-    
         // Ensure timestamp is valid
         const time = timestamp ? new Date(timestamp) : new Date();
-    
         displayMessage(user_id, text, time, file_url, file_type);
     });
     
@@ -142,11 +139,6 @@ function updateUserList(users) {
     });
 }
 
-// Scroll to the bottom smoothly
-function scrollToBottom() {
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-
 // Function to format timestamps
 function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
@@ -199,7 +191,7 @@ async function loadMessages() {
         }
 
         loadMoreBtn.style.display = data.messages.length < 20 ? "none" : "block";
-        
+
         // Scroll to the bottom after loading messages
         chatContainer.scrollTop = chatContainer.scrollHeight;
     } catch (error) {
@@ -235,7 +227,8 @@ async function loadMoreMessages() {
         data.messages.sort((a, b) => new Date(a.time) - new Date(b.time));
 
         // Save current scroll position before adding messages
-        const scrollHeightBefore = chatContainer.scrollHeight;
+        const oldScrollHeight = chatContainer.scrollHeight;
+        const oldScrollTop = chatContainer.scrollTop;
 
         // Insert messages manually at the top  
         const newMessageElements = await Promise.all(
@@ -258,7 +251,7 @@ async function loadMoreMessages() {
         }
 
         // Keep scroll position
-        chatContainer.scrollTop += chatContainer.scrollHeight - scrollHeightBefore;
+        chatContainer.scrollTop = oldScrollTop + (chatContainer.scrollHeight - oldScrollHeight);
 
     } catch (error) {
         console.error("Fetch error:", error);
@@ -327,13 +320,6 @@ async function displayMessage(user_id, text = null, time, file_url = null, file_
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
     return messageDiv;
-}
-
-// Call `scrollToBottom()` after appending a new message
-async function addNewMessage(user_id, text, time, file_url = null, file_type = null) {
-    const newMessage = await displayMessage(user_id, text, time, file_url, file_type);
-    chatContainer.appendChild(newMessage);
-    scrollToBottom(); // Ensure the chat always stays at the latest message
 }
 
 // To display when joining
