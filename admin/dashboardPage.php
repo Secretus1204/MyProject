@@ -1,9 +1,23 @@
 <?php
+    require ("../SQL/config/DBConnection.php");
     session_start();
+
     if (!isset($_SESSION['adminName'])) {
     header("Location: ../client/index.php");
     exit;
     }
+
+    $stmt = $pdo->query("SELECT COUNT(*) AS total_users FROM users");
+    $totalUsers = $stmt->fetch(PDO::FETCH_ASSOC)['total_users'];
+
+    // Query 2: Current Online Users
+    $stmt = $pdo->query("SELECT COUNT(*) AS online_users FROM users WHERE is_online = 1");
+    $onlineUsers = $stmt->fetch(PDO::FETCH_ASSOC)['online_users'];
+
+    // Query 3: Total Messages Sent
+    $stmt = $pdo->query("SELECT COUNT(*) AS total_messages FROM messages");
+    $totalMessages = $stmt->fetch(PDO::FETCH_ASSOC)['total_messages'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,19 +43,15 @@
         <div class="numerical-info-container">
             <div class="total-users info">
                 <h3>Total Users</h3>
-                <h2>200</h2>
+                <h2><?= $totalUsers?></h2>
             </div>
             <div class="current-online-users info">
                 <h3>Current Online Users</h3>
-                <h2>21</h2>
+                <h2><?= $onlineUsers?></h2>
             </div>
             <div class="total-messages-sent info">
                 <h3>Total Messages Sent</h3>
-                <h2>3500</h2>
-            </div>
-            <div class="banned-users info">
-                <h3>Banned Users</h3>
-                <h2>5000</h2>
+                <h2><?= $totalMessages?></h2>
             </div>
         </div>
     </section>
