@@ -4,7 +4,7 @@
     include_once('authenticate.php');
     $chatId = isset($_GET['chat_id']) ? $_GET['chat_id'] : null;
 
-    // If chat_id is not provided, fetch the first available chat
+    // to fetch the most recent chat
     if (!$chatId) {
     $userId = $_SESSION['currentUserId'];
     $stmt = $pdo->prepare("SELECT chat_id FROM chat_members WHERE user_id = ? ORDER BY chat_id ASC LIMIT 1");
@@ -57,11 +57,12 @@
                 <div class="send-message">
                     <div class="type-message">
                         <form action="">
-                        <input type="hidden" name="sender_id" id="sender_id" value="<?php echo htmlspecialchars($_SESSION['currentUserId']); ?>">
-                        <input type="hidden" name="chat_id" id="chat_id" value="<?php echo htmlspecialchars($chatId); ?>">
-                        <textarea name="message" id="message" placeholder="Type a message..." rows="1" ></textarea>
+                            <input type="hidden" name="sender_id" id="sender_id" value="<?php echo htmlspecialchars($_SESSION['currentUserId']); ?>">
+                            <input type="hidden" name="chat_id" id="chat_id" value="<?php echo htmlspecialchars($chatId); ?>">
+                            <textarea name="message" id="message" placeholder="Type a message..." rows="1"></textarea>
                         </form>
                     </div>
+                    <input type="file" id="fileInput" style="display: none;">
                     <button class="send-icon" id="sendBtn">
                         <img src="images/icons/send_icon.png" alt="send">
                     </button>
@@ -82,11 +83,14 @@
                     <h2>James Oliver</h2>
                 </div>
             </div>
-            <div class="create-chat-container">
-            <button class="create-chat">
+            <!-- hides if group -->
+            <div class="create-group-chat-container">
+            <button class="create-group-chat">
+                <input type="hidden" class="user" >
                 <h2>Create a group </h2>
             </button>
             </div>
+            <!-- hides this if not group -->
             <div class="group-member-container">
                 <h1>Group Members:</h1>
                 <div class="group-members">
@@ -94,13 +98,49 @@
                     <h2>DM Ferrer</h2>
                 </div>
             </div>
-            <div class="add-members-container">
-                <button class="add-members">
-                    <h2>Add members</h2>
+            <div class="modify-members-container">
+                <button class="modify-members" id="modifyMembersBtn">
+                    <h2>Modify members</h2>
                 </button>
             </div>
         </div>
     </section>
+    <!-- Modal Structure -->
+    <div id="modifyGroupModal" class="modal">
+    <div class="modal-content">
+        <div class="containerModal">
+            <div class="closeBtnModal">
+                <span class="close">&times;</span>
+            </div>
+
+            <div class="modifyGroupHeaderModal">
+                <h2>Modify Group Members</h2>
+            </div>
+
+            <div class="currentMembersHeaderModal">
+                <h3>Current Members:</h3>
+            </div>
+
+            <div class="groupMembersListModal">
+                <ul id="groupMembersList"></ul>
+            </div>
+
+            <div class="addMembersContainer">
+                <div class="addMembersHeader">
+                <h3>Add Members</h3>
+                </div>
+                <div class="addUserSelectContainer">
+                <select id="addUserSelect"></select>
+                </div>
+                </div class="addUserBtnContainer">
+                <button id="addUserBtn"><h2>Add User</h2></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
     <script src="jsFiles/inboxLoader.js"></script>
     <script src="jsFiles/frontendMessageHandler.js"></script>
 </body>
