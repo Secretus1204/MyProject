@@ -76,8 +76,6 @@
             <div class="profile-container">
                 <div class="profile">
                     <img src="images/profile_img/default_profile.jpg" alt="profile">
-                    <div class="online">
-                    </div>
                 </div>
                 <div class="profileName">
                     <h2>James Oliver</h2>

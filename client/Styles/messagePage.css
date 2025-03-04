@@ -391,6 +391,7 @@
     background-color: #12346F;
     border-radius: 50%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-bottom: 5px;
@@ -398,8 +399,10 @@
 
 .profile img{
     width: 90px;
-    height: 9 0px;
+    height: 90px;
     border-radius: 50%;
+    margin-left: 5px;
+    margin-top: 5px;
 }
 
 .online{
@@ -413,6 +416,7 @@
 }
 
 .profileName h2{
+    margin-top: 10px;
     color: #12346F;
     font-weight: 500;
     font-size: 20px;
@@ -529,10 +533,10 @@
   
 .modal-content {
     background-color: white;
-    margin: 10% 0;
+    margin: 10% auto;
     padding: 20px;
     border-radius: 10px;
-    width: 900px;
+    max-width: 900px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -588,12 +592,13 @@
 }
 
 .currentMembersListModal{
-    width: 500px;
+    width: 300px;
+    margin-left: 100px;
     list-style: none;
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: center
+    justify-content: left;
+    align-items: center;
 }
 
 .currentMembersListModal h2{
@@ -676,3 +681,10 @@
     cursor: pointer;
 }
 
+.profile,
+.profileName,
+.modify-members-container,
+.create-group-chat-container,
+.group-member-container {
+    display: none; /* Hide initially */
+}

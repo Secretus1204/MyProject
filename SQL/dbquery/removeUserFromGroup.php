@@ -27,7 +27,10 @@ try {
     $stmt = $pdo->prepare("DELETE FROM chat_members WHERE chat_id = ? AND user_id = ?");
     $stmt->execute([$groupId, $userId]);
 
-    echo json_encode(["status" => "success"]);
+    // Use "success" instead of "status"
+    echo json_encode(["success" => true]);
+    exit;
 } catch (Exception $e) {
     echo json_encode(["error" => $e->getMessage()]);
+    exit;
 }
