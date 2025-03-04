@@ -5,7 +5,7 @@ const chatContainer = document.querySelector(".main-message");
 const typingIndicator = document.querySelector(".activity h3");
 const loadMoreBtn = document.createElement("button");
 const fileInput = document.createElement("input");
-const addMembersContainer = document.querySelector(".add-members-container");
+const modifyMembersContainer = document.querySelector(".modify-members-container");
 const createGroupChatContainer = document.querySelector(".create-group-chat-container");
 const groupMembersContainer = document.querySelector(".group-member-container");
 const groupMembersList = document.querySelector(".group-members");
@@ -101,7 +101,7 @@ function loadCurrentChatDetails(chatId) {
 
             // Handle group chat
             if (data.is_group) {
-                addMembersContainer.style.display = "block";
+                modifyMembersContainer.style.display = "block";
                 createGroupChatContainer.style.display = "none";
                 groupMembersList.innerHTML = "";
 
@@ -117,7 +117,7 @@ function loadCurrentChatDetails(chatId) {
             } else {
                 // Hide group chat related containers
                 createGroupChatContainer.style.display = "block";
-                addMembersContainer.style.display = "none";
+                modifyMembersContainer.style.display = "none";
                 groupMembersContainer.style.display = "none";
             }
 
@@ -476,4 +476,132 @@ fileInput.addEventListener("change", async () => {
 // Attach event listener to the attachment button
 document.getElementById("sendAttachmentBtn").addEventListener("click", selectFile);
 
+const modal = document.getElementById("modifyGroupModal");
+const openModalBtn = document.getElementById("modifyMembersBtn");
+const closeModal = document.querySelector(".close");
+const groupMembersListModal = document.getElementById("groupMembersList");
+const addUserSelect = document.getElementById("addUserSelect");
+const addUserBtn = document.getElementById("addUserBtn");
 
+// Open modal and load members
+openModalBtn.addEventListener("click", () => {
+    modal.style.display = "block";
+    loadGroupMembers();
+    loadAvailableUsers();
+});
+
+// Close modal
+closeModal.addEventListener("click", () => {
+    modal.style.display = "none";
+});
+
+// Load current group members
+function loadGroupMembers() {
+    if (!currentChat) {
+        console.error("No chat selected.");
+        return;
+    }
+    
+    fetch(`../SQL/dbquery/getGroupMembers.php?group_id=${currentChat}`)
+        .then(response => response.json())
+        .then(data => {
+            groupMembersListModal.innerHTML = "";
+            data.forEach(member => {
+                let li = document.createElement("li");
+                li.classList.add("currentMembersListModal");
+
+                // Create an h2 element for the username
+                let usernameText = document.createElement("h2");
+                usernameText.textContent = member.username;
+                li.appendChild(usernameText);
+
+                // Only show remove button if the member is not the current user
+                if (member.user_id !== currentUser) {
+                    let removeBtn = document.createElement("button");
+                    removeBtn.classList.add("removeMemberBtn");
+                
+                    let removeText = document.createElement("h2");
+                    removeText.textContent = "Remove";
+                
+                    removeBtn.appendChild(removeText); // Append h2 inside button
+                    li.appendChild(removeBtn); // Append button to the list item
+                }
+                
+
+                groupMembersListModal.appendChild(li);
+            });
+        });
+}
+
+
+function loadAvailableUsers() {
+    if (!currentChat) {
+        console.error("Error: chat_id is undefined.");
+        return;
+    }
+
+    fetch(`../SQL/dbquery/getUsers.php?group_id=${currentChat}`)
+        .then(response => response.json())
+        .then(data => {
+            addUserSelect.innerHTML = "";
+            
+            if (data.error) {
+                console.error("Error:", data.error);
+                return;
+            }
+
+            data.forEach(user => {
+                let option = document.createElement("option");
+                option.value = user.user_id;
+                option.textContent = user.username;
+                addUserSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Fetch error:", error));
+}
+
+
+// Add user to group
+addUserBtn.addEventListener("click", () => {
+    let userId = addUserSelect.value;
+    let selectedOption = addUserSelect.options[addUserSelect.selectedIndex]; // Get the selected option
+
+    if (!currentChat) {
+        console.error("No chat selected.");
+        return;
+    }
+
+    fetch("../SQL/dbquery/addUserToGroup.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `group_id=${currentChat}&user_id=${userId}`
+    })
+    .then(response => response.json()) // Assuming PHP returns a JSON response
+    .then(data => {
+        if (data.error) {
+            console.error("Error:", data.error);
+            return;
+        }
+
+        // Remove the added user from the available users dropdown
+        selectedOption.remove();
+
+        // Reload the group members list
+        loadGroupMembers();
+    })
+    .catch(error => console.error("Fetch error:", error));
+});
+
+// Remove user from group
+function removeUser(userId) {
+    if (!currentChat) {
+        console.error("No chat selected.");
+        return;
+    }
+    
+    fetch("../SQL/dbquery/removeUserFromGroup.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `group_id=${currentChat}&user_id=${userId}`
+    }).then(() => loadGroupMembers());
+}

@@ -98,13 +98,49 @@
                     <h2>DM Ferrer</h2>
                 </div>
             </div>
-            <div class="add-members-container">
-                <button class="add-members">
-                    <h2>Add members</h2>
+            <div class="modify-members-container">
+                <button class="modify-members" id="modifyMembersBtn">
+                    <h2>Modify members</h2>
                 </button>
             </div>
         </div>
     </section>
+    <!-- Modal Structure -->
+    <div id="modifyGroupModal" class="modal">
+    <div class="modal-content">
+        <div class="containerModal">
+            <div class="closeBtnModal">
+                <span class="close">&times;</span>
+            </div>
+
+            <div class="modifyGroupHeaderModal">
+                <h2>Modify Group Members</h2>
+            </div>
+
+            <div class="currentMembersHeaderModal">
+                <h3>Current Members:</h3>
+            </div>
+
+            <div class="groupMembersListModal">
+                <ul id="groupMembersList"></ul>
+            </div>
+
+            <div class="addMembersContainer">
+                <div class="addMembersHeader">
+                <h3>Add Members</h3>
+                </div>
+                <div class="addUserSelectContainer">
+                <select id="addUserSelect"></select>
+                </div>
+                </div class="addUserBtnContainer">
+                <button id="addUserBtn"><h2>Add User</h2></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
     <script src="jsFiles/inboxLoader.js"></script>
     <script src="jsFiles/frontendMessageHandler.js"></script>
 </body>

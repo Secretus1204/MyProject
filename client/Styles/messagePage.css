@@ -450,30 +450,30 @@
     color: #E9EEF0;
 }
 
-.add-members-container{
+.modify-members-container{
     margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.add-members{
-    width: 130px;
+.modify-members{
+    width: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #12346F;
     border: none;
-    border-radius: 50px;
+    border-radius: 10px;
     box-shadow: 1px 1px 1px 1px #264A82;
 }
 
-.add-members:hover{
+.modify-members:hover{
     background-color: #7E9DCE;
     box-shadow: none;
 }
 
-.add-members h2{
+.modify-members h2{
     margin-top: 10px;
     padding: 0 20px;
     font-size: 14px;
@@ -514,3 +514,165 @@
     text-align: center;
     margin-bottom: 2px;
 }
+
+.modal {
+    display: none;
+    display: inline-text;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+.modal-content {
+    background-color: white;
+    margin: 10% 0;
+    padding: 20px;
+    border-radius: 10px;
+    width: 900px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.closeBtnModal{
+    align-self: flex-end;
+}
+
+.containerModal{
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modifyGroupHeaderModal{
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+.modifyGroupHeaderModal h2{
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.currentMembersHeaderModal{
+    width: 400px;
+    align-self: flex-start;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.currentMembersHeaderModal h3{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.groupMembersListModal{
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.groupMembersList{
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.currentMembersListModal{
+    width: 500px;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center
+}
+
+.currentMembersListModal h2{
+    padding-top: 5px;
+    font-size: 20px;
+    font-weight: 450;
+}
+
+.removeMemberBtn{
+    margin-left: 10px;
+    margin-bottom: 3px;
+    height: 22px;
+    width: 70px;
+    border: 0;
+    background-color: #12346F;
+    border-radius: 5px ;
+}
+
+.removeMemberBtn:hover{
+    cursor: pointer;
+    background-color: #7E9DCE;
+}
+
+.removeMemberBtn h2{
+    font-size: 14px;
+    padding-top: 4px;
+    color: white;
+}
+  
+.addMembersContainer{
+    border-top: 1px solid black;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.addMembersHeader {
+    margin-top: 5px;
+}
+
+.addMembersHeader h3{
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.addUserSelectionContainer{
+    width: 60%;
+}
+
+#addUserSelect{
+    width: 400px;
+}
+
+#addUserBtn{
+    margin-top: 10px;
+    height: 30px;
+    width: 150px;
+    border: 0;
+    background-color: #12346F;
+    border-radius: 5px ;
+    padding: 5px;
+}
+
+#addUserBtn h2{
+    font-size: 16px;
+    color: white;
+    font-weight: 400;
+}
+
+#addUserBtn:hover{
+    cursor: pointer;
+    background-color: #7E9DCE;
+}
+
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+

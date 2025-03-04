@@ -15,9 +15,6 @@
         <li class="nav-item main dashboard">
             <a class="nav-link" href="dashboardPage.php"><img src="adminImages/icons/dashboard_icon.png" alt="profile" class="iconbtn"> Dashboard</a>
         </li>
-        <li class="nav-item main dashboard">
-            <a class="nav-link" href="usersPage.php"><img src="adminImages/icons/users_icon.png" alt="profile" class="iconbtn"> Users</a>
-        </li>
         <li class="nav-item logout">
             <a class="nav-link" href="../SQL/config/logout.php"><img src="adminImages/icons/logout_icon.png" class="logout_icon" width="20px" height="20px">Logout</a>
         </li>

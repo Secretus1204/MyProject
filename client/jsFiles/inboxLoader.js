@@ -81,10 +81,10 @@ function loadGroupChats() {
 
 // Display private messages
 function displayInbox(inbox) {
-    if (inbox.length === 0) {
-        inboxContainer.innerHTML = "<p>No recent chats</p>";
-        return;
-    }
+    // if (inbox.length === 0) {
+    //     inboxContainer.innerHTML = "<p>No recent chats</p>";
+    //     return;
+    // }
 
     inbox.forEach(user => {
         const profilePic = user.profile_picture 
@@ -140,10 +140,10 @@ function displayInbox(inbox) {
 
 // Display group chats
 function displayGroups(groups) {
-    if (groups.length === 0) {
-        inboxContainer.innerHTML = "<p>No group chats</p>";
-        return;
-    }
+    // if (groups.length === 0) {
+    //     inboxContainer.innerHTML = "<p>No group chats</p>";
+    //     return;
+    // }
 
     groups.forEach(group => {
         const groupPic = group.group_picture 
