@@ -176,3 +176,15 @@
     outline: 0;
     border-bottom: 1px solid black;
 }
+
+@media  (max-width: 1280px) and (max-height: 720px) {
+    .info_container{
+        width: 80%;
+    }
+
+    .profile img {
+        width: 150px;
+        height: 150px;
+    }
+
+}
