@@ -1,4 +1,4 @@
-const socket = io("http://localhost:5500"); // Change if deployed
+const socket = io("ws://localhost:3000");
 
 const messageInput = document.getElementById("message");
 const chatContainer = document.querySelector(".main-message");

@@ -7,7 +7,7 @@ import fetch from 'node-fetch'; // Use to make requests to PHP
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = process.env.PORT || 5500;
+const PORT = process.env.PORT || 3000;
 const ADMIN = "Admin";
 
 const UsersState = new Map(); // Stores { socketId -> { user_id, chat_id } }
@@ -21,12 +21,11 @@ const expressServer = app.listen(PORT, () => {
 
 const io = new Server(expressServer, {
     cors: {
-        origin: ["http://localhost", "http://127.0.0.1:5500"], // Allow frontend
+        origin: ["http://localhost", "http://127.0.0.1:3000"], // Allow frontend
         methods: ["GET", "POST"], // Restrict to only necessary methods
         credentials: true // Allow credentials (if needed)
     }
 });
-
 
 io.on('connection', (socket) => {
     console.log(`User ${socket.id} connected`);
@@ -75,7 +74,7 @@ io.on('connection', (socket) => {
             UsersState.set(socket.id, { user_id, chat_id });
             socket.join(chat_id);
     
-            // Notify everyone in the chat when user join
+            // Notify everyone in the chat when user joins
             socket.emit('join_leftChat', notifyMessage(user_id, `joined chat ${chat_id}.`));
 
             // Update user list for the chat
@@ -89,7 +88,7 @@ io.on('connection', (socket) => {
         }
     });
     
-    //listen for message
+    // Listen for message
     socket.on("message", async ({ user_id, chat_id, text, file_url, file_type }) => {
         const user = UsersState.get(socket.id);
         if (!user || user.chat_id !== chat_id) return;
@@ -114,15 +113,13 @@ io.on('connection', (socket) => {
         // Emit the message to the chat room
         io.to(chat_id).emit("message", messageData);
     });
-    
 
-
-    // starts typing
+    // Starts typing
     socket.on("typing", ({ user_id, chat_id }) => {
         socket.to(chat_id).emit("typing", user_id);
     });
     
-    // stops typing
+    // Stops typing
     socket.on("stopTyping", ({ user_id, chat_id }) => {
         socket.to(chat_id).emit("stopTyping", user_id);
     });
@@ -152,7 +149,7 @@ function buildMessage(user_id, text) {
 };
 
 function notifyMessage(user_id, text){
-    return{
+    return {
         user_id,
         text
     };

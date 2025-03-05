@@ -26,8 +26,9 @@
     <link rel="stylesheet" href="styles/messagePage.css?v=<?php echo time(); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script defer src="jsFiles/frontendMessageHandler.js"></script>
     <title>Messages</title>
 </head>
 <body>
@@ -140,6 +141,5 @@
 
 
     <script src="jsFiles/inboxLoader.js"></script>
-    <script src="jsFiles/frontendMessageHandler.js"></script>
 </body>
 </html>
