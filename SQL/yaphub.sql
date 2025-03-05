@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 03, 2025 at 02:01 PM
+-- Generation Time: Mar 05, 2025 at 09:08 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -63,7 +63,17 @@ CREATE TABLE `chats` (
 INSERT INTO `chats` (`chat_id`, `chat_name`, `group_picture`, `is_group`, `created_at`) VALUES
 (1, NULL, 'images/group_img/default_group.jpg', 0, '2025-02-28 09:44:39'),
 (2, NULL, 'images/group_img/default_group.jpg', 0, '2025-02-28 09:45:01'),
-(3, 'James and Friends', 'images/group_img/default_group.jpg', 1, '2025-02-28 09:45:26');
+(3, 'James and Friends', 'images/group_img/default_group.jpg', 1, '2025-02-28 09:45:26'),
+(4, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 10:18:31'),
+(5, 'Another Group', 'images/group_img/default_group.jpg', 1, '2025-03-04 10:23:12'),
+(6, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:38:59'),
+(7, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:39:00'),
+(8, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:39:00'),
+(9, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:41:17'),
+(10, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:41:17'),
+(11, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:41:18'),
+(12, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:41:18'),
+(13, 'Groupers', 'images/group_img/default_group.jpg', 1, '2025-03-04 13:55:58');
 
 -- --------------------------------------------------------
 
@@ -87,9 +97,31 @@ INSERT INTO `chat_members` (`chat_member_id`, `chat_id`, `user_id`, `joined_at`)
 (2, 1, 2, '2025-02-28 09:44:39'),
 (3, 2, 2, '2025-02-28 09:45:01'),
 (4, 2, 3, '2025-02-28 09:45:01'),
-(5, 3, 1, '2025-02-28 09:45:26'),
-(6, 3, 3, '2025-02-28 09:45:26'),
-(7, 3, 2, '2025-02-28 09:45:26');
+(13, 4, 3, '2025-03-04 10:18:31'),
+(14, 4, 1, '2025-03-04 10:18:31'),
+(16, 3, 1, '2025-03-04 10:19:27'),
+(17, 5, 1, '2025-03-04 10:23:12'),
+(26, 6, 4, '2025-03-04 12:38:59'),
+(27, 6, 1, '2025-03-04 12:38:59'),
+(28, 7, 4, '2025-03-04 12:39:00'),
+(29, 7, 2, '2025-03-04 12:39:00'),
+(30, 8, 4, '2025-03-04 12:39:00'),
+(31, 8, 3, '2025-03-04 12:39:00'),
+(32, 9, 5, '2025-03-04 12:41:17'),
+(33, 9, 4, '2025-03-04 12:41:17'),
+(34, 10, 5, '2025-03-04 12:41:17'),
+(35, 10, 3, '2025-03-04 12:41:17'),
+(36, 11, 5, '2025-03-04 12:41:18'),
+(37, 11, 2, '2025-03-04 12:41:18'),
+(38, 12, 5, '2025-03-04 12:41:18'),
+(39, 12, 1, '2025-03-04 12:41:18'),
+(51, 5, 5, '2025-03-04 13:33:44'),
+(56, 5, 2, '2025-03-04 13:53:26'),
+(57, 13, 2, '2025-03-04 13:55:58'),
+(58, 13, 1, '2025-03-04 13:55:58'),
+(61, 13, 3, '2025-03-04 13:55:58'),
+(67, 13, 4, '2025-03-04 13:59:44'),
+(68, 13, 5, '2025-03-04 13:59:44');
 
 -- --------------------------------------------------------
 
@@ -111,7 +143,15 @@ CREATE TABLE `friends` (
 
 INSERT INTO `friends` (`friendship_id`, `user_id1`, `user_id2`, `status`, `created_at`) VALUES
 (2, 2, 1, 'accepted', '2025-02-28 09:44:49'),
-(4, 2, 3, 'accepted', '2025-03-01 02:31:58');
+(4, 2, 3, 'accepted', '2025-03-01 02:31:58'),
+(5, 3, 1, 'accepted', '2025-03-04 10:18:31'),
+(6, 4, 1, 'pending', '2025-03-04 12:38:59'),
+(7, 4, 2, 'accepted', '2025-03-04 12:39:00'),
+(8, 4, 3, 'accepted', '2025-03-04 12:39:00'),
+(9, 5, 4, 'pending', '2025-03-04 12:41:17'),
+(10, 5, 3, 'accepted', '2025-03-04 12:41:17'),
+(11, 5, 2, 'accepted', '2025-03-04 12:41:18'),
+(12, 5, 1, 'pending', '2025-03-04 12:41:18');
 
 -- --------------------------------------------------------
 
@@ -224,7 +264,31 @@ INSERT INTO `messages` (`message_id`, `chat_id`, `sender_id`, `message_text`, `m
 (111, 2, 2, 'sige', 'text', NULL, '2025-03-03 12:51:36'),
 (112, 2, 2, 'yo', 'text', NULL, '2025-03-03 12:56:22'),
 (113, 2, 3, 'what the yow', 'text', NULL, '2025-03-03 12:56:34'),
-(114, 2, 3, NULL, 'image', 'fileUpload/file_67c5a707060d66.44210080.png', '2025-03-03 12:56:39');
+(114, 2, 3, NULL, 'image', 'fileUpload/file_67c5a707060d66.44210080.png', '2025-03-03 12:56:39'),
+(117, 3, 1, 'hello', 'text', NULL, '2025-03-03 13:07:44'),
+(118, 3, 1, 'whayou', 'text', NULL, '2025-03-03 13:08:17'),
+(119, 1, 1, 'chuy', 'text', NULL, '2025-03-03 13:08:31'),
+(120, 1, 2, 'helo', 'text', NULL, '2025-03-03 13:08:43'),
+(121, 2, 2, 'hello', 'text', NULL, '2025-03-03 13:09:51'),
+(122, 2, 2, 'sawl', 'text', NULL, '2025-03-03 13:11:03'),
+(123, 2, 2, 'awdaw', 'text', NULL, '2025-03-03 13:12:05'),
+(124, 11, 5, 'hello', 'text', NULL, '2025-03-04 13:43:45'),
+(125, 4, 3, 'hello', 'text', NULL, '2025-03-04 13:58:06'),
+(126, 4, 3, 'idols', 'text', NULL, '2025-03-04 13:58:08'),
+(127, 2, 2, 'chuy', 'text', NULL, '2025-03-04 21:03:58'),
+(128, 2, 3, 'oy', 'text', NULL, '2025-03-04 21:04:01'),
+(129, 2, 3, 'anong problema', 'text', NULL, '2025-03-04 21:04:03'),
+(130, 2, 2, 'look at this', 'text', NULL, '2025-03-04 21:04:09'),
+(131, 2, 3, 'asa man', 'text', NULL, '2025-03-04 21:04:12'),
+(132, 2, 3, NULL, 'image', 'fileUpload/file_67c76ad1166cb5.27264812.png', '2025-03-04 21:04:17'),
+(133, 2, 2, 'WHAT THE HILL', 'text', NULL, '2025-03-04 21:04:22'),
+(134, 2, 2, 'watch this also', 'text', NULL, '2025-03-04 21:04:29'),
+(135, 2, 2, NULL, 'image', 'fileUpload/file_67c76ae48ee8c1.13118461.png', '2025-03-04 21:04:36'),
+(136, 2, 3, 'WHAT THE ROBLOX', 'text', NULL, '2025-03-04 21:04:40'),
+(137, 2, 3, 'watch this bedyu', 'text', NULL, '2025-03-04 21:04:45'),
+(138, 2, 3, NULL, 'video', 'fileUpload/file_67c76af57de118.41820540.mp4', '2025-03-04 21:04:53'),
+(139, 2, 3, 'kuyawa uy', 'text', NULL, '2025-03-05 08:06:13'),
+(140, 2, 2, 'mao ba', 'text', NULL, '2025-03-05 08:06:20');
 
 -- --------------------------------------------------------
 
@@ -264,8 +328,11 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `firstName`, `lastName`, `email`, `address`, `password`, `profile_picture`, `created_at`, `is_online`) VALUES
 (1, 'Mark', 'Palma', 'mark@gmail.com', 'Panabo, Davao', '$2y$10$rysaOgQ2MeoUNLIGbVB.Ae3naOo4wGsSMIJjW4zIaCIeicqvmTijO', NULL, '2025-02-26 09:49:46', 0),
-(2, 'James', 'Oliver', 'jamesoliver@gmail.com', 'Water District, Lanang', '$2y$10$6nLWxJ.KTlvIFJOtXv2r8.NcM0dBC76HRbU6fgkJLucfbMHIuLXYi', 'images/profile_img/profile_2_1740563965.jpg', '2025-02-26 09:57:25', 1),
-(3, 'Jayrald', 'Dionaldo', 'jayrald@gmail.com', 'Abreeza, Davao City', '$2y$10$ZUxA/aIaQc5V/.0QlAXKQeu3/DbHo0O.BR1COL2AG9uA6tAld1yxe', 'images/profile_img/profile_3_1740796380.jpg', '2025-02-26 09:57:46', 1);
+(2, 'James Oliver', 'Mendoza', 'jamesmendoza@gmail.com', 'Sa bandang lapis', '$2y$10$StMQmQJz2qMV/IUjRNVmgOAt0O8EvclkeH/ZBZOxDOFkznt.CTP3C', 'images/profile_img/profile_2_1741122153.png', '2025-02-26 09:57:25', 1),
+(3, 'Jayrald', 'Dionaldo', 'jayrald@gmail.com', 'Abreeza, Davao City', '$2y$10$ZUxA/aIaQc5V/.0QlAXKQeu3/DbHo0O.BR1COL2AG9uA6tAld1yxe', 'images/profile_img/profile_3_1740796380.jpg', '2025-02-26 09:57:46', 1),
+(4, 'John', 'Mayer', 'john@gmail.com', 'Sasa, Davao City', '$2y$10$Tjkg0LAy.9GuA/rSJkxzHuB5aH4AN7yi36LPlZMjJptxPyIRQZVEO', NULL, '2025-03-04 12:38:36', 0),
+(5, 'Merk', 'Richards', 'merk@gmail.com', 'Tagum, Davao del Norte', '$2y$10$gXhlTABQR0Mv/kslm1/fDuIYPhd251Pi2woVPY8GkUJfMAIse9tq2', NULL, '2025-03-04 12:39:22', 0),
+(6, 'Jack', 'Roberto', 'jack@gmail.com', 'Selos, Baracatan Toril', '$2y$10$gL5vvcjUfkXJ9NBem9ggA.zwl4VQ6em7E31gXAZ8s5Cs38.MTSV6S', NULL, '2025-03-04 12:46:39', 0);
 
 --
 -- Indexes for dumped tables
@@ -336,25 +403,25 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `chats`
 --
 ALTER TABLE `chats`
-  MODIFY `chat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `chat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `chat_members`
 --
 ALTER TABLE `chat_members`
-  MODIFY `chat_member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `chat_member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `friends`
 --
 ALTER TABLE `friends`
-  MODIFY `friendship_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `friendship_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
 
 --
 -- AUTO_INCREMENT for table `message_status`
@@ -366,7 +433,7 @@ ALTER TABLE `message_status`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
