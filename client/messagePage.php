@@ -28,7 +28,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <script defer src="jsFiles/frontendMessageHandler.js"></script>
+    <script defer src="jsFiles/chatMessagesHandler.js"></script>
     <title>Messages</title>
 </head>
 <body>
@@ -138,8 +138,6 @@
         </div>
     </div>
     </div>
-
-
     <script src="jsFiles/inboxLoader.js"></script>
 </body>
 </html>
