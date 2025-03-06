@@ -3,6 +3,7 @@ import { Server } from 'socket.io';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fetch from 'node-fetch';
+import cors from 'cors'; // Import CORS
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,15 +18,35 @@ const UsersState = new Map(); // Stores { socketId -> { user_id, chat_id } }
 const app = express();
 app.use(express.json()); // Enable JSON parsing
 
+// Enable CORS
+app.use(cors({
+    origin: [
+        "http://localhost",
+        "http://127.0.0.1:3000",
+        "https://localhost",
+        "https://127.0.0.1:3000"
+    ], // Allow both HTTP & HTTPS
+    methods: ["GET", "POST"], // Restrict to necessary methods
+    credentials: true // Allow credentials (cookies, headers, etc.)
+}));
+
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
+
 const expressServer = app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
 
+
 const io = new Server(expressServer, {
     cors: {
-        origin: ["http://localhost", "http://127.0.0.1:3000"], // Allow frontend
-        methods: ["GET", "POST"], // Restrict to only necessary methods
-        credentials: true // Allow credentials (if needed)
+        origin: [
+            "http://localhost",
+            "http://127.0.0.1:3000",
+            "https://localhost",
+            "https://127.0.0.1:3000"
+        ], // Allow both HTTP & HTTPS
+        methods: ["GET", "POST"], // Restrict to necessary methods
+        credentials: true // Allow credentials
     }
 });
 

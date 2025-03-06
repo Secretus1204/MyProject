@@ -1,4 +1,4 @@
-const socket = io("ws://localhost:3000");
+const socket = io("http://localhost:3000");
 
 const messageInput = document.getElementById("message");
 const chatContainer = document.querySelector(".main-message");

@@ -1,4 +1,7 @@
 <?php
+header("Access-Control-Allow-Origin: *"); // Allow all origins (use a specific one in production)
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");
 require_once __DIR__ . "/../config/DBConnection.php"; // Ensure correct path
 
