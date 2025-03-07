@@ -6,13 +6,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const errorContainer = document.querySelector(".error_message");
     let selectedUsers = [];
 
-    // Function to get URL parameters
+    // function to get URL parameters
     function getURLParams() {
         const params = new URLSearchParams(window.location.search);
         return params.get("preselected_users") ? params.get("preselected_users").split(",") : [];
     }
 
-    // Load users and preselect if needed
+    // load users and preselect if needed
     function loadUsers() {
         fetch("../SQL/dbquery/showUsersCreateGroup.php")
             .then(response => response.json())
@@ -38,11 +38,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         <button class="selectBtn"><img src="images/icons/select_icon.png" alt="Select"></button>
                     `;
 
-                    // Ensure that user.id is compared as a string
+                    // if there are preselected users
                     if (preselectedUsers.includes(user.id.toString())) {
-                        selectUser(userDiv); // Preselect user if their ID is in the array
+                        selectUser(userDiv);
                     } else {
-                        usersList.appendChild(userDiv); // Append user normally if not preselected
+                        usersList.appendChild(userDiv);
                     }  
                 });
             })
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     loadUsers();
 
-    // Function to select a user
+    // function to select a user
     function selectUser(userDiv) {
         const userId = userDiv.dataset.userId;
         const userName = userDiv.querySelector("h2").textContent;
@@ -63,10 +63,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!selectedUsers.includes(userId)) {
             selectedUsers.push(userId);
 
-            // Remove from .show-users
             userDiv.remove();
 
-            // Add to .added-members
+            // add to added members
             const addedUserDiv = document.createElement("div");
             addedUserDiv.classList.add("added-user");
             addedUserDiv.dataset.userId = userId;
@@ -79,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Search for users
+    // search for users
     searchInput.addEventListener("input", function () {
         const searchValue = searchInput.value.toLowerCase();
         document.querySelectorAll(".show-users .user").forEach(user => {
@@ -88,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Add user to group manually
+    // add user to group manually
     usersList.addEventListener("click", function (event) {
         if (event.target.closest(".selectBtn")) {
             const userDiv = event.target.closest(".user");
@@ -96,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Remove user from group
+    // remove user from group
     addedMembersList.addEventListener("click", function (event) {
         if (event.target.closest(".removeBtn")) {
             const userDiv = event.target.closest(".added-user");
@@ -104,10 +103,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const userName = userDiv.querySelector("h2").textContent;
             const userImage = userDiv.querySelector(".profilePic").src;
 
-            // Remove from selected users
+            // remove selected users
             selectedUsers = selectedUsers.filter(id => id !== userId);
-
-            // Move back to .show-users
             const originalUserDiv = document.createElement("div");
             originalUserDiv.classList.add("user");
             originalUserDiv.dataset.userId = userId;
@@ -122,14 +119,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Submit group creation
+    // submit group creation
     createGroupBtn.addEventListener("click", function () {
         const groupName = document.getElementById("groupName").value.trim();
         
-        // Clear previous error messages
+        // clear previous error messages
         errorContainer.innerHTML = "";
 
-        // Error message if no group name or members are less than 3
         if (groupName === "" || selectedUsers.length < 2) { 
             errorContainer.innerHTML = `<p class="error">Please enter a group name or add at least 3 members!</p>`;
             return;

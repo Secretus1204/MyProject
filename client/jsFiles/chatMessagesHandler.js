@@ -24,7 +24,7 @@ let typingTimeout;
 let lastMessageTime = null;
 let messages = [];
 
-//for load more button
+// for load more button
 loadMoreBtn.innerText = "Load More...";
 loadMoreBtn.classList.add("load-more-btn");
 loadMoreBtn.addEventListener("click", loadMoreMessages);
@@ -32,11 +32,11 @@ chatContainer.prepend(loadMoreBtn);
 
 // for file selection
 fileInput.type = "file";
-fileInput.accept = "image/jpeg, image/png, video/mp4"; // Allowed file types
+fileInput.accept = "image/jpeg, image/png, video/mp4";
 fileInput.style.display = "none";
 document.body.appendChild(fileInput);
 
-// Connect the user to the chat
+// connect the user to the chat
 function joinChat(user_id, chat_id) {
     currentUser = user_id;
     currentChat = chat_id;
@@ -52,7 +52,6 @@ function joinChat(user_id, chat_id) {
     socket.on("message", (message) => {
         console.log("Received message:", message);
         const { user_id, text, file_url, file_type, timestamp } = message;
-        // Ensure timestamp is valid
         const time = timestamp ? new Date(timestamp) : new Date();
         displayMessage(user_id, text, time, file_url, file_type);
     });
@@ -87,12 +86,10 @@ function loadCurrentChatDetails(chatId) {
                 console.error("Error loading chat or chat does not exist:", data?.message || "Chat is null");
                 return;
             }
-
-            // Show components when valid data is received
             document.querySelector(".profile").style.display = "block";
             document.querySelector(".profileName").style.display = "block";
 
-            // Update profile picture and chat name
+            // update profile picture and chat name
             const profileImg = document.querySelector(".profile img");
             const profileName = document.querySelector(".profileName h2");
 
@@ -145,7 +142,7 @@ function loadCurrentChatDetails(chatId) {
         });
 }
 
-// sends a message
+// sends a message to server
 function sendMessage() {
     const text = messageInput.value.trim();
 
@@ -156,7 +153,7 @@ function sendMessage() {
     messageInput.value = "";
 }
 
-//update the log of current users on chat
+// update the log of current users on chat
 function updateUserList(users) {
     console.log("Current Users:");
     
@@ -170,7 +167,7 @@ function updateUserList(users) {
     });
 }
 
-// Function to format timestamps
+// function to format timestamps
 function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
 
@@ -187,13 +184,13 @@ function formatTimestamp(timestamp) {
     const minutes = date.getMinutes();
     const ampm = hours >= 12 ? "PM" : "AM";
 
-    hours = hours % 12 || 12; // Convert "0" (midnight) to "12"
+    hours = hours % 12 || 12;
     const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
 
     return `${month} ${day}, ${year} | ${hours}:${formattedMinutes} ${ampm}`;
 }
 
-// Remove user from group
+// remove user from group
 function removeUser(userId) {
 
     if (!currentChat) {
@@ -227,7 +224,7 @@ function loadAvailableUsers() {
     fetch(`../SQL/dbquery/getUsers.php?group_id=${currentChat}`)
         .then(response => response.json())
         .then(data => {
-            addUserSelect.innerHTML = ""; // Clear options
+            addUserSelect.innerHTML = "";
 
             if (data.error) {
                 console.error("Error:", data.error);
@@ -244,7 +241,7 @@ function loadAvailableUsers() {
         .catch(error => console.error("Fetch error:", error));
 }
 
-// Load current group members
+// load current group members
 function loadGroupMembers() {
     if (!currentChat) {
         console.error("No chat selected.");
@@ -254,12 +251,12 @@ function loadGroupMembers() {
     fetch(`../SQL/dbquery/getGroupMembers.php?group_id=${currentChat}`)
         .then(response => response.json())
         .then(data => {
-            groupMembersListModal.innerHTML = ""; // Clear list before adding new items
+            groupMembersListModal.innerHTML = "";
 
             data.forEach(member => {
                 let li = document.createElement("li");
                 li.classList.add("currentMembersListModal");
-                li.dataset.userId = member.user_id; // Store user ID in dataset
+                li.dataset.userId = member.user_id; // store id on list
 
                 let usernameText = document.createElement("h2");
                 usernameText.textContent = member.username;
@@ -284,7 +281,7 @@ function loadGroupMembers() {
 }
 
 
-// Load latest 20 messages
+// load latest 20 messages
 async function loadMessages() {
     try {
         const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getMessages.php?chat_id=${currentChat}&limit=20`);
@@ -298,10 +295,10 @@ async function loadMessages() {
         chatContainer.innerHTML = "";
         chatContainer.appendChild(loadMoreBtn);
 
-        // Sort messages by timestamp before displaying
+       // sort by timestamp
         data.messages.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
 
-        // Wait for all messages to be properly built before appending
+        // to build properly
         const messageElements = await Promise.all(data.messages.map(msg =>
             displayMessage(msg.user_id, msg.text, msg.time, msg.file_url, msg.file_type)
         ));
@@ -314,7 +311,6 @@ async function loadMessages() {
 
         loadMoreBtn.style.display = data.messages.length < 20 ? "none" : "block";
 
-        // Scroll to the bottom after loading messages
         chatContainer.scrollTop = chatContainer.scrollHeight;
     } catch (error) {
         console.error("Fetch error:", error);
@@ -322,7 +318,7 @@ async function loadMessages() {
 }
 
 
-// Load older messages
+// load older messages
 async function loadMoreMessages() {
     if (!lastMessageTime) return;
 
@@ -344,8 +340,7 @@ async function loadMoreMessages() {
             loadMoreBtn.style.display = "none";
             return;
         }
-
-        // Sort messages in ascending order before displaying
+        // sort timestamps
         data.messages.sort((a, b) => new Date(a.time) - new Date(b.time));
 
         // Save current scroll position before adding messages
