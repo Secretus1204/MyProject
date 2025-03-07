@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 usersList.innerHTML = "";
                 const preselectedUsers = getURLParams();
+                console.log(preselectedUsers);
 
                 data.friends.forEach(user => {
                     const userDiv = document.createElement("div");
@@ -37,12 +38,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         <button class="selectBtn"><img src="images/icons/select_icon.png" alt="Select"></button>
                     `;
 
-                    // Check if user is preselected
-                    if (preselectedUsers.includes(user.id)) {
-                        selectUser(userDiv);
+                    // Ensure that user.id is compared as a string
+                    if (preselectedUsers.includes(user.id.toString())) {
+                        selectUser(userDiv); // Preselect user if their ID is in the array
                     } else {
-                        usersList.appendChild(userDiv);
-                    }
+                        usersList.appendChild(userDiv); // Append user normally if not preselected
+                    }  
                 });
             })
             .catch(error => {

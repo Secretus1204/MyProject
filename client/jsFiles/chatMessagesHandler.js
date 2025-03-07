@@ -404,9 +404,9 @@ async function displayMessage(user_id, text = null, time, file_url = null, file_
         content += `<h3>${text}</h3>`;
     }
 
-    const formattedTime = formatTimestamp(time); // Apply formatting
+    const formattedTime = formatTimestamp(time);
 
-    if (user_id === currentUser) {
+    if (messageDiv.classList.contains("message-me")) {
         messageDiv.innerHTML = `
             <div class="my-message">
                 ${content}
@@ -417,7 +417,7 @@ async function displayMessage(user_id, text = null, time, file_url = null, file_
         // Fetch profile for other users
         let profileImage = "images/profile_img/default_profile.jpg";
         let userName = "Unknown";
-
+    
         try {
             const userProfile = await fetchUserProfile(user_id);
             if (userProfile) {
@@ -427,7 +427,7 @@ async function displayMessage(user_id, text = null, time, file_url = null, file_
         } catch (error) {
             console.error("Error fetching user profile:", error);
         }
-
+    
         messageDiv.innerHTML = `
             <img src="${profileImage}" alt="chathead" class="profile-pic-others">
             <div>
@@ -436,7 +436,7 @@ async function displayMessage(user_id, text = null, time, file_url = null, file_
                 <h4>${formattedTime}</h4>
             </div>
         `;
-    }
+    }    
 
     chatContainer.appendChild(messageDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
