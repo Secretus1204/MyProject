@@ -1,18 +1,11 @@
 import express from 'express';
 import { Server } from 'socket.io';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import fetch from 'node-fetch';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import configRouter from './config.js'; // Import config router
+import configRouter from './config.js';
 
 dotenv.config();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-console.log("Current directory:", __dirname);
 
 const PORT = process.env.PORT || 3000;
 const ADMIN = "Admin";
@@ -20,16 +13,15 @@ const ADMIN = "Admin";
 const UsersState = new Map(); // Stores { socketId -> { user_id, chat_id } }
 
 const app = express();
-app.use(express.json()); // Enable JSON parsing
+app.use(express.json());
 
 // Enable CORS
 app.use(cors({
     origin: process.env.CORS_ORIGINS.split(','), // Use environment variable
-    methods: ["GET", "POST"], // Restrict to necessary methods
-    credentials: true // Allow credentials (cookies, headers, etc.)
+    methods: ["GET", "POST"],
+    credentials: true
 }));
-
-app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
+ 
 
 app.use('/api', configRouter); // Use config router
 
@@ -40,8 +32,8 @@ const expressServer = app.listen(PORT, () => {
 const io = new Server(expressServer, {
     cors: {
         origin: process.env.CORS_ORIGINS.split(','), // Use environment variable
-        methods: ["GET", "POST"], // Restrict to necessary methods
-        credentials: true // Allow credentials
+        methods: ["GET", "POST"], 
+        credentials: true 
     }
 });
 

@@ -199,7 +199,7 @@
 }
 
 .message-others h4{
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 400;
     text-align: right;
     padding: 0 10px;
@@ -249,7 +249,7 @@
 }
 
 .message-me h4{
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 400;
     text-align: left;
     color: white;
@@ -450,7 +450,7 @@
     align-items: center;
     background-color: #12346F;
     border: none;
-    border-radius: 50px;
+    border-radius: 10px;
     box-shadow: 1px 1px 1px 1px #264A82;
 }
 
