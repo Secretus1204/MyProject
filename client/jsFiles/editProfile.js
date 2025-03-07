@@ -1,8 +1,22 @@
-document.getElementById('saveProfileChanges').addEventListener('click', function () {
+let config = {}; // Config object to store API path
+
+// to ensure that config is loaded
+async function loadConfig() {
+    try {
+        const response = await fetch('http://localhost:3000/api/config'); // Ensure correct API path
+        config = await response.json();
+    } catch (error) {
+        console.error("Error loading config:", error);
+    }
+}
+
+document.getElementById('saveProfileChanges').addEventListener('click', async function () {
     const formData = new FormData();
     const fileInput = document.getElementById('file');
     const currentPassword = document.getElementById('currentPassword').value.trim();
     const newPassword = document.getElementById('newPassword').value.trim();
+
+    await loadConfig();
 
     if (fileInput.files.length > 0) {
         formData.append('profile_picture', fileInput.files[0]);
@@ -38,7 +52,7 @@ document.getElementById('saveProfileChanges').addEventListener('click', function
         formData.append('newPassword', newPassword);
     }
 
-    fetch('../SQL/dbquery/editProfile.php', {
+    fetch(config.EDIT_PROFILE_URL, {
         method: 'POST',
         body: formData
     })

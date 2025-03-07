@@ -47,6 +47,7 @@
 .last-chat-header{
     width: 100%;
 }
+
 .last-chat-header h3{
     margin-top: 20px;
     margin-left: 30px;
@@ -65,9 +66,9 @@
 .last-message{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
-    height: 60px;
+    height: 80px;
     width: 100%;
     padding: 10px;
     border: 0;
@@ -79,29 +80,41 @@
 }
 
 .img-container img{
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 40px;
 }
 
 .names-msg{
+    width: 65%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    align-items: left;
+    padding-left: 20px;
     margin-top: 5px;
 }
 
 .names-msg h3{
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .names-msg h4{
-    font-size: 12px;
+    font-size: 14px;
+}
+
+.timeSent{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: right;
+    margin-top: 5px;
 }
 
 .timeSent h4{
-    font-size: 12px;
+    margin-top: 30px;
+    padding-left: 30px;
+    font-size: 14px;
     font-style: italic;
 }
 
@@ -161,7 +174,7 @@
 
 .message-others div {
     width: fit-content; 
-    max-width: 80%;
+    max-width: 45%;
     padding: 10px;
     background-color: #7E9DCE;
     margin: 10px 0;
@@ -172,21 +185,21 @@
 }
 
 .message-others h2{
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 600;
     text-align: justify;
     padding: 2px 10px;
 }
 
 .message-others h3{
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     text-align: justify;
     padding: 0 10px;
 }
 
 .message-others h4{
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     text-align: right;
     padding: 0 10px;
@@ -207,6 +220,7 @@
     padding: 10px 0;
 }
 .message-me{
+    padding-right: 20px;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -216,7 +230,7 @@
 
 .message-me div{
     width: fit-content; 
-    max-width: 80%;
+    max-width: 45%;
     padding: 10px;
     background-color: #264A82;
     margin: 10px 0;
@@ -227,7 +241,7 @@
 }
 
 .message-me h3{
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     text-align: justify;
     padding: 10px;
@@ -235,7 +249,7 @@
 }
 
 .message-me h4{
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     text-align: left;
     color: white;
@@ -536,7 +550,7 @@
     margin: 10% auto;
     padding: 20px;
     border-radius: 10px;
-    max-width: 900px;
+    max-width: 800px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -593,11 +607,10 @@
 
 .currentMembersListModal{
     width: 300px;
-    margin-left: 100px;
     list-style: none;
     display: flex;
     flex-direction: row;
-    justify-content: left;
+    justify-content: space-between;
     align-items: center;
 }
 

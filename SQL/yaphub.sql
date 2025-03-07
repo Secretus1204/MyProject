@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 05, 2025 at 09:08 AM
+-- Generation Time: Mar 07, 2025 at 01:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -56,25 +56,6 @@ CREATE TABLE `chats` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `chats`
---
-
-INSERT INTO `chats` (`chat_id`, `chat_name`, `group_picture`, `is_group`, `created_at`) VALUES
-(1, NULL, 'images/group_img/default_group.jpg', 0, '2025-02-28 09:44:39'),
-(2, NULL, 'images/group_img/default_group.jpg', 0, '2025-02-28 09:45:01'),
-(3, 'James and Friends', 'images/group_img/default_group.jpg', 1, '2025-02-28 09:45:26'),
-(4, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 10:18:31'),
-(5, 'Another Group', 'images/group_img/default_group.jpg', 1, '2025-03-04 10:23:12'),
-(6, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:38:59'),
-(7, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:39:00'),
-(8, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:39:00'),
-(9, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:41:17'),
-(10, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:41:17'),
-(11, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:41:18'),
-(12, NULL, 'images/group_img/default_group.jpg', 0, '2025-03-04 12:41:18'),
-(13, 'Groupers', 'images/group_img/default_group.jpg', 1, '2025-03-04 13:55:58');
-
 -- --------------------------------------------------------
 
 --
@@ -87,41 +68,6 @@ CREATE TABLE `chat_members` (
   `user_id` int(11) DEFAULT NULL,
   `joined_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `chat_members`
---
-
-INSERT INTO `chat_members` (`chat_member_id`, `chat_id`, `user_id`, `joined_at`) VALUES
-(1, 1, 1, '2025-02-28 09:44:39'),
-(2, 1, 2, '2025-02-28 09:44:39'),
-(3, 2, 2, '2025-02-28 09:45:01'),
-(4, 2, 3, '2025-02-28 09:45:01'),
-(13, 4, 3, '2025-03-04 10:18:31'),
-(14, 4, 1, '2025-03-04 10:18:31'),
-(16, 3, 1, '2025-03-04 10:19:27'),
-(17, 5, 1, '2025-03-04 10:23:12'),
-(26, 6, 4, '2025-03-04 12:38:59'),
-(27, 6, 1, '2025-03-04 12:38:59'),
-(28, 7, 4, '2025-03-04 12:39:00'),
-(29, 7, 2, '2025-03-04 12:39:00'),
-(30, 8, 4, '2025-03-04 12:39:00'),
-(31, 8, 3, '2025-03-04 12:39:00'),
-(32, 9, 5, '2025-03-04 12:41:17'),
-(33, 9, 4, '2025-03-04 12:41:17'),
-(34, 10, 5, '2025-03-04 12:41:17'),
-(35, 10, 3, '2025-03-04 12:41:17'),
-(36, 11, 5, '2025-03-04 12:41:18'),
-(37, 11, 2, '2025-03-04 12:41:18'),
-(38, 12, 5, '2025-03-04 12:41:18'),
-(39, 12, 1, '2025-03-04 12:41:18'),
-(51, 5, 5, '2025-03-04 13:33:44'),
-(56, 5, 2, '2025-03-04 13:53:26'),
-(57, 13, 2, '2025-03-04 13:55:58'),
-(58, 13, 1, '2025-03-04 13:55:58'),
-(61, 13, 3, '2025-03-04 13:55:58'),
-(67, 13, 4, '2025-03-04 13:59:44'),
-(68, 13, 5, '2025-03-04 13:59:44');
 
 -- --------------------------------------------------------
 
@@ -136,22 +82,6 @@ CREATE TABLE `friends` (
   `status` enum('pending','accepted','blocked') DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `friends`
---
-
-INSERT INTO `friends` (`friendship_id`, `user_id1`, `user_id2`, `status`, `created_at`) VALUES
-(2, 2, 1, 'accepted', '2025-02-28 09:44:49'),
-(4, 2, 3, 'accepted', '2025-03-01 02:31:58'),
-(5, 3, 1, 'accepted', '2025-03-04 10:18:31'),
-(6, 4, 1, 'pending', '2025-03-04 12:38:59'),
-(7, 4, 2, 'accepted', '2025-03-04 12:39:00'),
-(8, 4, 3, 'accepted', '2025-03-04 12:39:00'),
-(9, 5, 4, 'pending', '2025-03-04 12:41:17'),
-(10, 5, 3, 'accepted', '2025-03-04 12:41:17'),
-(11, 5, 2, 'accepted', '2025-03-04 12:41:18'),
-(12, 5, 1, 'pending', '2025-03-04 12:41:18');
 
 -- --------------------------------------------------------
 
@@ -168,127 +98,6 @@ CREATE TABLE `messages` (
   `file_url` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `messages`
---
-
-INSERT INTO `messages` (`message_id`, `chat_id`, `sender_id`, `message_text`, `message_type`, `file_url`, `created_at`) VALUES
-(1, 2, 3, 'hello', 'text', NULL, '2025-03-01 06:02:43'),
-(2, 2, 3, 'hello po kuya', 'text', NULL, '2025-03-01 06:11:20'),
-(3, 2, 3, 'bakit ang hirap ng websocket', 'text', NULL, '2025-03-01 06:11:25'),
-(4, 2, 3, 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz', 'text', NULL, '2025-03-01 06:12:28'),
-(5, 2, 2, 'hello', 'text', NULL, '2025-03-01 06:17:05'),
-(6, 2, 2, 'nganong lisod man kaayo btaw', 'text', NULL, '2025-03-01 06:17:17'),
-(7, 3, 3, 'hi group mates', 'text', NULL, '2025-03-01 06:17:34'),
-(8, 2, 2, 'awrgrawhrwa', 'text', NULL, '2025-03-01 13:08:14'),
-(9, 2, 2, 'abrkabr', 'text', NULL, '2025-03-01 13:08:15'),
-(10, 2, 2, 'awbrbhra', 'text', NULL, '2025-03-01 13:08:15'),
-(11, 2, 2, 'awhrbjarhbhraw', 'text', NULL, '2025-03-01 13:08:16'),
-(12, 2, 2, 'awhrawhjrg', 'text', NULL, '2025-03-01 13:08:17'),
-(13, 2, 3, 'ang herap nga', 'text', NULL, '2025-03-01 13:08:40'),
-(14, 2, 3, 'soper', 'text', NULL, '2025-03-01 13:08:44'),
-(15, 2, 3, 'sample', 'text', NULL, '2025-03-01 13:08:50'),
-(16, 2, 3, 'pa 20', 'text', NULL, '2025-03-01 13:08:51'),
-(17, 2, 3, 'hello', 'text', NULL, '2025-03-01 13:08:59'),
-(18, 2, 2, 'maker', 'text', NULL, '2025-03-01 13:10:03'),
-(19, 2, 2, 'aksf', 'text', NULL, '2025-03-01 13:10:04'),
-(20, 2, 2, 'aawhr', 'text', NULL, '2025-03-01 13:10:05'),
-(21, 2, 2, 'awlrawhasmf', 'text', NULL, '2025-03-01 13:10:05'),
-(22, 2, 2, 'awfjawbwar', 'text', NULL, '2025-03-01 13:10:06'),
-(23, 2, 2, 'arlawkrnbalbra', 'text', NULL, '2025-03-01 13:10:07'),
-(24, 2, 2, 'awrlakwbr', 'text', NULL, '2025-03-01 13:10:07'),
-(25, 2, 2, 'arwawrjlbraw', 'text', NULL, '2025-03-01 13:10:08'),
-(26, 2, 2, 'sfawjbaw', 'text', NULL, '2025-03-01 13:10:09'),
-(27, 2, 2, 'ra', 'text', NULL, '2025-03-01 13:10:10'),
-(28, 2, 3, 'awrkawrvbrawr', 'text', NULL, '2025-03-01 13:10:14'),
-(29, 2, 3, 'awawkrjbarwjkbarw', 'text', NULL, '2025-03-01 13:10:14'),
-(30, 2, 3, 'awrlbawrjlabwr', 'text', NULL, '2025-03-01 13:10:15'),
-(31, 2, 3, 'awawjburawjra', 'text', NULL, '2025-03-01 13:10:16'),
-(32, 2, 3, 'wrawubrawugawr', 'text', NULL, '2025-03-01 13:10:16'),
-(33, 2, 3, 'asfalskfbajbrw', 'text', NULL, '2025-03-01 13:10:17'),
-(34, 2, 3, 'awaujbrwaj', 'text', NULL, '2025-03-01 13:10:18'),
-(35, 2, 3, 'afajbfwjabr', 'text', NULL, '2025-03-01 13:10:18'),
-(36, 2, 3, 'wqqrwbrwkqjbrqw', 'text', NULL, '2025-03-01 13:10:19'),
-(37, 2, 3, 'hello', 'text', NULL, '2025-03-01 13:19:37'),
-(38, 2, 2, 'hi', 'text', NULL, '2025-03-01 13:19:41'),
-(39, 2, 3, 'natapos na rin ang chat', 'text', NULL, '2025-03-01 14:34:54'),
-(40, 2, 2, 'hello', 'text', NULL, '2025-03-01 14:35:25'),
-(41, 2, 2, 'hello', 'text', NULL, '2025-03-01 14:36:13'),
-(42, 2, 2, 'ayo', 'text', NULL, '2025-03-01 14:37:07'),
-(43, 2, 2, 'hello', 'text', NULL, '2025-03-01 14:38:12'),
-(44, 2, 3, 'hi', 'text', NULL, '2025-03-01 14:38:23'),
-(45, 2, 2, 'baka', 'text', NULL, '2025-03-01 14:38:29'),
-(46, 2, 3, 'kabaw', 'text', NULL, '2025-03-01 14:38:34'),
-(47, 3, 2, 'kung ang hipon ay pasayan', 'text', NULL, '2025-03-01 14:47:16'),
-(48, 3, 2, 'nganong lisod man kaayo ning websocket', 'text', NULL, '2025-03-01 14:47:22'),
-(49, 3, 3, 'mao jud frfr', 'text', NULL, '2025-03-01 14:47:28'),
-(50, 3, 3, 'HAHAHAHAH', 'text', NULL, '2025-03-01 14:47:35'),
-(51, 3, 1, 'kasturya ang sarili o', 'text', NULL, '2025-03-01 14:47:58'),
-(52, 1, 1, 'hi oleber', 'text', NULL, '2025-03-01 14:57:24'),
-(53, 1, 2, 'hello', 'text', NULL, '2025-03-03 09:24:33'),
-(54, 1, 1, 'wat', 'text', NULL, '2025-03-03 09:24:45'),
-(55, 1, 1, 'anong problima', 'text', NULL, '2025-03-03 09:24:53'),
-(56, 1, 2, 'gumagana naba ang webscoket', 'text', NULL, '2025-03-03 09:28:07'),
-(57, 1, 1, 'yesser', 'text', NULL, '2025-03-03 09:28:10'),
-(58, 1, 1, 'helo', 'text', NULL, '2025-03-03 09:50:13'),
-(60, 2, 3, 'hey', 'text', NULL, '2025-03-03 10:50:00'),
-(61, 2, 3, 'hell', 'text', NULL, '2025-03-03 10:50:17'),
-(62, 2, 2, 'hello', 'text', NULL, '2025-03-03 10:50:56'),
-(63, 2, 3, 'mellow', 'text', NULL, '2025-03-03 10:53:25'),
-(64, 2, 3, 'is this working?', 'text', NULL, '2025-03-03 11:10:25'),
-(65, 2, 3, 'hello', 'text', NULL, '2025-03-03 11:12:35'),
-(66, 2, 3, 'hi', 'text', NULL, '2025-03-03 11:12:44'),
-(67, 2, 2, 'wrokier', 'text', NULL, '2025-03-03 11:14:00'),
-(68, 2, 3, 'hey', 'text', NULL, '2025-03-03 11:15:39'),
-(79, 2, 3, 'hello', 'text', NULL, '2025-03-03 11:24:13'),
-(80, 2, 3, 'wow', 'text', NULL, '2025-03-03 11:24:15'),
-(81, 2, 2, 'nigana na', 'text', NULL, '2025-03-03 11:24:20'),
-(90, 3, 3, NULL, 'image', 'fileUpload/file_67c59a0bc6d476.98155706.jpg', '2025-03-03 12:01:15'),
-(92, 2, 3, NULL, 'image', 'fileUpload/file_67c59a128d86a7.32546984.jpg', '2025-03-03 12:01:22'),
-(94, 2, 3, 'hello FINALLY ITS WORKING', 'text', NULL, '2025-03-03 12:01:30'),
-(96, 2, 3, NULL, 'image', 'fileUpload/file_67c59ba48f43c5.46814966.png', '2025-03-03 12:08:04'),
-(97, 2, 3, 'hello', 'text', NULL, '2025-03-03 12:11:11'),
-(98, 2, 2, 'wow wat the roblox', 'text', NULL, '2025-03-03 12:11:20'),
-(100, 2, 3, NULL, 'image', 'fileUpload/file_67c5a1b5897ad4.56492759.png', '2025-03-03 12:33:57'),
-(101, 2, 3, NULL, 'image', 'fileUpload/file_67c5a23ef3d719.68846234.png', '2025-03-03 12:36:15'),
-(102, 2, 3, 'aw', 'text', NULL, '2025-03-03 12:37:03'),
-(103, 2, 3, 'hala', 'text', NULL, '2025-03-03 12:37:09'),
-(104, 2, 3, NULL, 'image', 'fileUpload/file_67c5a392509e23.34965727.png', '2025-03-03 12:41:54'),
-(105, 2, 3, 'hello', 'text', NULL, '2025-03-03 12:43:59'),
-(106, 2, 2, 'hello', 'text', NULL, '2025-03-03 12:46:12'),
-(107, 2, 3, 'he', 'text', NULL, '2025-03-03 12:48:20'),
-(108, 2, 3, 'hello', 'text', NULL, '2025-03-03 12:48:27'),
-(109, 2, 2, 'again', 'text', NULL, '2025-03-03 12:49:16'),
-(110, 2, 3, 'hello', 'text', NULL, '2025-03-03 12:50:30'),
-(111, 2, 2, 'sige', 'text', NULL, '2025-03-03 12:51:36'),
-(112, 2, 2, 'yo', 'text', NULL, '2025-03-03 12:56:22'),
-(113, 2, 3, 'what the yow', 'text', NULL, '2025-03-03 12:56:34'),
-(114, 2, 3, NULL, 'image', 'fileUpload/file_67c5a707060d66.44210080.png', '2025-03-03 12:56:39'),
-(117, 3, 1, 'hello', 'text', NULL, '2025-03-03 13:07:44'),
-(118, 3, 1, 'whayou', 'text', NULL, '2025-03-03 13:08:17'),
-(119, 1, 1, 'chuy', 'text', NULL, '2025-03-03 13:08:31'),
-(120, 1, 2, 'helo', 'text', NULL, '2025-03-03 13:08:43'),
-(121, 2, 2, 'hello', 'text', NULL, '2025-03-03 13:09:51'),
-(122, 2, 2, 'sawl', 'text', NULL, '2025-03-03 13:11:03'),
-(123, 2, 2, 'awdaw', 'text', NULL, '2025-03-03 13:12:05'),
-(124, 11, 5, 'hello', 'text', NULL, '2025-03-04 13:43:45'),
-(125, 4, 3, 'hello', 'text', NULL, '2025-03-04 13:58:06'),
-(126, 4, 3, 'idols', 'text', NULL, '2025-03-04 13:58:08'),
-(127, 2, 2, 'chuy', 'text', NULL, '2025-03-04 21:03:58'),
-(128, 2, 3, 'oy', 'text', NULL, '2025-03-04 21:04:01'),
-(129, 2, 3, 'anong problema', 'text', NULL, '2025-03-04 21:04:03'),
-(130, 2, 2, 'look at this', 'text', NULL, '2025-03-04 21:04:09'),
-(131, 2, 3, 'asa man', 'text', NULL, '2025-03-04 21:04:12'),
-(132, 2, 3, NULL, 'image', 'fileUpload/file_67c76ad1166cb5.27264812.png', '2025-03-04 21:04:17'),
-(133, 2, 2, 'WHAT THE HILL', 'text', NULL, '2025-03-04 21:04:22'),
-(134, 2, 2, 'watch this also', 'text', NULL, '2025-03-04 21:04:29'),
-(135, 2, 2, NULL, 'image', 'fileUpload/file_67c76ae48ee8c1.13118461.png', '2025-03-04 21:04:36'),
-(136, 2, 3, 'WHAT THE ROBLOX', 'text', NULL, '2025-03-04 21:04:40'),
-(137, 2, 3, 'watch this bedyu', 'text', NULL, '2025-03-04 21:04:45'),
-(138, 2, 3, NULL, 'video', 'fileUpload/file_67c76af57de118.41820540.mp4', '2025-03-04 21:04:53'),
-(139, 2, 3, 'kuyawa uy', 'text', NULL, '2025-03-05 08:06:13'),
-(140, 2, 2, 'mao ba', 'text', NULL, '2025-03-05 08:06:20');
 
 -- --------------------------------------------------------
 
@@ -321,18 +130,6 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `is_online` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`user_id`, `firstName`, `lastName`, `email`, `address`, `password`, `profile_picture`, `created_at`, `is_online`) VALUES
-(1, 'Mark', 'Palma', 'mark@gmail.com', 'Panabo, Davao', '$2y$10$rysaOgQ2MeoUNLIGbVB.Ae3naOo4wGsSMIJjW4zIaCIeicqvmTijO', NULL, '2025-02-26 09:49:46', 0),
-(2, 'James Oliver', 'Mendoza', 'jamesmendoza@gmail.com', 'Sa bandang lapis', '$2y$10$StMQmQJz2qMV/IUjRNVmgOAt0O8EvclkeH/ZBZOxDOFkznt.CTP3C', 'images/profile_img/profile_2_1741122153.png', '2025-02-26 09:57:25', 1),
-(3, 'Jayrald', 'Dionaldo', 'jayrald@gmail.com', 'Abreeza, Davao City', '$2y$10$ZUxA/aIaQc5V/.0QlAXKQeu3/DbHo0O.BR1COL2AG9uA6tAld1yxe', 'images/profile_img/profile_3_1740796380.jpg', '2025-02-26 09:57:46', 1),
-(4, 'John', 'Mayer', 'john@gmail.com', 'Sasa, Davao City', '$2y$10$Tjkg0LAy.9GuA/rSJkxzHuB5aH4AN7yi36LPlZMjJptxPyIRQZVEO', NULL, '2025-03-04 12:38:36', 0),
-(5, 'Merk', 'Richards', 'merk@gmail.com', 'Tagum, Davao del Norte', '$2y$10$gXhlTABQR0Mv/kslm1/fDuIYPhd251Pi2woVPY8GkUJfMAIse9tq2', NULL, '2025-03-04 12:39:22', 0),
-(6, 'Jack', 'Roberto', 'jack@gmail.com', 'Selos, Baracatan Toril', '$2y$10$gL5vvcjUfkXJ9NBem9ggA.zwl4VQ6em7E31gXAZ8s5Cs38.MTSV6S', NULL, '2025-03-04 12:46:39', 0);
 
 --
 -- Indexes for dumped tables
@@ -403,25 +200,25 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `chats`
 --
 ALTER TABLE `chats`
-  MODIFY `chat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `chat_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `chat_members`
 --
 ALTER TABLE `chat_members`
-  MODIFY `chat_member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `chat_member_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `friends`
 --
 ALTER TABLE `friends`
-  MODIFY `friendship_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `friendship_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `message_status`
@@ -433,7 +230,7 @@ ALTER TABLE `message_status`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

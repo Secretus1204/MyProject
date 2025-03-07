@@ -23,6 +23,7 @@ let currentChat = null;
 let typingTimeout;
 let lastMessageTime = null;
 let messages = [];
+let config = {};
 
 // for load more button
 loadMoreBtn.innerText = "Load More...";
@@ -35,6 +36,16 @@ fileInput.type = "file";
 fileInput.accept = "image/jpeg, image/png, video/mp4";
 fileInput.style.display = "none";
 document.body.appendChild(fileInput);
+
+// to ensure that config is loaded
+async function loadConfig() {
+    try {
+        const response = await fetch('http://localhost:3000/api/config'); // Ensure correct API path
+        config = await response.json();
+    } catch (error) {
+        console.error("Error loading config:", error);
+    }
+}
 
 // connect the user to the chat
 function joinChat(user_id, chat_id) {
@@ -78,8 +89,10 @@ function joinChat(user_id, chat_id) {
 }
 
 // load message details
-function loadCurrentChatDetails(chatId) {
-    fetch(`../SQL/dbquery/getChatInfo.php?chat_id=${chatId}`)
+async function loadCurrentChatDetails(chatId) {
+    await loadConfig();
+
+    fetch(`${config.GET_CHAT_INFO_URL}?chat_id=${chatId}`)
         .then(response => response.json())
         .then(data => {
             if (!data || !data.success || data.chat_name === null) {
@@ -128,8 +141,8 @@ function loadCurrentChatDetails(chatId) {
             if (!data.is_group) {
                 createChatBtn.addEventListener("click", function () {
                     const userId = createChatBtn.dataset.userId;
-                    console.log("Create Chat Button Clicked, userId:", userId); // Debugging line
                     if (userId) {
+                        // BE AWARE MAYBE NEEDS CONFIG
                         window.location.href = `createGroupPage.php?preselected_users=${userId}`;
                     } else {
                         console.error("User ID not found for creating group chat");
@@ -198,7 +211,7 @@ function removeUser(userId) {
         return;
     }
 
-    fetch("../SQL/dbquery/removeUserFromGroup.php", {
+    fetch(config.REMOVE_USER_URL, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `group_id=${currentChat}&user_id=${userId}`
@@ -221,7 +234,7 @@ function loadAvailableUsers() {
         return;
     }
 
-    fetch(`../SQL/dbquery/getUsers.php?group_id=${currentChat}`)
+    fetch(`${config.GET_USERS_URL}?group_id=${currentChat}`)
         .then(response => response.json())
         .then(data => {
             addUserSelect.innerHTML = "";
@@ -248,7 +261,7 @@ function loadGroupMembers() {
         return;
     }
 
-    fetch(`../SQL/dbquery/getGroupMembers.php?group_id=${currentChat}`)
+    fetch(`${config.GET_GROUP_MEMBERS_URL}?group_id=${currentChat}`)
         .then(response => response.json())
         .then(data => {
             groupMembersListModal.innerHTML = "";
@@ -261,18 +274,17 @@ function loadGroupMembers() {
                 let usernameText = document.createElement("h2");
                 usernameText.textContent = member.username;
                 li.appendChild(usernameText);
+                
+                
+                let removeBtn = document.createElement("button");
+                removeBtn.classList.add("removeMemberBtn");
+                removeBtn.dataset.userId = member.user_id;
 
-                if (member.user_id !== currentUser) {
-                    let removeBtn = document.createElement("button");
-                    removeBtn.classList.add("removeMemberBtn");
-                    removeBtn.dataset.userId = member.user_id;
+                let removeText = document.createElement("h2");
+                removeText.textContent = "Remove";
+                removeBtn.appendChild(removeText);
 
-                    let removeText = document.createElement("h2");
-                    removeText.textContent = "Remove";
-                    removeBtn.appendChild(removeText);
-
-                    li.appendChild(removeBtn);
-                }
+                li.appendChild(removeBtn);
 
                 groupMembersListModal.appendChild(li);
             });
@@ -280,11 +292,10 @@ function loadGroupMembers() {
         .catch(error => console.error("Fetch error:", error));
 }
 
-
 // load latest 20 messages
 async function loadMessages() {
     try {
-        const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getMessages.php?chat_id=${currentChat}&limit=20`);
+        const response = await fetch(`${config.GET_MESSAGES_URL}?chat_id=${currentChat}&limit=20`);
         const data = await response.json();
 
         if (!data.success) {
@@ -325,7 +336,7 @@ async function loadMoreMessages() {
     console.log("Loading more messages. Last message time:", lastMessageTime);
 
     try {
-        const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getMessages.php?chat_id=${currentChat}&limit=20&last_time=${encodeURIComponent(lastMessageTime)}`);
+        const response = await fetch(`${config.GET_MESSAGES_URL}?chat_id=${currentChat}&limit=20&last_time=${encodeURIComponent(lastMessageTime)}`);
         const data = await response.json();
 
         console.log("Response data:", data);
@@ -343,31 +354,27 @@ async function loadMoreMessages() {
         // sort timestamps
         data.messages.sort((a, b) => new Date(a.time) - new Date(b.time));
 
-        // Save current scroll position before adding messages
+        
         const oldScrollHeight = chatContainer.scrollHeight;
         const oldScrollTop = chatContainer.scrollTop;
 
-        // Insert messages manually at the top  
+        // insert older messages at top
         const newMessageElements = await Promise.all(
             data.messages.map((msg) => displayMessage(msg.user_id, msg.text, msg.time, msg.file_url, msg.file_type))
         );
 
-        // Insert messages at the top
         newMessageElements.reverse().forEach((msgElement) => {
             chatContainer.insertBefore(msgElement, chatContainer.children[1]); // Put messages below "Load More" button
         });
 
-        // Update lastMessageTime to the oldest message's time  
         lastMessageTime = data.messages[0].time;  
         console.log("Updated lastMessageTime:", lastMessageTime);
 
-        // Check if we just loaded the first message in the database
         if (data.messages.length < 20) {
             console.log("Reached the oldest message. Hiding Load More button.");
             loadMoreBtn.style.display = "none";
         }
 
-        // Keep scroll position
         chatContainer.scrollTop = oldScrollTop + (chatContainer.scrollHeight - oldScrollHeight);
 
     } catch (error) {
@@ -448,7 +455,7 @@ async function displayUserJoined(user_id, text) {
 //to display profile per message
 async function fetchUserProfile(user_id) {
     try {
-        const response = await fetch(`http://localhost/Projects/CST5-Final-Project/SQL/dbquery/getUserProfile.php?user_id=${user_id}`);
+        const response = await fetch(`${config.GET_USER_PROFILE_URL}?user_id=${user_id}`);
         const data = await response.json();
 
         if (!data.success) {
@@ -463,8 +470,10 @@ async function fetchUserProfile(user_id) {
     }
 }
 
-// Join chat when page loads
-document.addEventListener("DOMContentLoaded", () => {
+// join chat when page loads
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadConfig();
+
     const user_id = document.querySelector("#sender_id").value;
     const chat_id = document.querySelector("#chat_id").value;
 
@@ -479,7 +488,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadCurrentChatDetails(chat_id);
 });
 
-// Typing event
+// typing event
 messageInput.addEventListener("input", () => {
     socket.emit("typing", { user_id: currentUser, chat_id: currentChat });
 
@@ -489,10 +498,10 @@ messageInput.addEventListener("input", () => {
     }, 500);
 });
 
-// Send message on button click
+// send message on click
 document.getElementById("sendBtn").addEventListener("click", sendMessage);
 
-// Send message on Enter key press
+// send message on enter key
 messageInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
@@ -500,7 +509,7 @@ messageInput.addEventListener("keydown", (e) => {
     }
 });
 
-// Function to trigger file selection
+// function to trigger file selection
 function selectFile() {
     fileInput.click();
 }
@@ -538,7 +547,7 @@ fileInput.addEventListener("change", async () => {
     try {
         console.log("Uploading file...");
 
-        const uploadResponse = await fetch("http://localhost/Projects/CST5-Final-Project/SQL/dbquery/uploadFileMessage.php", {
+        const uploadResponse = await fetch(config.UPLOAD_FILE_MESSAGE_URL, {
             method: "POST",
             body: formData,
         });
@@ -598,7 +607,7 @@ addUserBtn.addEventListener("click", () => {
         return;
     }
 
-    fetch("../SQL/dbquery/addUserToGroup.php", {
+    fetch(config.ADD_USER_TO_GROUP_URL, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `group_id=${currentChat}&user_id=${userId}`

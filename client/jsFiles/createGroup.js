@@ -1,10 +1,24 @@
-document.addEventListener("DOMContentLoaded", function () {
+let config = {}; // Config object to store API path
+
+// to ensure that config is loaded
+async function loadConfig() {
+    try {
+        const response = await fetch('http://localhost:3000/api/config'); // Ensure correct API path
+        config = await response.json();
+    } catch (error) {
+        console.error("Error loading config:", error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", async function () {
     const searchInput = document.getElementById("searchMember");
     const usersList = document.querySelector(".show-users");
     const addedMembersList = document.querySelector(".added-members");
     const createGroupBtn = document.querySelector(".createGroupbtn");
     const errorContainer = document.querySelector(".error_message");
     let selectedUsers = [];
+
+    await loadConfig();
 
     // function to get URL parameters
     function getURLParams() {
@@ -14,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // load users and preselect if needed
     function loadUsers() {
-        fetch("../SQL/dbquery/showUsersCreateGroup.php")
+        fetch(config.SHOW_USERS_CREATE_GROUP_URL)
             .then(response => response.json())
             .then(data => {
                 if (!data.success) {
@@ -131,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         
-        fetch("../SQL/dbquery/createGroup.php", {
+        fetch(config.CREATE_GROUP_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ groupName, members: selectedUsers })

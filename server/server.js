@@ -3,7 +3,11 @@ import { Server } from 'socket.io';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fetch from 'node-fetch';
-import cors from 'cors'; // Import CORS
+import cors from 'cors';
+import dotenv from 'dotenv';
+import configRouter from './config.js'; // Import config router
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,31 +24,22 @@ app.use(express.json()); // Enable JSON parsing
 
 // Enable CORS
 app.use(cors({
-    origin: [
-        "http://localhost",
-        "http://127.0.0.1:3000",
-        "https://localhost",
-        "https://127.0.0.1:3000"
-    ], // Allow both HTTP & HTTPS
+    origin: process.env.CORS_ORIGINS.split(','), // Use environment variable
     methods: ["GET", "POST"], // Restrict to necessary methods
     credentials: true // Allow credentials (cookies, headers, etc.)
 }));
 
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
 
+app.use('/api', configRouter); // Use config router
+
 const expressServer = app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
 
-
 const io = new Server(expressServer, {
     cors: {
-        origin: [
-            "http://localhost",
-            "http://127.0.0.1:3000",
-            "https://localhost",
-            "https://127.0.0.1:3000"
-        ], // Allow both HTTP & HTTPS
+        origin: process.env.CORS_ORIGINS.split(','), // Use environment variable
         methods: ["GET", "POST"], // Restrict to necessary methods
         credentials: true // Allow credentials
     }
@@ -58,7 +53,7 @@ io.on('connection', (socket) => {
             console.log(`Attempting to validate user ${user_id} for chat ${chat_id}`);
 
             // Validate user via PHP
-            const response = await fetch("http://localhost/Projects/CST5-Final-Project/SQL/dbquery/chatValidation.php", {
+            const response = await fetch(process.env.CHAT_VALIDATION_URL, { // Use environment variable
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ user_id, chat_id })
@@ -119,7 +114,7 @@ io.on('connection', (socket) => {
             const messageData = { user_id, chat_id, text, file_url, file_type };
 
             // Store message in the database
-            const dbResponse = await fetch("http://localhost/Projects/CST5-Final-Project/SQL/dbquery/saveMessage.php", {
+            const dbResponse = await fetch(process.env.SAVE_MESSAGE_URL, { // Use environment variable
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(messageData),

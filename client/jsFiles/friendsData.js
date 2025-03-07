@@ -1,6 +1,20 @@
+let config = {}; // Config object to store API path
+
+// to ensure that config is loaded
+async function loadConfig() {
+    try {
+        const response = await fetch('http://localhost:3000/api/config'); // Ensure correct API path
+        config = await response.json();
+    } catch (error) {
+        console.error("Error loading config:", error);
+    }
+}
+
 //to get all friend and non-friend data of the current user
-function fetchFriendsData() {
-    fetch('../SQL/dbquery/discoverPeople.php')
+async function fetchFriendsData() {
+    await loadConfig();
+
+    fetch(config.DISCOVER_PEOPLE_URL)
         .then(response => response.json())
         .then(data => {
             // Update Current Friends List
@@ -131,8 +145,10 @@ function attachEventListeners() {
 }
 
 //function for add friend button
-function addFriend(friendId) {
-    fetch('../SQL/dbquery/addFriend.php', {
+async function addFriend(friendId) {
+    await loadConfig();
+
+    fetch(config.ADD_FRIEND_URL, {
         method: 'POST',
         body: new URLSearchParams({ add_friend_id: friendId }),
     })
@@ -141,8 +157,9 @@ function addFriend(friendId) {
 }
 
 //function for accept and reject button sent to sqlquery friendreq.php
-function handleFriendRequest(friendId, action) {
-    fetch('../SQL/dbquery/handleFriendRequest.php', {
+async function handleFriendRequest(friendId, action) {
+    await loadConfig();
+    fetch(config.HANDLE_FRIEND_REQUEST_URL, {
         method: 'POST',
         body: new URLSearchParams({ friend_id: friendId, [action]: true }),
     })
