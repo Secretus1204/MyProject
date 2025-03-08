@@ -26,17 +26,21 @@ app.use(cors({
 }));
 
 app.use('/api', configRouter);
-const axios = require('axios');
 
-axios.get('https://yaphubers.ct.ws/server/api.php')  // Use the actual URL for your PHP API
+const axios = require('axios');
+const https = require('https');
+
+const agent = new https.Agent({  
+  rejectUnauthorized: false  
+});
+
+axios.get('https://yaphubers.ct.ws/server/api.php', { httpsAgent: agent })
   .then(response => {
-    console.log(response.data); 
+    console.log(response.data);  
   })
   .catch(error => {
     console.error('Error fetching data from PHP API:', error);
   });
-
-
 
 const PHP_API_URL = "https://yaphubers.ct.ws/server/api.php";
 app.get("/api/users", async (req, res) => {
