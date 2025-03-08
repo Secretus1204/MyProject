@@ -26,6 +26,9 @@ app.use(cors({
 }));
 
 app.use('/api', configRouter); // Use config router
+app.get('/api/test', (req, res) => {
+    res.json({ message: "API is working!" });
+});
 
 const expressServer = app.listen(PORT, () => {
     console.log(`✅ Server is running on port ${PORT}`);
