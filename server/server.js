@@ -4,6 +4,7 @@ import fetch from 'node-fetch';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import configRouter from './config.js';
+import axios from "axios";
 
 dotenv.config();
 
@@ -11,14 +12,13 @@ const PORT = process.env.PORT || 3000;
 const ADMIN = "Admin";
 const CHAT_VALIDATION_URL = process.env.CHAT_VALIDATION_URL;
 const SAVE_MESSAGE_URL = process.env.SAVE_MESSAGE_URL;
-const CORS_ORIGINS = ["https://yaphubers.ct.ws"]; // ✅ Updated with your new domain
+const CORS_ORIGINS = ["https://yaphubers.ct.ws"];
 
-const UsersState = new Map(); // Stores { socketId -> { user_id, chat_id } }
+const UsersState = new Map();
 
 const app = express();
 app.use(express.json());
 
-// ✅ Enable CORS for your domain
 app.use(cors({
     origin: CORS_ORIGINS,
     methods: ["GET", "POST"],
@@ -26,8 +26,22 @@ app.use(cors({
 }));
 
 app.use('/api', configRouter);
+
+
+const PHP_API_URL = "https://yaphubers.ct.ws/server/api.php";
+app.get("/api/users", async (req, res) => {
+    try {
+        const response = await axios.get(PHP_API_URL);
+        console.log("✅ Data received:", response.data); 
+        res.json(response.data);
+    } catch (error) {
+        console.error("❌ Error fetching users:", error.response?.data || error.message);
+        res.status(500).json({ error: "Failed to fetch data", details: error.response?.data || error.message });
+    }
+});
+
 app.get('/api/test', (req, res) => {
-    res.json({ message: "API is working!" });
+    res.json({ message: "API is working!"});
 });
 
 const expressServer = app.listen(PORT, () => {
@@ -43,7 +57,7 @@ const io = new Server(expressServer, {
 });
 
 io.on('connection', (socket) => {
-    console.log(`🟢 User ${socket.id} connected`);
+    console.log(`User ${socket.id} connected`);
 
     socket.on('enterRoom', async ({ user_id, chat_id }) => {
         try {
@@ -56,7 +70,7 @@ io.on('connection', (socket) => {
             });
 
             if (!response.ok) {
-                console.error(`❌ Validation request failed with status: ${response.status}`);
+                console.error(`Validation request failed with status: ${response.status}`);
                 socket.emit("errorMessage", "Validation service is unavailable.");
                 return;
             }
@@ -67,38 +81,33 @@ io.on('connection', (socket) => {
             try {
                 data = JSON.parse(rawText);
             } catch (jsonError) {
-                console.error("❌ JSON Parsing Error:", jsonError, "Response:", rawText);
+                console.error("JSON Parsing Error:", jsonError, "Response:", rawText);
                 socket.emit("errorMessage", "Invalid server response.");
                 return;
             }
 
             if (!data.success) {
-                console.warn(`❌ Validation failed: ${data.message}`);
+                console.warn(`Validation failed: ${data.message}`);
                 socket.emit("errorMessage", "You are not a member of this chat.");
                 return;
             }
 
-            console.log(`✅ User ${user_id} validated for chat ${chat_id}`);
+            console.log(`User ${user_id} validated for chat ${chat_id}`);
 
-            // Leave previous room if exists
             const prevRoom = UsersState.get(socket.id)?.chat_id;
             if (prevRoom) {
                 socket.leave(prevRoom);
                 io.to(prevRoom).emit('join_leftChat', notifyMessage(user_id, `left chat ${prevRoom}.`));
             }
 
-            // Store user session
             UsersState.set(socket.id, { user_id, chat_id });
             socket.join(chat_id);
-
-            // Notify chat
             io.to(chat_id).emit('join_leftChat', notifyMessage(user_id, `joined chat ${chat_id}.`));
 
-            // Update user list
             updateUserList(chat_id);
 
         } catch (error) {
-            console.error("❌ Error entering room:", error);
+            console.error("Error entering room:", error);
             socket.emit("errorMessage", "Failed to join the chat.");
         }
     });
@@ -117,17 +126,16 @@ io.on('connection', (socket) => {
             });
 
             if (!dbResponse.ok) {
-                console.error("❌ Database error: Message failed to store.");
+                console.error("Database error: Message failed to store.");
                 socket.emit("errorMessage", "Message could not be saved.");
                 return;
             }
 
             console.log(`📩 Message from ${user_id} in chat ${chat_id}:`, text || file_url);
-
             io.to(chat_id).emit("message", messageData);
 
         } catch (error) {
-            console.error("❌ Error sending message:", error);
+            console.error("Error sending message:", error);
             socket.emit("errorMessage", "Failed to send the message.");
         }
     });
@@ -148,11 +156,10 @@ io.on('connection', (socket) => {
             updateUserList(user.chat_id);
         }
 
-        console.log(`🔴 User ${socket.id} disconnected`);
+        console.log(`User ${socket.id} disconnected`);
     });
 });
 
-// ✅ Helper function to build messages
 function notifyMessage(user_id, text) {
     return {
         user_id,
@@ -161,7 +168,6 @@ function notifyMessage(user_id, text) {
     };
 }
 
-// ✅ Helper function to update user list
 function updateUserList(chat_id) {
     io.to(chat_id).emit('userList', {
         users: Array.from(UsersState.values()).filter(u => u.chat_id === chat_id).map(u => u.user_id)
