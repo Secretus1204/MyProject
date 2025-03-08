@@ -1,24 +1,18 @@
 import fetch from 'node-fetch';
+import https from 'https';
 
-const PHP_API_URL = "https://yaphubers.ct.ws/server/api.php";
-
-async function testDatabase() {
+async function testAPI() {
     try {
-        console.log("🔍 Testing database connection via PHP API...");
+        const agent = new https.Agent({ rejectUnauthorized: false }); 
+        const response = await fetch("https://yaphubers.ct.ws/server/api.php", { agent });
+
+        if (!response.ok) throw new Error(`HTTP Error! Status: ${response.status}`);
         
-        
-        const response = await fetch(PHP_API_URL, { method: "GET" });
         const data = await response.json();
-        
-        if (response.ok) {
-            console.log("Database connection successful!");
-            console.log("Received data:", data);
-        } else {
-            console.error("Failed to fetch data:", data);
-        }
+        console.log("✅ API Response:", data);
     } catch (error) {
-        console.error("Error testing database:", error.message);
+        console.error("❌ Error testing database:", error);
     }
 }
 
-testDatabase();
+testAPI();
