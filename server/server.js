@@ -11,21 +11,21 @@ const PORT = process.env.PORT || 3000;
 const ADMIN = "Admin";
 const CHAT_VALIDATION_URL = process.env.CHAT_VALIDATION_URL;
 const SAVE_MESSAGE_URL = process.env.SAVE_MESSAGE_URL;
-const CORS_ORIGINS = process.env.CORS_ORIGINS?.split(',') || ['*'];
+const CORS_ORIGINS = ["https://yaphubers.ct.ws"]; // ✅ Updated with your new domain
 
 const UsersState = new Map(); // Stores { socketId -> { user_id, chat_id } }
 
 const app = express();
 app.use(express.json());
 
-// Enable CORS
+// ✅ Enable CORS for your domain
 app.use(cors({
     origin: CORS_ORIGINS,
     methods: ["GET", "POST"],
     credentials: true
 }));
 
-app.use('/api', configRouter); // Use config router
+app.use('/api', configRouter);
 app.get('/api/test', (req, res) => {
     res.json({ message: "API is working!" });
 });
@@ -37,8 +37,8 @@ const expressServer = app.listen(PORT, () => {
 const io = new Server(expressServer, {
     cors: {
         origin: CORS_ORIGINS,
-        methods: ["GET", "POST"], 
-        credentials: true 
+        methods: ["GET", "POST"],
+        credentials: true
     }
 });
 
@@ -55,12 +55,17 @@ io.on('connection', (socket) => {
                 body: JSON.stringify({ user_id, chat_id })
             });
 
-            const rawText = await response.text();
+            if (!response.ok) {
+                console.error(`❌ Validation request failed with status: ${response.status}`);
+                socket.emit("errorMessage", "Validation service is unavailable.");
+                return;
+            }
 
+            const rawText = await response.text();
             let data;
+
             try {
                 data = JSON.parse(rawText);
-                console.log("✅ Validation response:", data);
             } catch (jsonError) {
                 console.error("❌ JSON Parsing Error:", jsonError, "Response:", rawText);
                 socket.emit("errorMessage", "Invalid server response.");
@@ -98,7 +103,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Listen for messages
     socket.on("message", async ({ user_id, chat_id, text, file_url, file_type }) => {
         try {
             const user = UsersState.get(socket.id);
@@ -106,7 +110,6 @@ io.on('connection', (socket) => {
 
             const messageData = { user_id, chat_id, text, file_url, file_type };
 
-            // Store message in the database
             const dbResponse = await fetch(SAVE_MESSAGE_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -121,7 +124,6 @@ io.on('connection', (socket) => {
 
             console.log(`📩 Message from ${user_id} in chat ${chat_id}:`, text || file_url);
 
-            // Emit message to chat
             io.to(chat_id).emit("message", messageData);
 
         } catch (error) {
@@ -130,7 +132,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Typing events
     socket.on("typing", ({ user_id, chat_id }) => {
         socket.to(chat_id).emit("typing", user_id);
     });
@@ -139,7 +140,6 @@ io.on('connection', (socket) => {
         socket.to(chat_id).emit("stopTyping", user_id);
     });
 
-    // Disconnect event
     socket.on('disconnect', () => {
         const user = UsersState.get(socket.id);
         if (user) {
@@ -152,7 +152,7 @@ io.on('connection', (socket) => {
     });
 });
 
-// Function to build messages
+// ✅ Helper function to build messages
 function notifyMessage(user_id, text) {
     return {
         user_id,
@@ -161,7 +161,7 @@ function notifyMessage(user_id, text) {
     };
 }
 
-// Function to update user list
+// ✅ Helper function to update user list
 function updateUserList(chat_id) {
     io.to(chat_id).emit('userList', {
         users: Array.from(UsersState.values()).filter(u => u.chat_id === chat_id).map(u => u.user_id)
