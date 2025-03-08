@@ -26,6 +26,16 @@ app.use(cors({
 }));
 
 app.use('/api', configRouter);
+const axios = require('axios');
+
+axios.get('https://yaphubers.ct.ws/server/api.php')  // Use the actual URL for your PHP API
+  .then(response => {
+    console.log(response.data); 
+  })
+  .catch(error => {
+    console.error('Error fetching data from PHP API:', error);
+  });
+
 
 
 const PHP_API_URL = "https://yaphubers.ct.ws/server/api.php";
